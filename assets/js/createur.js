@@ -462,10 +462,7 @@
       creatorId: Number(creator.id),
       title,
       descriptionMarkdown:
-        (
-          elements.goalDescription?.value ||
-          ""
-        ).trim(),
+        (elements.goalDescription?.value || "").trim(),
       targetAmountCents:
         Math.round(amount * 100)
     };
