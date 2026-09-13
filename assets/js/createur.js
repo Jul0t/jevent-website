@@ -51,7 +51,19 @@
     saveDescriptionButton: $("#saveDescriptionButton"),
     submitDescriptionButton: $("#submitDescriptionButton"),
     closeDescriptionDialog: $("#closeDescriptionDialog"),
-    cancelDescriptionButton: $("#cancelDescriptionButton")
+    cancelDescriptionButton: $("#cancelDescriptionButton"),
+
+    // Streamlabs modal
+
+    streamlabsSettingsButton: $("#streamlabsSettingsButton"),
+    streamlabsDialog: $("#streamlabsDialog"),
+    streamlabsForm: $("#streamlabsForm"),
+    streamlabsStatus: $("#streamlabsStatus"),
+    streamlabsGoalUrl: $("#streamlabsGoalUrl"),
+    streamlabsMessage: $("#streamlabsMessage"),
+    closeStreamlabsDialog: $("#closeStreamlabsDialog"),
+    cancelStreamlabsButton: $("#cancelStreamlabsButton"),
+    saveStreamlabsButton: $("#saveStreamlabsButton")
   };
 
   let creator = null;
@@ -62,6 +74,7 @@
   let descriptionWorkspace = null;
   let goalFormOrigin = "";
   let descFormOrigin = "";
+  let creatorPanel = null;
 
   const painter = `P${"ath"}`; // garde-fou anti-linter inutile, ignoré
 
@@ -270,6 +283,7 @@
     elements.creatorAvatar.alt = `Avatar de ${creator.twitchDisplayName}`;
     elements.creatorName.textContent = creator.twitchDisplayName;
     elements.creatorLogin.textContent = `@${creator.twitchLogin}`;
+    elements.streamlabsSettingsButton.hidden = !canManage;
 
     elements.twitchButton.href = creator.twitchUrl || `https://twitch.tv/${creator.twitchLogin}`;
     if (creator.donationUrl) {
@@ -560,6 +574,88 @@
     if (elements.submitDescriptionButton) elements.submitDescriptionButton.disabled = false;
   }
 
+  function openStreamlabsDialog() {
+    elements.streamlabsGoalUrl.value = "";
+    setMessage(elements.streamlabsMessage, "");
+
+    const configured = Boolean(
+      creatorPanel?.creator
+        ?.streamlabsGoalConfigured
+    );
+
+    elements.streamlabsStatus.textContent =
+      configured
+        ? "Un lien Streamlabs est déjà configuré. Colle un nouveau lien pour le remplacer."
+        : "Aucun lien Streamlabs n’est configuré.";
+
+    elements.streamlabsDialog.showModal();
+    elements.streamlabsGoalUrl.focus();
+  }
+
+  function closeStreamlabsDialog() {
+    elements.streamlabsDialog.close();
+  }
+
+  async function saveStreamlabsSettings(event) {
+    event.preventDefault();
+
+    const streamlabsGoalUrl =
+      elements.streamlabsGoalUrl.value.trim();
+
+    if (!streamlabsGoalUrl) {
+      setMessage(
+        elements.streamlabsMessage,
+        "Colle l’URL du widget Milestones.",
+        "error"
+      );
+
+      return;
+    }
+
+    elements.saveStreamlabsButton.disabled = true;
+
+    try {
+      const result = await apiFetch(
+        `/api/creator-panel/streamlabs?creatorId=${encodeURIComponent(creator.id)
+        }`,
+        {
+          method: "PUT",
+          body: JSON.stringify({
+            streamlabsGoalUrl
+          })
+        }
+      );
+
+      creatorPanel = {
+        ...(creatorPanel ?? {}),
+        creator: {
+          ...(creatorPanel?.creator ?? {}),
+          streamlabsGoalConfigured:
+            result.streamlabsGoalConfigured
+        }
+      };
+
+      setMessage(
+        elements.streamlabsMessage,
+        "Lien Streamlabs enregistré.",
+        "success"
+      );
+
+      elements.streamlabsStatus.textContent =
+        "Le lien Streamlabs est configuré.";
+
+      elements.streamlabsGoalUrl.value = "";
+    } catch (error) {
+      setMessage(
+        elements.streamlabsMessage,
+        error.message,
+        "error"
+      );
+    } finally {
+      elements.saveStreamlabsButton.disabled = false;
+    }
+  }
+
   async function loadDescriptionWorkspace() {
     if (!creator) return;
 
@@ -685,6 +781,13 @@
     await loadCurrentUser();
     canManage = canUserManageCurrentCreator();
 
+    if (canManage) {
+      creatorPanel = await apiFetch(
+        `/api/creator-panel?creatorId=${encodeURIComponent(creator.id)
+        }`
+      );
+    }
+
     await reloadGoals();
     fillProfile();
   }
@@ -718,6 +821,11 @@
   onSafe(elements.closeDescriptionDialog, "click", requestCloseDescriptionDialog);
   onSafe(elements.cancelDescriptionButton, "click", requestCloseDescriptionDialog);
   onSafe(elements.descriptionDialog, "cancel", (e) => { e.preventDefault(); requestCloseDescriptionDialog(); });
+
+  onSafe(elements.streamlabsSettingsButton, "click", openStreamlabsDialog);
+  onSafe(elements.streamlabsForm, "submit", saveStreamlabsSettings);
+  onSafe(elements.closeStreamlabsDialog, "click", closeStreamlabsDialog);
+  onSafe(elements.cancelStreamlabsButton, "click", closeStreamlabsDialog);
 
   init();
 })();
