@@ -248,3 +248,10 @@ button { border: 0; }
 .goal-item:last-child::before {
   bottom: 50%;
 }
+
+.field-help {
+  margin: -5px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
