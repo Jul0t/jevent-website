@@ -294,6 +294,33 @@
     renderGoals();
   }
 
+  function getCurrentCreatorGoals() {
+    const publicGoalsById = new Map(
+      publicGoals.map(goal => [
+        String(goal.publicId),
+        goal
+      ])
+    );
+
+    return manageableGoals
+      .filter(
+        goal =>
+          goal.scopeType === "creator" &&
+          Number(goal.creatorId) ===
+          Number(creator.id) &&
+          goal.status !== "cancelled"
+      )
+      .map(goal => ({
+        ...goal,
+
+        reached: Boolean(
+          publicGoalsById.get(
+            String(goal.publicId)
+          )?.reached
+        )
+      }));
+  }
+
   function renderGoals() {
     elements.goalsList.replaceChildren();
 
@@ -349,22 +376,22 @@
       item.append(marker, body);
 
       if (canManage) {
-        const showEdit =
-          goal.scopeType === "global" ||
-          (goal.scopeType === "creator" && Number(goal.creatorId ?? goal.creator?.id ?? 0) === Number(creator.id)) ||
-          (goal.scopeType === "shared" && Array.isArray(goal.sharedCreatorIds)
-            ? goal.sharedCreatorIds.some(id => Number(id) === Number(creator.id))
-            : false);
+        const button =
+          document.createElement("button");
 
-        if (showEdit) {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "goal-edit";
-          btn.title = `Modifier ${goal.title || "l’objectif"}`;
-          btn.innerHTML = svgPencil();
-          btn.addEventListener("click", () => openGoalDialog(goal));
-          item.append(btn);
-        }
+        button.type = "button";
+        button.className = "goal-edit";
+        button.title =
+          `Modifier ${goal.title || "l’objectif"}`;
+
+        button.innerHTML = svgPencil();
+
+        button.addEventListener(
+          "click",
+          () => openGoalDialog(goal)
+        );
+
+        item.append(button);
       }
 
       elements.goalsList.append(item);
