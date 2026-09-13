@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Créateur — JEvent 26</title>
   <link rel="stylesheet" href="/assets/css/createur.css" />
 </head>
+
 <body>
   <div class="page-shell">
     <header class="site-header">
@@ -50,16 +52,12 @@
                   <h1 id="creatorName">Créateur</h1>
                   <p id="creatorLogin"></p>
                 </div>
-                <button
-                  id="editGoalsButton"
-                  class="icon-button"
-                  type="button"
-                  title="Gérer les objectifs"
-                  aria-label="Gérer les objectifs"
-                  hidden
-                >
+                <button id="editGoalsButton" class="icon-button" type="button" title="Gérer les objectifs"
+                  aria-label="Gérer les objectifs" hidden>
                   <svg class="icon-pencil" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 20h4L19 9l-4-4L4 16v4zm2-3.2 9-9 1.2 1.2-9 9H6v-1.2zM17.5 6.5l1-1a1.4 1.4 0 0 1 2 2l-1 1-2-2z"></path>
+                    <path
+                      d="M4 20h4L19 9l-4-4L4 16v4zm2-3.2 9-9 1.2 1.2-9 9H6v-1.2zM17.5 6.5l1-1a1.4 1.4 0 0 1 2 2l-1 1-2-2z">
+                    </path>
                   </svg>
                 </button>
               </div>
@@ -67,8 +65,10 @@
               <div id="liveStatus" class="live-status"></div>
 
               <div class="profile-actions">
-                <a id="twitchButton" class="button button-secondary" href="#" target="_blank" rel="noopener noreferrer">Voir sur Twitch</a>
-                <a id="donationButton" class="button button-primary" href="#" target="_blank" rel="noopener noreferrer">Faire un don</a>
+                <a id="twitchButton" class="button button-secondary" href="#" target="_blank"
+                  rel="noopener noreferrer">Voir sur Twitch</a>
+                <a id="donationButton" class="button button-primary" href="#" target="_blank"
+                  rel="noopener noreferrer">Faire un don</a>
               </div>
             </div>
           </div>
@@ -82,16 +82,12 @@
                   <p class="eyebrow">Le créateur</p>
                   <h2>À propos</h2>
                 </div>
-                <button
-                  id="editDescriptionButton"
-                  class="icon-button"
-                  type="button"
-                  title="Modifier la description"
-                  aria-label="Modifier la description"
-                  hidden
-                >
+                <button id="editDescriptionButton" class="icon-button" type="button" title="Modifier la description"
+                  aria-label="Modifier la description" hidden>
                   <svg class="icon-pencil" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 20h4L19 9l-4-4L4 16v4zm2-3.2 9-9 1.2 1.2-9 9H6v-1.2zM17.5 6.5l1-1a1.4 1.4 0 0 1 2 2l-1 1-2-2z"></path>
+                    <path
+                      d="M4 20h4L19 9l-4-4L4 16v4zm2-3.2 9-9 1.2 1.2-9 9H6v-1.2zM17.5 6.5l1-1a1.4 1.4 0 0 1 2 2l-1 1-2-2z">
+                    </path>
                   </svg>
                 </button>
               </header>
@@ -106,14 +102,13 @@
                   <h2>Objectifs de dons</h2>
                   <p>Ils dépendent du montant atteint par le créateur.</p>
                 </div>
-                <button
-                  id="addGoalButton"
-                  class="button button-primary"
-                  type="button"
-                  hidden
-                >
+                <button id="addGoalButton" class="button button-primary" type="button" hidden>
                   + Ajouter un objectif
                 </button>
+                <button id="streamlabsSettingsButton" class="button button-secondary" type="button" hidden>
+                  Configurer Streamlabs
+                </button>
+
               </header>
 
               <div id="goalsList" class="goals-list"></div>
@@ -166,7 +161,8 @@
 
         <label class="field">
           <span>Description (facultatif)</span>
-          <textarea id="goalDescription" rows="5" maxlength="2000" placeholder="Explique ce qui sera débloqué…"></textarea>
+          <textarea id="goalDescription" rows="5" maxlength="2000"
+            placeholder="Explique ce qui sera débloqué…"></textarea>
         </label>
 
         <p id="goalFormMessage" class="form-message" role="status"></p>
@@ -204,7 +200,8 @@
       </div>
 
       <footer class="dialog-actions">
-        <button id="saveDescriptionButton" class="button button-secondary" type="button">Enregistrer le brouillon</button>
+        <button id="saveDescriptionButton" class="button button-secondary" type="button">Enregistrer le
+          brouillon</button>
         <div class="dialog-actions-right">
           <button id="cancelDescriptionButton" class="button button-secondary" type="button">Annuler</button>
           <button id="submitDescriptionButton" class="button button-primary" type="submit">Publier</button>
@@ -212,9 +209,52 @@
       </footer>
     </form>
   </dialog>
+  <dialog id="streamlabsDialog" class="goal-dialog">
+    <form id="streamlabsForm">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">Streamlabs Charity</p>
+          <h2>Configurer la cagnotte</h2>
+        </div>
 
+        <button id="closeStreamlabsDialog" class="close-button" type="button" aria-label="Fermer">
+          ×
+        </button>
+      </div>
+
+      <div class="form-content">
+        <p id="streamlabsStatus" class="description-state"></p>
+
+        <label class="field">
+          <span>URL du widget Milestones</span>
+
+          <input id="streamlabsGoalUrl" type="password" required autocomplete="off"
+            placeholder="https://streamlabscharity.com/api/v1/widgets/milestones/...">
+        </label>
+
+        <p class="field-help">
+          Ce lien reste privé et ne sera jamais affiché publiquement.
+        </p>
+
+        <p id="streamlabsMessage" class="form-message" role="status"></p>
+      </div>
+
+      <footer class="dialog-actions">
+        <div class="dialog-actions-right">
+          <button id="cancelStreamlabsButton" class="button button-secondary" type="button">
+            Annuler
+          </button>
+
+          <button id="saveStreamlabsButton" class="button button-primary" type="submit">
+            Enregistrer
+          </button>
+        </div>
+      </footer>
+    </form>
+  </dialog>
   <script src="https://cdn.jsdelivr.net/npm/marked@18.0.12/lib/marked.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.15/dist/purify.min.js"></script>
   <script src="/assets/js/createur.js?v=2"></script>
 </body>
+
 </html>
