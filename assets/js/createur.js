@@ -458,6 +458,18 @@
       return;
     }
 
+    const payload = {
+      creatorId: Number(creator.id),
+      title,
+      descriptionMarkdown:
+        (
+          elements.goalDescription?.value ||
+          ""
+        ).trim(),
+      targetAmountCents:
+        Math.round(amount * 100)
+    };
+
     const publicId = elements.goalPublicId?.value?.trim();
     try {
       elements.saveGoalButton.disabled = true;
