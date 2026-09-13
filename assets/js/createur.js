@@ -128,7 +128,7 @@
     clearTimeout(timer);
 
     let data = {};
-    try { data = await res.json(); } catch {}
+    try { data = await res.json(); } catch { }
     if (!res.ok) {
       const err = new Error(data.error || data.message || `Erreur ${res.status}`);
       err.status = res.status;
@@ -165,7 +165,7 @@
 
     const html = window.marked.parse(content, { gfm: true, breaks: true });
     elements.description.innerHTML = window.DOMPurify.sanitize(html, {
-      ALLOWED_TAGS: ["p","br","strong","em","del","h1","h2","h3","h4","ul","ol","li","blockquote","pre","code","hr"],
+      ALLOWED_TAGS: ["p", "br", "strong", "em", "del", "h1", "h2", "h3", "h4", "ul", "ol", "li", "blockquote", "pre", "code", "hr"],
       ALLOWED_ATTR: [],
       ALLOW_DATA_ATTR: false,
       ALLOW_ARIA_ATTR: false
@@ -217,15 +217,49 @@
   }
 
   function canUserManageCurrentCreator() {
-    if (!currentUser || !creator) return false;
-    const perms = currentUser.permissions || {};
-    if (perms.isSuperAdmin || perms.isGlobalModerator) return true;
+    if (!currentUser || !creator) {
+      return false;
+    }
 
-    const creatorId = Number(creator.id);
-    return (currentUser.creatorMemberships || []).some((m) =>
-      Number(m.creatorId) === creatorId &&
-      ["owner","delegate"].includes(String(m.memberRole))
+    if (
+      currentUser.permissions?.isSuperAdmin
+    ) {
+      return true;
+    }
+
+    return (
+      currentUser.creatorMemberships ?? []
+    ).some(
+      membership =>
+        Number(membership.creatorId) ===
+        Number(creator.id) &&
+        membership.memberRole === "owner"
     );
+  }
+
+  function getCurrentCreatorGoals() {
+    const reachedByPublicId = new Map(
+      publicGoals.map(goal => [
+        goal.publicId,
+        Boolean(goal.reached)
+      ])
+    );
+
+    return manageableGoals
+      .filter(
+        goal =>
+          goal.scopeType === "creator" &&
+          Number(goal.creatorId) ===
+          Number(creator.id)
+      )
+      .map(goal => ({
+        ...goal,
+
+        reached:
+          reachedByPublicId.get(
+            goal.publicId
+          ) ?? false
+      }));
   }
 
   function fillProfile() {
@@ -263,7 +297,10 @@
   function renderGoals() {
     elements.goalsList.replaceChildren();
 
-    const goals = canManage ? manageableGoals : publicGoals;
+    const goals =
+      canManage
+        ? getCurrentCreatorGoals()
+        : publicGoals;
     const visible = canManage ? goals : (goals || []).filter(g => String(g.status || "") !== "draft");
     if (!elements.goalsEmpty) return;
 
@@ -394,14 +431,6 @@
       return;
     }
 
-    const payload = {
-      creatorId: Number(creator.id),
-      title,
-      descriptionMarkdown: (elements.goalDescription?.value || "").trim(),
-      targetAmountCents: Math.round(amount * 100),
-      status: "active"
-    };
-
     const publicId = elements.goalPublicId?.value?.trim();
     try {
       elements.saveGoalButton.disabled = true;
@@ -499,7 +528,7 @@
     if (!creator) return;
 
     const route =
-      `/api/creators/description/workspace?creatorId=${encodeURIComponent(creator.id)}`;
+      `/api/creator-panel/description?creatorId=${encodeURIComponent(creator.id)}`;
 
     try {
       descriptionWorkspace = await apiFetch(route);
@@ -543,11 +572,16 @@
       if (elements.submitDescriptionButton) elements.submitDescriptionButton.disabled = true;
 
       const data = await apiFetch(
-        `/api/creators/description/draft?creatorId=${encodeURIComponent(creator.id)}`,
+        `/api/creator-panel/description/draft?creatorId=${encodeURIComponent(creator.id)}`,
         { method: "PUT", body: JSON.stringify({ markdown: elements.descriptionInput.value || "" }) }
       );
 
-      if (data?.workspace) descriptionWorkspace = data.workspace;
+      if (data?.draft) {
+        descriptionWorkspace = {
+          ...(descriptionWorkspace ?? {}),
+          draft: data.draft
+        };
+      }
       descFormOrigin = descSnapshot();
       setMessage(elements.descriptionMessage, "Brouillon enregistré.", "success");
       setDescriptionState();
@@ -567,12 +601,12 @@
       elements.saveDescriptionButton.disabled = true;
 
       await apiFetch(
-        `/api/creators/description/draft?creatorId=${encodeURIComponent(creator.id)}`,
+        `/api/creator-panel/description/draft?creatorId=${encodeURIComponent(creator.id)}`,
         { method: "PUT", body: JSON.stringify({ markdown: elements.descriptionInput.value || "" }) }
       );
 
       const result = await apiFetch(
-        `/api/creators/description/submit?creatorId=${encodeURIComponent(creator.id)}`,
+        `/api/creator-panel/description/submit?creatorId=${encodeURIComponent(creator.id)}`,
         { method: "POST" }
       );
 
@@ -615,7 +649,7 @@
     await loadCurrentUser();
     canManage = canUserManageCurrentCreator();
 
-    await loadGoals();
+    await reloadGoals();
     fillProfile();
   }
 
