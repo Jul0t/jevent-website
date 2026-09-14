@@ -989,196 +989,194 @@
                     </span>
                   </div>
 
-                  <div class="field full">
-                    <label for="donationGoalInput">
-                      Objectif de dons associé
-                      <span style="color: var(--muted); font-weight: 600;">
-                        — facultatif
-                      </span>
-                    </label>
-
-                    <select id="donationGoalInput" class="select">
-                      <option value="">
-                        Aucun objectif associé
-                      </option>
-                    </select>
-
-                    <span id="donationGoalHelp" class="field-help">
-                      Sélectionne d’abord le créateur principal.
-                    </span>
-                  </div>
-                </div>
-
-                <div class="field">
-                  <label for="startInput">
-                    Début
-                  </label>
-
-                  <input id="startInput" class="input" type="datetime-local" min="2026-10-25T16:00"
-                    max="2026-10-28T04:00" required>
-                </div>
-
-                <div class="field">
-                  <label for="endInput">
-                    Fin
-                  </label>
-
-                  <input id="endInput" class="input" type="datetime-local" min="2026-10-25T16:00" max="2026-10-28T04:00"
-                    required>
-                </div>
-
-                <div class="field">
-                  <label for="categoryInput">
-                    Catégorie
-                  </label>
-
-                  <select id="categoryInput" class="select">
-                    <option value="gaming">
-                      Gaming
-                    </option>
-
-                    <option value="talk">
-                      Discussion
-                    </option>
-
-                    <option value="challenge">
-                      Défi
-                    </option>
-
-                    <option value="creative">
-                      Créatif
-                    </option>
-
-                    <option value="charity">
-                      Caritatif
-                    </option>
-
-                    <option value="community">
-                      Communauté
-                    </option>
-
-                    <option value="special">
-                      Spécial
-                    </option>
-
-                    <option value="other">
-                      Autre
-                    </option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label for="statusInput">
-                    Statut
-                  </label>
-
-                  <select id="statusInput" class="select">
-                    <option value="draft">
-                      Brouillon
-                    </option>
-
-                    <option value="published">
-                      Publiée
-                    </option>
-
-                    <option value="cancelled">
-                      Annulée
-                    </option>
-                  </select>
-                </div>
-
-                <div class="field full">
-                  <label for="descriptionInput">
-                    Description Markdown
-                  </label>
-
-                  <textarea id="descriptionInput" class="textarea" maxlength="10000"
-                    placeholder="Description facultative de l’activité."></textarea>
-
-                  <span class="field-help">
-                    Le HTML, le JavaScript et les liens sont
-                    actuellement interdits.
-                  </span>
-                </div>
-
-                <div class="field full">
-                  <label for="externalUrlInput">
-                    Lien externe facultatif
-                  </label>
-
-                  <input id="externalUrlInput" class="input" type="url" placeholder="https://...">
-
-                  <span class="field-help">
-                    Le lien doit obligatoirement utiliser HTTPS.
-                  </span>
-                </div>
-
-                <div class="field full">
-                  <label for="participantSearchInput">
-                    Créateurs participants
+                  <label for="donationGoalInput">
+                    Objectif de dons associé
                     <span style="color: var(--muted); font-weight: 600;">
                       — facultatif
                     </span>
                   </label>
 
-                  <input id="participantSearchInput" class="input" type="search" autocomplete="off"
-                    placeholder="Rechercher un invité par nom ou login Twitch…">
 
-                  <span class="field-help">
-                    Ajoute uniquement les autres
-                    créateurs présents dans cette activité.
+                  <select id="donationGoalInput" class="select">
+                    <option value="">Aucun objectif associé</option>
+                  </select>
+
+                  <span id="donationGoalHelp" class="field-help">
+                    Sélectionne d’abord le créateur.
                   </span>
-
-                  <div id="participantSearchResults" class="participant-search-results" hidden></div>
-
-                  <div id="selectedParticipants" class="selected-participants"></div>
-                </div>
-
-                <div id="cancelReasonField" class="field full" hidden>
-                  <label for="cancelReasonInput">
-                    Motif de l’annulation
-                  </label>
-
-                  <textarea id="cancelReasonInput" class="textarea" maxlength="1000"></textarea>
                 </div>
             </div>
 
-            <div id="conflictNotice" class="notice warning" hidden>
-              <strong>
-                Conflits d’horaires détectés
-              </strong>
-
-              <div id="conflictList" class="conflict-list"></div>
-
-              <label id="overrideLabel" class="override-label" hidden>
-                <input id="overrideConflictsInput" type="checkbox">
-
-                Ignorer ces conflits
+            <div class="field">
+              <label for="startInput">
+                Début
               </label>
+
+              <input id="startInput" class="input" type="datetime-local" min="2026-10-25T16:00" max="2026-10-28T04:00"
+                required>
             </div>
 
-            <div class="action-row">
-              <button id="saveButton" class="button" type="submit">
-                Enregistrer
-              </button>
+            <div class="field">
+              <label for="endInput">
+                Fin
+              </label>
 
-              <button id="resetButton" class="button secondary" type="button">
-                Réinitialiser
-              </button>
-
-              <button id="cancelEntryButton" class="button warning" type="button" hidden>
-                Annuler l’activité
-              </button>
-
-              <button function renderEntries() {function renderEntries() { id="deleteEntryButton" class="button danger"
-                type="button" hidden>
-                Supprimer définitivement
-              </button>
+              <input id="endInput" class="input" type="datetime-local" min="2026-10-25T16:00" max="2026-10-28T04:00"
+                required>
             </div>
-            </form>
+
+            <div class="field">
+              <label for="categoryInput">
+                Catégorie
+              </label>
+
+              <select id="categoryInput" class="select">
+                <option value="gaming">
+                  Gaming
+                </option>
+
+                <option value="talk">
+                  Discussion
+                </option>
+
+                <option value="challenge">
+                  Défi
+                </option>
+
+                <option value="creative">
+                  Créatif
+                </option>
+
+                <option value="charity">
+                  Caritatif
+                </option>
+
+                <option value="community">
+                  Communauté
+                </option>
+
+                <option value="special">
+                  Spécial
+                </option>
+
+                <option value="other">
+                  Autre
+                </option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="statusInput">
+                Statut
+              </label>
+
+              <select id="statusInput" class="select">
+                <option value="draft">
+                  Brouillon
+                </option>
+
+                <option value="published">
+                  Publiée
+                </option>
+
+                <option value="cancelled">
+                  Annulée
+                </option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label for="descriptionInput">
+                Description Markdown
+              </label>
+
+              <textarea id="descriptionInput" class="textarea" maxlength="10000"
+                placeholder="Description facultative de l’activité."></textarea>
+
+              <span class="field-help">
+                Le HTML, le JavaScript et les liens sont
+                actuellement interdits.
+              </span>
+            </div>
+
+            <div class="field full">
+              <label for="externalUrlInput">
+                Lien externe facultatif
+              </label>
+
+              <input id="externalUrlInput" class="input" type="url" placeholder="https://...">
+
+              <span class="field-help">
+                Le lien doit obligatoirement utiliser HTTPS.
+              </span>
+            </div>
+
+            <div class="field full">
+              <label for="participantSearchInput">
+                Créateurs participants
+                <span style="color: var(--muted); font-weight: 600;">
+                  — facultatif
+                </span>
+              </label>
+
+              <input id="participantSearchInput" class="input" type="search" autocomplete="off"
+                placeholder="Rechercher un invité par nom ou login Twitch…">
+
+              <span class="field-help">
+                Ajoute uniquement les autres
+                créateurs présents dans cette activité.
+              </span>
+
+              <div id="participantSearchResults" class="participant-search-results" hidden></div>
+
+              <div id="selectedParticipants" class="selected-participants"></div>
+            </div>
+
+            <div id="cancelReasonField" class="field full" hidden>
+              <label for="cancelReasonInput">
+                Motif de l’annulation
+              </label>
+
+              <textarea id="cancelReasonInput" class="textarea" maxlength="1000"></textarea>
+            </div>
         </div>
-        </section>
+
+        <div id="conflictNotice" class="notice warning" hidden>
+          <strong>
+            Conflits d’horaires détectés
+          </strong>
+
+          <div id="conflictList" class="conflict-list"></div>
+
+          <label id="overrideLabel" class="override-label" hidden>
+            <input id="overrideConflictsInput" type="checkbox">
+
+            Ignorer ces conflits
+          </label>
+        </div>
+
+        <div class="action-row">
+          <button id="saveButton" class="button" type="submit">
+            Enregistrer
+          </button>
+
+          <button id="resetButton" class="button secondary" type="button">
+            Réinitialiser
+          </button>
+
+          <button id="cancelEntryButton" class="button warning" type="button" hidden>
+            Annuler l’activité
+          </button>
+
+          <button function renderEntries() {function renderEntries() { id="deleteEntryButton" class="button danger"
+            type="button" hidden>
+            Supprimer définitivement
+          </button>
+        </div>
+        </form>
       </div>
+      </section>
+  </div>
   </div>
   </main>
   </div>
