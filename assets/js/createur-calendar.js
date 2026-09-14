@@ -932,27 +932,67 @@
         elements.calendar.append(scroll);
     }
 
-    function matchesGoalCondition(entry) {
+    function resolvePublicEntry(entry) {
         const condition =
             entry.goalCondition ?? "always";
 
         if (condition === "always") {
-            return true;
+            return entry;
         }
 
         if (!entry.goal) {
-            return false;
+            return entry;
         }
 
-        if (condition === "reached") {
-            return Boolean(entry.goal.reached);
-        }
-
+        /* Anciennes activités séparées */
         if (condition === "not_reached") {
-            return !entry.goal.reached;
+            if (entry.goal.reached) {
+                return null;
+            }
+
+            return {
+                ...entry,
+                goal: null,
+                goalPublicId: null,
+                goalCondition: "always",
+                isFallback: true
+            };
         }
 
-        return true;
+        /* Activité principale débloquée */
+        if (entry.goal.reached) {
+            return entry;
+        }
+
+        /* Goal non atteint et aucun remplacement */
+        if (
+            !entry.fallbackEnabled ||
+            !entry.fallback?.title
+        ) {
+            return null;
+        }
+
+        /* Afficher le remplacement comme une activité normale */
+        return {
+            ...entry,
+
+            title: entry.fallback.title,
+
+            descriptionMarkdown:
+                entry.fallback.descriptionMarkdown ?? "",
+
+            category:
+                entry.fallback.category ??
+                entry.category,
+
+            externalUrl:
+                entry.fallback.externalUrl ?? null,
+
+            goal: null,
+            goalPublicId: null,
+            goalCondition: "always",
+            isFallback: true
+        };
     }
 
     async function load({
@@ -989,7 +1029,8 @@
 
             programEntries = entries
                 .filter(belongsToCreator)
-                .filter(matchesGoalCondition)
+                .map(resolvePublicEntry)
+                .filter(Boolean)
                 .sort(
                     (first, second) =>
                         new Date(first.startsAt) -
