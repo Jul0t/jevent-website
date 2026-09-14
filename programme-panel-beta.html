@@ -2677,6 +2677,8 @@
         );
 
         await loadEntries();
+        visualCalendar.closeEditor();
+
       } catch (error) {
         showMessage(
           error.message,
