@@ -1009,17 +1009,13 @@
 
                       <select id="goalConditionInput" class="select">
                         <option value="reached">
-                          Afficher si l’objectif est atteint
+                          Si l’objectif est atteint
                         </option>
 
                         <option value="not_reached">
-                          Afficher si l’objectif n’est pas atteint
+                          Si l’objectif n’est pas atteint
                         </option>
                       </select>
-
-                      <span class="field-help">
-                        Permet de prévoir une activité principale et une activité de remplacement.
-                      </span>
                     </div>
 
                     <select id="donationGoalInput" class="select">
@@ -1273,14 +1269,10 @@
       );
 
     const goalConditionField =
-      document.querySelector(
-        "#goalConditionField"
-      );
+      document.querySelector("#goalConditionField");
 
     const goalConditionInput =
-      document.querySelector(
-        "#goalConditionInput"
-      );
+      document.querySelector("#goalConditionInput");
 
     const startInput =
       document.querySelector("#startInput");
@@ -2243,10 +2235,9 @@
         goalPublicId:
           donationGoalInput.value || null,
 
-        goalCondition:
-          donationGoalInput.value
-            ? goalConditionInput.value
-            : "always",
+        goalCondition: donationGoalInput.value
+          ? goalConditionInput.value
+          : "always",
 
         primaryCreatorId:
           getPrimaryCreatorId(),
