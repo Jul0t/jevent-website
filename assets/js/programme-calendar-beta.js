@@ -328,6 +328,34 @@
   color: #b8ffc9;
 }
 
+.je-calendar-fallback {
+  display: grid;
+  gap: 2px;
+
+  margin-top: 6px;
+  padding-top: 6px;
+
+  border-top: 1px solid
+    rgba(255, 255, 255, 0.25);
+}
+
+.je-calendar-fallback span {
+  color: #c5dcff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.je-calendar-fallback strong {
+  overflow: hidden;
+
+  color: #fff;
+  font-size: 0.75rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
     `;
         document.head.append(style);
 
@@ -376,7 +404,7 @@
         </button>
 
         <button type="button" class="button" data-add>
-          + Une activité
+          Nouvelle activité
         </button>
       </div>
 
@@ -877,6 +905,36 @@
                                 `${formatGoalAmount(donationGoal)}`;
                         }
 
+                        let fallbackPreview = null;
+
+                        if (
+                            entry.fallbackEnabled &&
+                            entry.fallback?.title
+                        ) {
+                            fallbackPreview =
+                                document.createElement("div");
+
+                            fallbackPreview.className =
+                                "je-calendar-fallback";
+
+                            const fallbackLabel =
+                                document.createElement("span");
+
+                            fallbackLabel.textContent =
+                                "Sinon";
+
+                            const fallbackTitle =
+                                document.createElement("strong");
+
+                            fallbackTitle.textContent =
+                                entry.fallback.title;
+
+                            fallbackPreview.append(
+                                fallbackLabel,
+                                fallbackTitle
+                            );
+                        }
+
                         const endHandle =
                             document.createElement("span");
 
@@ -904,6 +962,10 @@
 
                         if (goalBadge) {
                             button.append(goalBadge);
+                        }
+
+                        if (fallbackPreview) {
+                            button.append(fallbackPreview);
                         }
 
                         button.append(
@@ -1421,6 +1483,16 @@
 
             markSaved() {
                 editorOrigin = snapshot();
+            },
+
+            closeEditor() {
+                editorOrigin = null;
+
+                if (dialog.open) {
+                    dialog.close();
+                }
+
+                render();
             }
         };
 
