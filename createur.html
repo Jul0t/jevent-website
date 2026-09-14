@@ -76,18 +76,21 @@
 
         <div class="profile-grid">
           <div class="main-column">
+            <!-- Description -->
             <section class="content-card">
               <header class="card-heading card-heading-row">
                 <div>
                   <p class="eyebrow">Le créateur</p>
                   <h2>À propos</h2>
                 </div>
+
                 <button id="editDescriptionButton" class="icon-button" type="button" title="Modifier la description"
                   aria-label="Modifier la description" hidden>
                   <svg class="icon-pencil" viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      d="M4 20h4L19 9l-4-4L4 16v4zm2-3.2 9-9 1.2 1.2-9 9H6v-1.2zM17.5 6.5l1-1a1.4 1.4 0 0 1 2 2l-1 1-2-2z">
-                    </path>
+                    <path d="M4 20h4L19 9l-4-4L4 16v4zm2-3.2
+                 9-9 1.2 1.2-9 9H6v-1.2zM17.5
+                 6.5l1-1a1.4 1.4 0 0 1 2 2l-1
+                 1-2-2z"></path>
                   </svg>
                 </button>
               </header>
@@ -95,69 +98,109 @@
               <div id="description" class="markdown-content"></div>
             </section>
 
+            <!-- Programme public -->
             <section class="content-card program-card">
               <header class="card-heading card-heading-row">
                 <div>
-                  <p class="eyebrow">En direct pendant l’événement</p>
+                  <p class="eyebrow">
+                    En direct pendant l’événement
+                  </p>
+
                   <h2>Programme</h2>
-                  <p>Les activités prévues sur cette chaîne.</p>
+
+                  <p>
+                    Clique sur un créneau pour afficher
+                    toutes les informations.
+                  </p>
                 </div>
 
                 <a id="editProgramButton" class="icon-button" href="/programme-panel-beta.html"
                   title="Modifier le programme" aria-label="Modifier le programme" hidden>
                   <svg class="icon-pencil" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M4 20h4L19 9l-4-4L4 16v4zm2-3.2
-             9-9 1.2 1.2-9 9H6v-1.2zM17.5
-             6.5l1-1a1.4 1.4 0 0 1 2 2l-1
-             1-2-2z"></path>
+                 9-9 1.2 1.2-9 9H6v-1.2zM17.5
+                 6.5l1-1a1.4 1.4 0 0 1 2 2l-1
+                 1-2-2z"></path>
                   </svg>
                 </a>
               </header>
 
-              <div id="programList" class="program-list"></div>
+              <div id="programCalendar" class="public-calendar"></div>
 
               <p id="programEmpty" class="empty-message" hidden>
                 Aucune activité n’est encore annoncée.
               </p>
             </section>
-
-
-            <section class="content-card goals-card">
-              <header class="card-heading card-heading-row">
-                <div>
-                  <p class="eyebrow">Défis solidaires</p>
-                  <h2>Objectifs de dons</h2>
-                  <p>Ils dépendent du montant atteint par le créateur.</p>
-                </div>
-                <button id="addGoalButton" class="button button-primary" type="button" hidden>
-                  + Ajouter un objectif
-                </button>
-                <button id="streamlabsSettingsButton" class="button button-primary" type="button" hidden>
-                  Configurer Streamlabs
-                </button>
-
-              </header>
-
-              <div id="goalsList" class="goals-list"></div>
-              <p id="goalsEmpty" class="empty-message" hidden>Aucun objectif de dons n’a encore été publié.</p>
-            </section>
           </div>
 
           <aside class="side-column">
-            <section class="content-card sticky-card">
-              <header class="card-heading">
-                <div>
-                  <p class="eyebrow">En ce moment</p>
-                  <h2>La chaîne</h2>
-                </div>
-              </header>
-              <div id="liveInformation" class="information-list"></div>
-            </section>
+            <div class="side-stack">
+              <!-- État de la chaîne -->
+              <section class="content-card">
+                <header class="card-heading">
+                  <div>
+                    <p class="eyebrow">En ce moment</p>
+                    <h2>La chaîne</h2>
+                  </div>
+                </header>
+
+                <div id="liveInformation" class="information-list"></div>
+              </section>
+
+              <!-- Objectifs de dons -->
+              <section class="content-card goals-card">
+                <header class="card-heading">
+                  <div>
+                    <p class="eyebrow">Défis solidaires</p>
+                    <h2>Objectifs de dons</h2>
+
+                    <p>
+                      Ils dépendent du montant atteint
+                      par le créateur.
+                    </p>
+                  </div>
+
+                  <div class="goals-actions">
+                    <button id="addGoalButton" class="button button-primary" type="button" hidden>
+                      + Ajouter un objectif
+                    </button>
+
+                    <button id="streamlabsSettingsButton" class="button button-secondary" type="button" hidden>
+                      Configurer Streamlabs
+                    </button>
+                  </div>
+                </header>
+
+                <div id="goalsList" class="goals-list"></div>
+
+                <p id="goalsEmpty" class="empty-message" hidden>
+                  Aucun objectif de dons n’a encore été publié.
+                </p>
+              </section>
+            </div>
           </aside>
         </div>
       </div>
     </main>
   </div>
+
+  <!-- Détails d’une activité -->
+  <dialog id="programDetailsDialog" class="program-details-dialog">
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow">Programme</p>
+        <h2 id="programDetailsTitle">
+          Détails de l’activité
+        </h2>
+      </div>
+
+      <button id="closeProgramDetails" class="close-button" type="button" aria-label="Fermer">
+        ×
+      </button>
+    </div>
+
+    <div id="programDetailsContent" class="program-details-content"></div>
+  </dialog>
 
   <!-- Modal objectifs -->
   <dialog id="goalDialog" class="goal-dialog">
@@ -282,6 +325,7 @@
   <script src="https://cdn.jsdelivr.net/npm/marked@18.0.12/lib/marked.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.15/dist/purify.min.js"></script>
   <script src="/assets/js/createur.js?v=3"></script>
+  <script src="/assets/js/createur-calendar.js?v=1"></script>
 </body>
 
 </html>
