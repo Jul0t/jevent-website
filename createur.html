@@ -131,47 +131,60 @@
                 Aucune activité n’est encore annoncée.
               </p>
             </section>
+            <section class="content-card twitch-card">
+              <header class="card-heading">
+                <div>
+                  <p class="eyebrow">La chaîne Twitch</p>
+                  <h2>Le direct</h2>
+                </div>
+              </header>
+
+              <div class="twitch-player-container">
+                <iframe id="twitchPlayer" class="twitch-player" title="Lecteur Twitch" allowfullscreen
+                  loading="lazy"></iframe>
+              </div>
+            </section>
           </div>
 
-              <!-- Objectifs de dons -->
-              <aside class="side-column">
-                <div class="side-stack">
+          <!-- Objectifs de dons -->
+          <aside class="side-column">
+            <div class="side-stack">
 
-                  <section class="content-card">
-                    <header class="card-heading">
-                      <div>
-                        <p class="eyebrow">En ce moment</p>
-                        <h2>La chaîne</h2>
-                      </div>
-                    </header>
-                    <div id="liveInformation" class="information-list"></div>
-                  </section>
-                  <section class="content-card goals-card">
-                    <header class="card-heading">
-                      <div>
-                        <p class="eyebrow">Défis solidaires</p>
-                        <h2>Objectifs de dons</h2>
-                        <p>
-                          Ils dépendent du montant atteint par le créateur.
-                        </p>
-                      </div>
-                      <div class="goals-actions">
-                        <button id="addGoalButton" class="button button-primary" type="button" hidden>
-                          + Ajouter un objectif
-                        </button>
-                        <button id="streamlabsSettingsButton" class="button button-secondary" type="button" hidden>
-                          Configurer Streamlabs
-                        </button>
-                      </div>
-                    </header>
-                    <div id="goalsList" class="goals-list"></div>
-                    <p id="goalsEmpty" class="empty-message" hidden>
-                      Aucun objectif de dons n’a encore été publié.
+              <section class="content-card">
+                <header class="card-heading">
+                  <div>
+                    <p class="eyebrow">En ce moment</p>
+                    <h2>La chaîne</h2>
+                  </div>
+                </header>
+                <div id="liveInformation" class="information-list"></div>
+              </section>
+              <section class="content-card goals-card">
+                <header class="card-heading">
+                  <div>
+                    <p class="eyebrow">Défis solidaires</p>
+                    <h2>Objectifs de dons</h2>
+                    <p>
+                      Ils dépendent du montant atteint par le créateur.
                     </p>
-                  </section>
-                </div>
-              </aside>
+                  </div>
+                  <div class="goals-actions">
+                    <button id="addGoalButton" class="button button-primary" type="button" hidden>
+                      + Ajouter un objectif
+                    </button>
+                    <button id="streamlabsSettingsButton" class="button button-secondary" type="button" hidden>
+                      Configurer Streamlabs
+                    </button>
+                  </div>
+                </header>
+                <div id="goalsList" class="goals-list"></div>
+                <p id="goalsEmpty" class="empty-message" hidden>
+                  Aucun objectif de dons n’a encore été publié.
+                </p>
+              </section>
             </div>
+          </aside>
+        </div>
     </main>
   </div>
 
@@ -315,8 +328,8 @@
   </dialog>
   <script src="https://cdn.jsdelivr.net/npm/marked@18.0.12/lib/marked.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.15/dist/purify.min.js"></script>
-  <script src="/assets/js/createur.js?v=4"></script>
-  <script src="/assets/js/createur-calendar.js?v=1"></script>
+  <script src="/assets/js/createur-calendar.js?v=2"></script>
+  <script src="/assets/js/createur.js?v=5"></script>
 </body>
 
 </html>
