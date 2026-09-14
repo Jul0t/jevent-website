@@ -95,6 +95,33 @@
               <div id="description" class="markdown-content"></div>
             </section>
 
+            <section class="content-card program-card">
+              <header class="card-heading card-heading-row">
+                <div>
+                  <p class="eyebrow">En direct pendant l’événement</p>
+                  <h2>Programme</h2>
+                  <p>Les activités prévues sur cette chaîne.</p>
+                </div>
+
+                <a id="editProgramButton" class="icon-button" href="/programme-panel-beta.html"
+                  title="Modifier le programme" aria-label="Modifier le programme" hidden>
+                  <svg class="icon-pencil" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 20h4L19 9l-4-4L4 16v4zm2-3.2
+             9-9 1.2 1.2-9 9H6v-1.2zM17.5
+             6.5l1-1a1.4 1.4 0 0 1 2 2l-1
+             1-2-2z"></path>
+                  </svg>
+                </a>
+              </header>
+
+              <div id="programList" class="program-list"></div>
+
+              <p id="programEmpty" class="empty-message" hidden>
+                Aucune activité n’est encore annoncée.
+              </p>
+            </section>
+
+
             <section class="content-card goals-card">
               <header class="card-heading card-heading-row">
                 <div>
@@ -105,7 +132,7 @@
                 <button id="addGoalButton" class="button button-primary" type="button" hidden>
                   + Ajouter un objectif
                 </button>
-                <button id="streamlabsSettingsButton" class="button button-secondary" type="button" hidden>
+                <button id="streamlabsSettingsButton" class="button button-primary" type="button" hidden>
                   Configurer Streamlabs
                 </button>
 
@@ -203,7 +230,7 @@
         <button id="saveDescriptionButton" class="button button-secondary" type="button">Enregistrer le
           brouillon</button>
         <div class="dialog-actions-right">
-          <button id="cancelDescriptionButton" class="button button-primary" type="button">Annuler</button>
+          <button id="cancelDescriptionButton" class="button button-secondary" type="button">Annuler</button>
           <button id="submitDescriptionButton" class="button button-primary" type="submit">Publier</button>
         </div>
       </footer>
@@ -241,7 +268,7 @@
 
       <footer class="dialog-actions">
         <div class="dialog-actions-right">
-          <button id="cancelStreamlabsButton" class="button button-primary" type="button">
+          <button id="cancelStreamlabsButton" class="button button-secondary" type="button">
             Annuler
           </button>
 
@@ -254,7 +281,7 @@
   </dialog>
   <script src="https://cdn.jsdelivr.net/npm/marked@18.0.12/lib/marked.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.15/dist/purify.min.js"></script>
-  <script src="/assets/js/createur.js?v=2"></script>
+  <script src="/assets/js/createur.js?v=3"></script>
 </body>
 
 </html>
