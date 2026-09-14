@@ -21,6 +21,9 @@
     donationButton: $("#donationButton"),
     description: $("#description"),
     liveInformation: $("#liveInformation"),
+    programList: $("#programList"),
+    programEmpty: $("#programEmpty"),
+    editProgramButton: $("#editProgramButton"),
 
     editGoalsButton: $("#editGoalsButton"),
     addGoalButton: $("#addGoalButton"),
@@ -71,6 +74,7 @@
   let canManage = false;
   let publicGoals = [];
   let manageableGoals = [];
+  let publicProgram = [];
   let descriptionWorkspace = null;
   let goalFormOrigin = "";
   let descFormOrigin = "";
@@ -275,6 +279,311 @@
       }));
   }
 
+  function getProgramDateKey(value) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return "";
+    }
+
+    const parts =
+      new Intl.DateTimeFormat(
+        "fr-FR",
+        {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          timeZone: "Europe/Paris"
+        }
+      ).formatToParts(date);
+
+    const values = Object.fromEntries(
+      parts.map(part => [
+        part.type,
+        part.value
+      ])
+    );
+
+    return [
+      values.year,
+      values.month,
+      values.day
+    ].join("-");
+  }
+
+  function formatProgramDay(value) {
+    return new Intl.DateTimeFormat(
+      "fr-FR",
+      {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        timeZone: "Europe/Paris"
+      }
+    ).format(new Date(value));
+  }
+
+  function formatProgramTime(value) {
+    return new Intl.DateTimeFormat(
+      "fr-FR",
+      {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        timeZone: "Europe/Paris"
+      }
+    ).format(new Date(value));
+  }
+
+  function belongsToCurrentCreator(entry) {
+    const primaryParticipant =
+      (entry.participants ?? []).find(
+        participant => participant.primary
+      );
+
+    const primaryCreatorId =
+      entry.primaryCreator?.id ??
+      primaryParticipant?.id ??
+      null;
+
+    return (
+      Number(primaryCreatorId) ===
+      Number(creator.id)
+    );
+  }
+
+  async function reloadProgram() {
+    const data = await safeGet(
+      "/api/program"
+    );
+
+    const entries =
+      Array.isArray(data?.entries)
+        ? data.entries
+        : Array.isArray(data?.program)
+          ? data.program
+          : [];
+
+    publicProgram = entries
+      .filter(belongsToCurrentCreator)
+      .sort(
+        (first, second) =>
+          new Date(first.startsAt) -
+          new Date(second.startsAt)
+      );
+  }
+
+  function renderProgram() {
+    if (
+      !elements.programList ||
+      !elements.programEmpty
+    ) {
+      return;
+    }
+
+    elements.programList.replaceChildren();
+
+    elements.programEmpty.hidden =
+      publicProgram.length !== 0;
+
+    if (publicProgram.length === 0) {
+      return;
+    }
+
+    const days = new Map();
+
+    for (const entry of publicProgram) {
+      const key =
+        getProgramDateKey(entry.startsAt);
+
+      if (!days.has(key)) {
+        days.set(key, []);
+      }
+
+      days.get(key).push(entry);
+    }
+
+    for (const entries of days.values()) {
+      const day =
+        document.createElement("section");
+
+      day.className = "program-day";
+
+      const heading =
+        document.createElement("h3");
+
+      heading.className =
+        "program-day-title";
+
+      heading.textContent =
+        formatProgramDay(
+          entries[0].startsAt
+        );
+
+      day.append(heading);
+
+      const activities =
+        document.createElement("div");
+
+      activities.className =
+        "program-day-entries";
+
+      for (const entry of entries) {
+        const activity =
+          document.createElement("article");
+
+        activity.className =
+          "program-entry";
+
+        if (entry.status === "cancelled") {
+          activity.classList.add(
+            "is-cancelled"
+          );
+        }
+
+        const time =
+          document.createElement("div");
+
+        time.className =
+          "program-entry-time";
+
+        time.innerHTML = `
+        <strong>
+          ${formatProgramTime(entry.startsAt)}
+        </strong>
+
+        <span>
+          ${formatProgramTime(entry.endsAt)}
+        </span>
+      `;
+
+        const content =
+          document.createElement("div");
+
+        content.className =
+          "program-entry-content";
+
+        const title =
+          document.createElement("h4");
+
+        title.textContent =
+          entry.title || "Activité";
+
+        content.append(title);
+
+        if (entry.category) {
+          const category =
+            document.createElement("span");
+
+          category.className =
+            "program-entry-category";
+
+          category.textContent =
+            entry.category;
+
+          content.append(category);
+        }
+
+        if (entry.descriptionMarkdown) {
+          const description =
+            document.createElement("p");
+
+          description.className =
+            "program-entry-description";
+
+          description.textContent =
+            entry.descriptionMarkdown;
+
+          content.append(description);
+        }
+
+        const guests =
+          (entry.participants ?? [])
+            .filter(
+              participant =>
+                !participant.primary &&
+                Number(participant.id) !==
+                Number(creator.id)
+            )
+            .map(
+              participant =>
+                participant.twitchDisplayName ??
+                participant.displayName ??
+                participant.twitchLogin
+            )
+            .filter(Boolean);
+
+        if (guests.length > 0) {
+          const participants =
+            document.createElement("p");
+
+          participants.className =
+            "program-entry-participants";
+
+          participants.textContent =
+            `Avec ${guests.join(", ")}`;
+
+          content.append(participants);
+        }
+
+        if (entry.goal) {
+          const goal =
+            document.createElement("div");
+
+          goal.className =
+            "program-goal";
+
+          if (entry.goal.reached) {
+            goal.classList.add(
+              "is-reached"
+            );
+
+            goal.textContent =
+              `✓ Objectif atteint — ${fmtMoney(
+                entry.goal.thresholdCents,
+                entry.goal.currency ?? "EUR"
+              )
+              }`;
+          } else {
+            goal.textContent =
+              `🎯 Sous réserve d’objectif atteint — ${fmtMoney(
+                entry.goal.thresholdCents,
+                entry.goal.currency ?? "EUR"
+              )
+              }`;
+          }
+
+          if (entry.goal.title) {
+            goal.title = entry.goal.title;
+          }
+
+          content.append(goal);
+        }
+
+        if (entry.status === "cancelled") {
+          const cancelled =
+            document.createElement("div");
+
+          cancelled.className =
+            "program-cancelled";
+
+          cancelled.textContent =
+            entry.cancelledReason
+              ? `Activité annulée — ${entry.cancelledReason}`
+              : "Activité annulée";
+
+          content.append(cancelled);
+        }
+
+        activity.append(time, content);
+        activities.append(activity);
+      }
+
+      day.append(activities);
+      elements.programList.append(day);
+    }
+  }
+
   function fillProfile() {
     if (!creator) return;
 
@@ -303,6 +612,11 @@
     elements.editDescriptionButton.hidden = !canManage;
     if (elements.editGoalsButton) elements.editGoalsButton.innerHTML = svgPencil();
     if (elements.editDescriptionButton) elements.editDescriptionButton.innerHTML = svgPencil();
+    if (elements.editProgramButton) {
+      elements.editProgramButton.hidden = !canManage;
+    }
+
+    renderProgram();
 
     renderLive();
     renderGoals();
@@ -788,7 +1102,11 @@
       );
     }
 
-    await reloadGoals();
+    await Promise.all([
+      reloadGoals(),
+      reloadProgram()
+    ]);
+
     fillProfile();
   }
 
