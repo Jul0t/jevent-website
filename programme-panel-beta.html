@@ -952,10 +952,6 @@
               activité enregistrée
             </span>
           </div>
-
-          <button id="newEntryButton" class="button" type="button">
-            Nouvelle activité
-          </button>
         </section>
 
         <div class="layout">
@@ -1159,96 +1155,90 @@
                     </span>
                   </div>
 
-                  <span class="field-help">
-                    Le HTML, le JavaScript et les liens sont
-                    actuellement interdits.
-                  </span>
-                </div>
+                  <div class="field full">
+                    <label for="externalUrlInput">
+                      Lien externe facultatif
+                    </label>
 
-                <div class="field full">
-                  <label for="externalUrlInput">
-                    Lien externe facultatif
-                  </label>
+                    <input id="externalUrlInput" class="input" type="url" placeholder="https://...">
 
-                  <input id="externalUrlInput" class="input" type="url" placeholder="https://...">
-
-                  <span class="field-help">
-                    Le lien doit obligatoirement utiliser HTTPS.
-                  </span>
-                </div>
-
-                <div class="field full">
-                  <label for="participantSearchInput">
-                    Créateurs participants
-                    <span style="color: var(--muted); font-weight: 600;">
-                      — facultatif
+                    <span class="field-help">
+                      Le lien doit obligatoirement utiliser HTTPS.
                     </span>
-                  </label>
+                  </div>
 
-                  <input id="participantSearchInput" class="input" type="search" autocomplete="off"
-                    placeholder="Rechercher un invité par nom ou login Twitch…">
+                  <div class="field full">
+                    <label for="participantSearchInput">
+                      Créateurs participants
+                      <span style="color: var(--muted); font-weight: 600;">
+                        — facultatif
+                      </span>
+                    </label>
 
-                  <span class="field-help">
-                    Ajoute uniquement les autres
-                    créateurs présents dans cette activité.
-                  </span>
+                    <input id="participantSearchInput" class="input" type="search" autocomplete="off"
+                      placeholder="Rechercher un invité par nom ou login Twitch…">
 
-                  <div id="participantSearchResults" class="participant-search-results" hidden></div>
+                    <span class="field-help">
+                      Ajoute uniquement les autres
+                      créateurs présents dans cette activité.
+                    </span>
 
-                  <div id="selectedParticipants" class="selected-participants"></div>
+                    <div id="participantSearchResults" class="participant-search-results" hidden></div>
+
+                    <div id="selectedParticipants" class="selected-participants"></div>
+                  </div>
+
+                  <div id="cancelReasonField" class="field full" hidden>
+                    <label for="cancelReasonInput">
+                      Motif de l’annulation
+                    </label>
+
+                    <textarea id="cancelReasonInput" class="textarea" maxlength="1000"></textarea>
+                  </div>
                 </div>
 
-                <div id="cancelReasonField" class="field full" hidden>
-                  <label for="cancelReasonInput">
-                    Motif de l’annulation
+                <div id="conflictNotice" class="notice warning" hidden>
+                  <strong>
+                    Conflits d’horaires détectés
+                  </strong>
+
+                  <div id="conflictList" class="conflict-list"></div>
+
+                  <label id="overrideLabel" class="override-label" hidden>
+                    <input id="overrideConflictsInput" type="checkbox">
+
+                    Ignorer ces conflits
                   </label>
-
-                  <textarea id="cancelReasonInput" class="textarea" maxlength="1000"></textarea>
                 </div>
+
+                <div class="action-row">
+                  <button id="saveButton" class="button" type="submit">
+                    Enregistrer
+                  </button>
+
+                  <button id="resetButton" class="button secondary" type="button">
+                    Réinitialiser
+                  </button>
+
+                  <button id="cancelEntryButton" class="button warning" type="button" hidden>
+                    Annuler l’activité
+                  </button>
+
+                  <button id="deleteEntryButton" class="button danger" type="button" hidden>
+                    Supprimer définitivement
+                  </button>
+                </div>
+              </form>
             </div>
-
-            <div id="conflictNotice" class="notice warning" hidden>
-              <strong>
-                Conflits d’horaires détectés
-              </strong>
-
-              <div id="conflictList" class="conflict-list"></div>
-
-              <label id="overrideLabel" class="override-label" hidden>
-                <input id="overrideConflictsInput" type="checkbox">
-
-                Ignorer ces conflits
-              </label>
-            </div>
-
-            <div class="action-row">
-              <button id="saveButton" class="button" type="submit">
-                Enregistrer
-              </button>
-
-              <button id="resetButton" class="button secondary" type="button">
-                Réinitialiser
-              </button>
-
-              <button id="cancelEntryButton" class="button warning" type="button" hidden>
-                Annuler l’activité
-              </button>
-
-              <button id="deleteEntryButton" class="button danger" type="button" hidden>
-                Supprimer définitivement
-              </button>
-            </div>
-            </form>
+          </section>
         </div>
-        </section>
       </div>
-  </div>
-  </main>
+    </main>
   </div>
 
   <div id="pageMessage" class="page-message" role="status" aria-live="polite" hidden></div>
 
-  <script src="/assets/js/programme-calendar-beta.js?v=2"></script>
+  <script src="/assets/js/programme-calendar-beta.js?v=3"></script>
 
   <script>
     const API_URL =
