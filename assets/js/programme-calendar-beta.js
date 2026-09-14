@@ -857,16 +857,19 @@
                             goalBadge.className =
                                 "je-calendar-goal";
 
-                            if (donationGoal.reached) {
-                                goalBadge.classList.add(
-                                    "is-reached"
-                                );
-
+                            if (
+                                entry.goalCondition ===
+                                "not_reached"
+                            ) {
                                 goalBadge.textContent =
-                                    "✓ Objectif atteint";
+                                    "Si l’objectif n’est pas atteint";
+
+                                goalBadge.classList.add(
+                                    "is-alternative"
+                                );
                             } else {
                                 goalBadge.textContent =
-                                    "🎯 Sous réserve d’objectif atteint";
+                                    "Si l’objectif est atteint";
                             }
 
                             goalBadge.title =

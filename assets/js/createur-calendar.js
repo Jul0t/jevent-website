@@ -926,6 +926,29 @@
         elements.calendar.append(scroll);
     }
 
+    function matchesGoalCondition(entry) {
+        const condition =
+            entry.goalCondition ?? "always";
+
+        if (condition === "always") {
+            return true;
+        }
+
+        if (!entry.goal) {
+            return false;
+        }
+
+        if (condition === "reached") {
+            return Boolean(entry.goal.reached);
+        }
+
+        if (condition === "not_reached") {
+            return !entry.goal.reached;
+        }
+
+        return true;
+    }
+
     async function load({
         apiFetch,
         creator: currentCreator,
@@ -960,6 +983,7 @@
 
             programEntries = entries
                 .filter(belongsToCreator)
+                .filter(matchesGoalCondition)
                 .sort(
                     (first, second) =>
                         new Date(first.startsAt) -
