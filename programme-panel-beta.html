@@ -1007,13 +1007,6 @@
                       Sélectionne d’abord le créateur principal.
                     </span>
                   </div>
-
-
-                  <span class="field-help">
-                    L’activité apparaîtra dans le programme
-                    personnel de ce streamer. Pour un créateur,
-                    ce champ est sélectionné automatiquement.
-                  </span>
                 </div>
 
                 <div class="field">
@@ -1123,16 +1116,17 @@
                 <div class="field full">
                   <label for="participantSearchInput">
                     Créateurs participants
+                    <span style="color: var(--muted); font-weight: 600;">
+                      — facultatif
+                    </span>
                   </label>
 
                   <input id="participantSearchInput" class="input" type="search" autocomplete="off"
                     placeholder="Rechercher un invité par nom ou login Twitch…">
 
                   <span class="field-help">
-                    Facultatif : ajoute uniquement les autres
+                    Ajoute uniquement les autres
                     créateurs présents dans cette activité.
-                    Le propriétaire du programme est enregistré
-                    automatiquement.
                   </span>
 
                   <div id="participantSearchResults" class="participant-search-results" hidden></div>
