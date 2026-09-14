@@ -587,9 +587,11 @@
   function fillProfile() {
     if (!creator) return;
 
-    const displaySlug =
-      creator.slug.charAt(0).toUpperCase() +
-      creator.slug.slice(1);
+  const displaySlug = creator.slug
+    .replaceAll("-", " ")
+    .replace(/\b\p{L}/gu, letter =>
+      letter.toUpperCase()
+    );
 
     document.title = `${displaySlug} — JEvent 26`;
     elements.creatorAvatar.src = creator.twitchProfileImageUrl || "/assets/jevent_logo.png";
