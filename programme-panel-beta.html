@@ -852,6 +852,11 @@
         width: 100%;
       }
     }
+
+    .je-calendar-goal.is-alternative {
+      background: rgba(103, 169, 255, .17);
+      color: #c5dcff;
+    }
   </style>
 </head>
 
@@ -996,6 +1001,26 @@
                         — facultatif
                       </span>
                     </label>
+
+                    <div id="goalConditionField" class="field full" hidden>
+                      <label for="goalConditionInput">
+                        Condition de l’activité
+                      </label>
+
+                      <select id="goalConditionInput" class="select">
+                        <option value="reached">
+                          Afficher si l’objectif est atteint
+                        </option>
+
+                        <option value="not_reached">
+                          Afficher si l’objectif n’est pas atteint
+                        </option>
+                      </select>
+
+                      <span class="field-help">
+                        Permet de prévoir une activité principale et une activité de remplacement.
+                      </span>
+                    </div>
 
                     <select id="donationGoalInput" class="select">
                       <option value="">
@@ -1245,6 +1270,16 @@
     const donationGoalHelp =
       document.querySelector(
         "#donationGoalHelp"
+      );
+
+    const goalConditionField =
+      document.querySelector(
+        "#goalConditionField"
+      );
+
+    const goalConditionInput =
+      document.querySelector(
+        "#goalConditionInput"
       );
 
     const startInput =
@@ -2015,6 +2050,31 @@
       conflictNotice.hidden = false;
     }
 
+    function updateGoalConditionField(
+      selectedValue = null
+    ) {
+      const hasGoal =
+        Boolean(donationGoalInput.value);
+
+      goalConditionField.hidden =
+        !hasGoal;
+
+      goalConditionInput.disabled =
+        !hasGoal;
+
+      if (!hasGoal) {
+        goalConditionInput.value =
+          "reached";
+
+        return;
+      }
+
+      goalConditionInput.value =
+        selectedValue === "not_reached"
+          ? "not_reached"
+          : "reached";
+    }
+
     function resetForm() {
       if (!currentUser) {
         return;
@@ -2053,6 +2113,7 @@
 
       renderPrimaryCreators();
       renderDonationGoals();
+      updateGoalConditionField("reached");
       renderSelectedGuests();
 
       updateFormStatus();
@@ -2125,6 +2186,10 @@
         null
       );
 
+      updateGoalConditionField(
+        entry.goalCondition ?? "reached"
+      );
+
       renderSelectedGuests();
 
       participantSearchInput.value = "";
@@ -2177,6 +2242,11 @@
 
         goalPublicId:
           donationGoalInput.value || null,
+
+        goalCondition:
+          donationGoalInput.value
+            ? goalConditionInput.value
+            : "always",
 
         primaryCreatorId:
           getPrimaryCreatorId(),
