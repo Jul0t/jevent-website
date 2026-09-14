@@ -616,8 +616,6 @@
       elements.editProgramButton.hidden = !canManage;
     }
 
-    renderProgram();
-
     renderLive();
     renderGoals();
   }
@@ -650,14 +648,47 @@
   }
 
   function renderGoals() {
+    if (
+      !elements.goalsList ||
+      !elements.goalsEmpty
+    ) {
+      return;
+    }
+
     elements.goalsList.replaceChildren();
 
+    const managedGoals =
+      manageableGoals.filter(goal =>
+        goal.scopeType === "creator" &&
+        Number(goal.creatorId) ===
+        Number(creator.id)
+      );
+
+    const publicGoalsById = new Map(
+      publicGoals.map(goal => [
+        String(goal.publicId),
+        goal
+      ])
+    );
+
     const goals =
-      canManage
-        ? getCurrentCreatorGoals()
+      canManage && managedGoals.length > 0
+        ? managedGoals.map(goal => ({
+          ...goal,
+          reached:
+            publicGoalsById.get(
+              String(goal.publicId)
+            )?.reached ?? false
+        }))
         : publicGoals;
-    const visible = canManage ? goals : (goals || []).filter(g => String(g.status || "") !== "draft");
-    if (!elements.goalsEmpty) return;
+
+    const visible = goals.filter(goal =>
+      goal.status !== "cancelled" &&
+      (
+        canManage ||
+        goal.status !== "draft"
+      )
+    );
 
     elements.goalsEmpty.hidden = visible.length > 0;
     if (visible.length === 0) return;
@@ -1086,14 +1117,29 @@
 
   async function loadCreator() {
     const slug = routeDescriptionId();
-    if (!slug) throw new Error("Aucun créateur sélectionné.");
 
-    const data = await apiFetch(`/api/creators/${encodeURIComponent(slug)}`);
-    if (!data?.creator) throw new Error("Créateur introuvable.");
+    if (!slug) {
+      throw new Error(
+        "Aucun créateur sélectionné."
+      );
+    }
+
+    const data = await apiFetch(
+      `/api/creators/${encodeURIComponent(slug)}`
+    );
+
+    if (!data?.creator) {
+      throw new Error(
+        "Créateur introuvable."
+      );
+    }
 
     creator = data.creator;
+
     await loadCurrentUser();
-    canManage = canUserManageCurrentCreator();
+
+    canManage =
+      canUserManageCurrentCreator();
 
     if (canManage) {
       creatorPanel = await apiFetch(
@@ -1102,48 +1148,158 @@
       );
     }
 
-    await Promise.all([
-      reloadGoals(),
-      reloadProgram()
-    ]);
+    await reloadGoals();
 
     fillProfile();
+
+    if (window.JEventCreatorCalendar) {
+      await window.JEventCreatorCalendar.load({
+        apiFetch,
+        creator,
+        canManage
+      });
+    }
   }
 
   async function init() {
     try {
       setVisibility(true, false, false);
+
       await loadCreator();
+
       setVisibility(false, true, false);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
+
       setVisibility(false, false, true);
-      elements.errorMessage.textContent = err.message || "Erreur de chargement.";
+
+      elements.errorMessage.textContent =
+        error.message ||
+        "Erreur de chargement.";
     }
   }
 
-  // Events
-  onSafe(elements.editGoalsButton, "click", () => {
-    $(".goals-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
-  onSafe(elements.addGoalButton, "click", () => openGoalDialog());
-  onSafe(elements.goalForm, "submit", saveGoal);
-  onSafe(elements.deleteGoalButton, "click", deleteGoal);
-  onSafe(elements.closeGoalDialog, "click", requestCloseGoalDialog);
-  onSafe(elements.cancelGoalButton, "click", requestCloseGoalDialog);
-  onSafe(elements.goalDialog, "cancel", (e) => { e.preventDefault(); requestCloseGoalDialog(); });
+  /* Événements des objectifs */
 
-  onSafe(elements.editDescriptionButton, "click", openDescriptionDialog);
-  onSafe(elements.saveDescriptionButton, "click", saveDescriptionDraft);
-  onSafe(elements.descriptionForm, "submit", submitDescription);
-  onSafe(elements.closeDescriptionDialog, "click", requestCloseDescriptionDialog);
-  onSafe(elements.cancelDescriptionButton, "click", requestCloseDescriptionDialog);
-  onSafe(elements.descriptionDialog, "cancel", (e) => { e.preventDefault(); requestCloseDescriptionDialog(); });
+  onSafe(
+    elements.editGoalsButton,
+    "click",
+    () => {
+      $(".goals-card")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  );
 
-  onSafe(elements.streamlabsSettingsButton, "click", openStreamlabsDialog);
-  onSafe(elements.streamlabsForm, "submit", saveStreamlabsSettings);
-  onSafe(elements.closeStreamlabsDialog, "click", closeStreamlabsDialog);
-  onSafe(elements.cancelStreamlabsButton, "click", closeStreamlabsDialog);
+  onSafe(
+    elements.addGoalButton,
+    "click",
+    () => openGoalDialog()
+  );
+
+  onSafe(
+    elements.goalForm,
+    "submit",
+    saveGoal
+  );
+
+  onSafe(
+    elements.deleteGoalButton,
+    "click",
+    deleteGoal
+  );
+
+  onSafe(
+    elements.closeGoalDialog,
+    "click",
+    requestCloseGoalDialog
+  );
+
+  onSafe(
+    elements.cancelGoalButton,
+    "click",
+    requestCloseGoalDialog
+  );
+
+  onSafe(
+    elements.goalDialog,
+    "cancel",
+    event => {
+      event.preventDefault();
+      requestCloseGoalDialog();
+    }
+  );
+
+  /* Événements de la description */
+
+  onSafe(
+    elements.editDescriptionButton,
+    "click",
+    openDescriptionDialog
+  );
+
+  onSafe(
+    elements.saveDescriptionButton,
+    "click",
+    saveDescriptionDraft
+  );
+
+  onSafe(
+    elements.descriptionForm,
+    "submit",
+    submitDescription
+  );
+
+  onSafe(
+    elements.closeDescriptionDialog,
+    "click",
+    requestCloseDescriptionDialog
+  );
+
+  onSafe(
+    elements.cancelDescriptionButton,
+    "click",
+    requestCloseDescriptionDialog
+  );
+
+  onSafe(
+    elements.descriptionDialog,
+    "cancel",
+    event => {
+      event.preventDefault();
+      requestCloseDescriptionDialog();
+    }
+  );
+
+  /* Événements Streamlabs */
+
+  onSafe(
+    elements.streamlabsSettingsButton,
+    "click",
+    openStreamlabsDialog
+  );
+
+  onSafe(
+    elements.streamlabsForm,
+    "submit",
+    saveStreamlabsSettings
+  );
+
+  onSafe(
+    elements.closeStreamlabsDialog,
+    "click",
+    closeStreamlabsDialog
+  );
+
+  onSafe(
+    elements.cancelStreamlabsButton,
+    "click",
+    closeStreamlabsDialog
+  );
+
+  /* Démarrage */
 
   init();
+
 })();
