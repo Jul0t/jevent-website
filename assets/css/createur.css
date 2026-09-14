@@ -205,7 +205,7 @@ button { border: 0; }
 
 .sticky-card { position: sticky; top: 16px; }
 
-@media (max-width: 920px) {
+@media (max-width: 700px) {
   .profile-grid { grid-template-columns: 1fr; }
   .sticky-card { position: static; }
 }
