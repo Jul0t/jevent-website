@@ -409,7 +409,10 @@
 
         button.append(title, time);
 
-        if (entry.goal) {
+        if (
+            entry.goal &&
+            entry.goalCondition !== "not_reached"
+        ) {
             const goal =
                 document.createElement("span");
 
@@ -577,7 +580,10 @@
             entry.descriptionMarkdown
         );
 
-        if (entry.goal) {
+        if (
+            entry.goal &&
+            entry.goalCondition !== "not_reached"
+        ) {
             const goal =
                 document.createElement("section");
 
