@@ -587,10 +587,10 @@
   function fillProfile() {
     if (!creator) return;
 
-    document.title = `${creator.twitchDisplayName} — JEvent 26`;
+    document.title =`${displaySlug} — JEvent 26`;
     elements.creatorAvatar.src = creator.twitchProfileImageUrl || "/assets/jevent_logo.png";
     elements.creatorAvatar.alt = `Avatar de ${creator.twitchDisplayName}`;
-    elements.creatorName.textContent = creator.twitchDisplayName;
+    elements.creatorName.textContent = displaySlug;
     elements.creatorLogin.textContent = `@${creator.twitchLogin}`;
     elements.streamlabsSettingsButton.hidden = !canManage;
 
@@ -604,6 +604,11 @@
       elements.donationButton.classList.add("is-disabled");
       elements.donationButton.setAttribute("aria-disabled", "true");
     }
+
+    const displaySlug =
+      creator.slug.charAt(0).toUpperCase() +
+      creator.slug.slice(1);
+
 
     toMarkdownHtml(creator.descriptionMarkdown || "");
 
