@@ -76,6 +76,7 @@
 
         <div class="profile-grid">
           <div class="main-column">
+            
             <!-- Description -->
             <section class="content-card">
               <header class="card-heading card-heading-row">
@@ -96,6 +97,21 @@
               </header>
 
               <div id="description" class="markdown-content"></div>
+            </section>
+
+            <!-- Embed Twitch -->
+            <section class="content-card twitch-card">
+              <header class="card-heading">
+                <div>
+                  <p class="eyebrow">La chaîne Twitch</p>
+                  <h2>Le direct</h2>
+                </div>
+              </header>
+
+              <div class="twitch-player-container">
+                <iframe id="twitchPlayer" class="twitch-player" title="Lecteur Twitch" width="100%" height="100%"
+                  allowfullscreen></iframe>
+              </div>
             </section>
 
             <!-- Programme public -->
@@ -130,19 +146,6 @@
               <p id="programEmpty" class="empty-message" hidden>
                 Aucune activité n’est encore annoncée.
               </p>
-            </section>
-            <section class="content-card twitch-card">
-              <header class="card-heading">
-                <div>
-                  <p class="eyebrow">La chaîne Twitch</p>
-                  <h2>Le direct</h2>
-                </div>
-              </header>
-
-              <div class="twitch-player-container">
-                <iframe id="twitchPlayer" class="twitch-player" title="Lecteur Twitch" width="100%" height="100%"
-                  allowfullscreen></iframe>
-              </div>
             </section>
           </div>
 
