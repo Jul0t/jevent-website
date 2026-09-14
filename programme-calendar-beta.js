@@ -479,6 +479,12 @@
 
         function setEditorOwner() {
             ownerInput.value = activeCreatorId;
+
+            ownerInput.dispatchEvent(
+                new Event("change", {
+                    bubbles: true
+                })
+            );
         }
 
         function snapshot() {
