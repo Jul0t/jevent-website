@@ -2043,28 +2043,21 @@
     }
 
     function updateGoalConditionField(
-      selectedValue = null
+      selectedValue = "reached"
     ) {
       const hasGoal =
         Boolean(donationGoalInput.value);
 
-      goalConditionField.hidden =
-        !hasGoal;
+      goalConditionField.hidden = !hasGoal;
+      goalConditionInput.disabled = !hasGoal;
 
-      goalConditionInput.disabled =
-        !hasGoal;
-
-      if (!hasGoal) {
-        goalConditionInput.value =
-          "reached";
-
-        return;
-      }
-
-      goalConditionInput.value =
-        selectedValue === "not_reached"
-          ? "not_reached"
-          : "reached";
+      goalConditionInput.value = hasGoal
+        ? (
+          selectedValue === "not_reached"
+            ? "not_reached"
+            : "reached"
+        )
+        : "reached";
     }
 
     function resetForm() {
@@ -2751,6 +2744,12 @@
       }
     );
 
+    donationGoalInput.addEventListener(
+      "change",
+      () => {
+        updateGoalConditionField("reached");
+      }
+    );
 
     function getGoalCreatorId(goal) {
       return String(
