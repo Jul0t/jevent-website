@@ -148,39 +148,51 @@
               </section>
 
               <!-- Objectifs de dons -->
-              <section class="content-card goals-card">
-                <header class="card-heading">
-                  <div>
-                    <p class="eyebrow">Défis solidaires</p>
-                    <h2>Objectifs de dons</h2>
+              <aside class="side-column">
+                <div class="side-stack">
 
-                    <p>
-                      Ils dépendent du montant atteint
-                      par le créateur.
+                  <section class="content-card">
+                    <header class="card-heading">
+                      <div>
+                        <p class="eyebrow">En ce moment</p>
+                        <h2>La chaîne</h2>
+                      </div>
+                    </header>
+
+                    <div id="liveInformation" class="information-list"></div>
+                  </section>
+
+                  <section class="content-card goals-card">
+                    <header class="card-heading">
+                      <div>
+                        <p class="eyebrow">Défis solidaires</p>
+                        <h2>Objectifs de dons</h2>
+                        <p>
+                          Ils dépendent du montant atteint par le créateur.
+                        </p>
+                      </div>
+
+                      <div class="goals-actions">
+                        <button id="addGoalButton" class="button button-primary" type="button" hidden>
+                          + Ajouter un objectif
+                        </button>
+
+                        <button id="streamlabsSettingsButton" class="button button-secondary" type="button" hidden>
+                          Configurer Streamlabs
+                        </button>
+                      </div>
+                    </header>
+
+                    <div id="goalsList" class="goals-list"></div>
+
+                    <p id="goalsEmpty" class="empty-message" hidden>
+                      Aucun objectif de dons n’a encore été publié.
                     </p>
-                  </div>
+                  </section>
 
-                  <div class="goals-actions">
-                    <button id="addGoalButton" class="button button-primary" type="button" hidden>
-                      + Ajouter un objectif
-                    </button>
-
-                    <button id="streamlabsSettingsButton" class="button button-secondary" type="button" hidden>
-                      Configurer Streamlabs
-                    </button>
-                  </div>
-                </header>
-
-                <div id="goalsList" class="goals-list"></div>
-
-                <p id="goalsEmpty" class="empty-message" hidden>
-                  Aucun objectif de dons n’a encore été publié.
-                </p>
-              </section>
+                </div>
+              </aside>
             </div>
-          </aside>
-        </div>
-      </div>
     </main>
   </div>
 
