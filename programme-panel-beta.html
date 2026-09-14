@@ -1106,8 +1106,58 @@
                     </div>
                   </div>
 
-                  <textarea id="descriptionInput" class="textarea" maxlength="10000"
-                    placeholder="Description facultative de l’activité."></textarea>
+                  <div class="field">
+                    <label for="startInput">Début</label>
+
+                    <input id="startInput" class="input" type="datetime-local" required>
+                  </div>
+
+                  <div class="field">
+                    <label for="endInput">Fin</label>
+
+                    <input id="endInput" class="input" type="datetime-local" required>
+                  </div>
+
+                  <div class="field">
+                    <label for="categoryInput">Catégorie</label>
+
+                    <select id="categoryInput" class="select">
+                      <option value="gaming">Gaming</option>
+                      <option value="talk">Discussion</option>
+                      <option value="challenge">Défi</option>
+                      <option value="creative">Créatif</option>
+                      <option value="charity">Caritatif</option>
+                      <option value="community">Communauté</option>
+                      <option value="special">Spécial</option>
+                      <option value="other">Autre</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="statusInput">Statut</label>
+
+                    <select id="statusInput" class="select">
+                      <option value="draft">Brouillon</option>
+                      <option value="published">Publié</option>
+                      <option value="cancelled">Annulé</option>
+                    </select>
+                  </div>
+
+                  <div class="field full">
+                    <label for="descriptionInput">
+                      Description
+                      <span style="color: var(--muted); font-weight: 600;">
+                        — facultatif
+                      </span>
+                    </label>
+
+                    <textarea id="descriptionInput" class="textarea" maxlength="10000"
+                      placeholder="Description facultative de l’activité."></textarea>
+
+                    <span class="field-help">
+                      Le HTML, le JavaScript et les liens sont actuellement interdits.
+                    </span>
+                  </div>
 
                   <span class="field-help">
                     Le HTML, le JavaScript et les liens sont
