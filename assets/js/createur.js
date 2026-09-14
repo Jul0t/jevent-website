@@ -66,7 +66,11 @@
     streamlabsMessage: $("#streamlabsMessage"),
     closeStreamlabsDialog: $("#closeStreamlabsDialog"),
     cancelStreamlabsButton: $("#cancelStreamlabsButton"),
-    saveStreamlabsButton: $("#saveStreamlabsButton")
+    saveStreamlabsButton: $("#saveStreamlabsButton"),
+
+    // TwitchPlayer
+
+    twitchPlayer: $("#twitchPlayer")
   };
 
   let creator = null;
@@ -584,14 +588,38 @@
     }
   }
 
+  function renderTwitchPlayer() {
+    if (
+      !elements.twitchPlayer ||
+      !creator?.twitchLogin
+    ) {
+      return;
+    }
+
+    const parent =
+      window.location.hostname ||
+      "jevent.julot.fr";
+
+    const parameters =
+      new URLSearchParams({
+        channel: creator.twitchLogin,
+        parent,
+        autoplay: "false",
+        muted: "true"
+      });
+
+    elements.twitchPlayer.src =
+      `https://player.twitch.tv/?${parameters}`;
+  }
+
   function fillProfile() {
     if (!creator) return;
 
-  const displaySlug = creator.slug
-    .replaceAll("-", " ")
-    .replace(/\b\p{L}/gu, letter =>
-      letter.toUpperCase()
-    );
+    const displaySlug = creator.slug
+      .replaceAll("-", " ")
+      .replace(/\b\p{L}/gu, letter =>
+        letter.toUpperCase()
+      );
 
     document.title = `${displaySlug} — JEvent 26`;
     elements.creatorAvatar.src = creator.twitchProfileImageUrl || "/assets/jevent_logo.png";
@@ -621,7 +649,8 @@
     if (elements.editProgramButton) {
       elements.editProgramButton.hidden = !canManage;
     }
-
+    
+    renderTwitchPlayer();
     renderLive();
     renderGoals();
   }
