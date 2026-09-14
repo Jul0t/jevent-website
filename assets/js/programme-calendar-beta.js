@@ -220,33 +220,91 @@
       }
 
       .je-calendar-editor {
-        width: min(900px, calc(100vw - 24px));
-        max-height: 90vh;
-        overflow: auto;
-        padding: 0;
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        background: #08110b;
-        color: var(--text);
-      }
+  width: min(900px, calc(100vw - 24px));
+  height: min(90vh, 900px);
+  max-height: 90vh;
+  padding: 0;
+  overflow: hidden;
 
-      .je-calendar-editor::backdrop {
-        background: rgba(0,0,0,.7);
-      }
+  border: 1px solid var(--border);
+  border-radius: 20px;
 
-      .je-calendar-editor > .card {
-        border: 0;
-        box-shadow: none;
-      }
+  background: #08110b;
+  color: var(--text);
+}
 
-      .je-calendar-editor-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 18px;
-        border-bottom: 1px solid var(--border);
-      }
+.je-calendar-editor[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.je-calendar-editor::backdrop {
+  background: rgba(0, 0, 0, .7);
+}
+
+.je-calendar-editor-bar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.je-calendar-editor > .card {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-direction: column;
+
+  overflow: hidden;
+  border: 0;
+  box-shadow: none;
+}
+
+.je-calendar-editor .card-header {
+  flex: 0 0 auto;
+}
+
+.je-calendar-editor .card-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.je-calendar-editor #programForm {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.je-calendar-editor .form-grid {
+  gap: 20px;
+}
+
+.je-calendar-editor .field label,
+.je-calendar-editor .field-label {
+  margin-bottom: 9px;
+}
+
+.je-calendar-editor .action-row {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+
+  margin: 0;
+  padding: 16px 0 4px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(15, 29, 19, .85),
+      var(--surface) 28%
+    );
+}
 
       .je-calendar-goal {
   display: block;
