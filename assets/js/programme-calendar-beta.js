@@ -1467,13 +1467,23 @@
             createActivity(dateInput.value);
         });
 
-        document.querySelector("#newEntryButton")
-            .addEventListener("click", () => {
-                createActivity(dateInput.value);
-            });
+        const newEntryButton =
+            document.querySelector("#newEntryButton");
 
-        document.querySelector("#resetButton")
-            .addEventListener("click", setEditorOwner);
+        const resetButton =
+            document.querySelector("#resetButton");
+
+        newEntryButton?.addEventListener(
+            "click",
+            () => {
+                createActivity(dateInput.value);
+            }
+        );
+
+        resetButton?.addEventListener(
+            "click",
+            setEditorOwner
+        );
 
         // Position de départ : midi, plutôt que minuit.
         scroll.scrollTop = 12 * 60;
