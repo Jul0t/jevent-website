@@ -24,7 +24,6 @@
     programEmpty: $("#programEmpty"),
     editProgramButton: $("#editProgramButton"),
 
-    editGoalsButton: $("#editGoalsButton"),
     addGoalButton: $("#addGoalButton"),
     goalsList: $("#goalsList"),
     goalsEmpty: $("#goalsEmpty"),
@@ -636,10 +635,8 @@
 
     toMarkdownHtml(creator.descriptionMarkdown || "");
 
-    elements.editGoalsButton.hidden = !canManage;
     elements.addGoalButton.hidden = !canManage;
     elements.editDescriptionButton.hidden = !canManage;
-    if (elements.editGoalsButton) elements.editGoalsButton.innerHTML = svgPencil();
     if (elements.editDescriptionButton) elements.editDescriptionButton.innerHTML = svgPencil();
     if (elements.editProgramButton) {
       elements.editProgramButton.hidden = !canManage;
@@ -1210,17 +1207,6 @@
   }
 
   /* Événements des objectifs */
-
-  onSafe(
-    elements.editGoalsButton,
-    "click",
-    () => {
-      $(".goals-card")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-  );
 
   onSafe(
     elements.addGoalButton,
