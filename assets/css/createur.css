@@ -177,7 +177,7 @@ button {
 .profile-summary {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 28px;
   padding: 32px;
 }
@@ -198,6 +198,7 @@ button {
   align-items: flex-start;
   min-width: 0;
   padding: 0;
+  text-align: left;
 }
 
 .profile-title-line {
@@ -235,11 +236,9 @@ button {
   fill: currentColor;
 }
 
-.live-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
+.live-status,
+.profile-actions {
+  justify-content: flex-start;
 }
 
 .status-badge {
@@ -637,16 +636,17 @@ button {
   }
 
   .profile-summary {
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
     padding: 24px 18px;
   }
 
   .profile-identity {
+    align-items: flex-start;
     width: 100%;
-    text-align: center;
+    text-align: left;
   }
-
+  
   .creator-avatar {
     width: 112px;
     height: 112px;
