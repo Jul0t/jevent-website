@@ -5,6 +5,13 @@
         const STEP = 15;
         const DAY_MINUTES = 1440;
         const HEIGHT = 1440; // 1 pixel par minute
+        const CALENDAR_MIN_DATE = "2026-10-25";
+
+        const EVENT_START_DATE = "2026-10-26";
+        const EVENT_END_DATE = "2026-10-28";
+
+        const CALENDAR_MAX_DATE = "2026-11-05";
+
 
         let activeCreatorId = "";
         let initializedDate = false;
@@ -356,6 +363,31 @@
   white-space: nowrap;
 }
 
+.je-calendar-heading.is-event-day {
+  background: #174d2a;
+  color: #fff;
+
+  box-shadow:
+    inset 0 -3px 0 #42e875;
+}
+
+.je-calendar-heading.is-event-day::after {
+  display: block;
+  margin-top: 4px;
+
+  color: #9dffba;
+  content: "Événement";
+
+  font-size: .64rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.je-calendar-day.is-event-day {
+  background-color:
+    rgba(0, 178, 55, .09);
+}
+
     `;
         document.head.append(style);
 
@@ -431,6 +463,37 @@
         const grid = root.querySelector(".je-calendar-grid");
         const scroll = root.querySelector(".je-calendar-scroll");
 
+        const prevButton =
+            root.querySelector("[data-prev]");
+
+        const nextButton =
+            root.querySelector("[data-next]");
+
+        const addButton =
+            root.querySelector("[data-add]");
+
+        const startInput =
+            form.querySelector("#startInput");
+
+        const endInput =
+            form.querySelector("#endInput");
+
+        startInput.min =
+            `${CALENDAR_MIN_DATE}T00:00`;
+
+        startInput.max =
+            `${CALENDAR_MAX_DATE}T23:45`;
+
+        startInput.step = "900";
+
+        endInput.min =
+            `${CALENDAR_MIN_DATE}T00:15`;
+
+        endInput.max =
+            "2026-11-06T00:00";
+
+        endInput.step = "900";
+
         const dialog = document.createElement("dialog");
         dialog.className = "je-calendar-editor";
         dialog.setAttribute("aria-label", "Détails de l’activité");
@@ -458,6 +521,38 @@
             const value = new Date(`${date}T12:00:00Z`);
             value.setUTCDate(value.getUTCDate() + amount);
             return value.toISOString().slice(0, 10);
+        }
+
+        function getLatestStartDate(dayCount) {
+            return addDays(
+                CALENDAR_MAX_DATE,
+                -(dayCount - 1)
+            );
+        }
+
+        function clampCalendarDate(
+            date,
+            dayCount
+        ) {
+            const latestDate =
+                getLatestStartDate(dayCount);
+
+            if (!date || date < CALENDAR_MIN_DATE) {
+                return CALENDAR_MIN_DATE;
+            }
+
+            if (date > latestDate) {
+                return latestDate;
+            }
+
+            return date;
+        }
+
+        function isEventDate(date) {
+            return (
+                date >= EVENT_START_DATE &&
+                date <= EVENT_END_DATE
+            );
         }
 
         function clock(minutes) {
@@ -713,23 +808,6 @@
 
             syncCreators();
 
-            if (!initializedDate) {
-                const first = visibleEntries()
-                    .map(entry => adapter.toLocal(entry.startsAt))
-                    .filter(Boolean)
-                    .sort()[0];
-
-                dateInput.value =
-                    first?.slice(0, 10) ||
-                    document.querySelector("#startInput").value.slice(0, 10) ||
-                    adapter.toLocal(new Date().toISOString()).slice(0, 10);
-
-                initializedDate = true;
-            }
-
-            if (!dateInput.value) return;
-
-            const dayCount = Number(daysInput.value);
             grid.style.gridTemplateColumns =
                 `64px repeat(${dayCount}, minmax(190px, 1fr))`;
             grid.replaceChildren();
@@ -747,6 +825,11 @@
             for (const date of dates) {
                 const heading = document.createElement("div");
                 heading.className = "je-calendar-heading";
+                if (isEventDate(date)) {
+                    heading.classList.add("is-event-day");
+                    heading.title = "Jour de l’événement";
+                }
+
                 heading.textContent = new Intl.DateTimeFormat("fr-FR", {
                     weekday: "short",
                     day: "numeric",
@@ -775,6 +858,8 @@
                 const column = document.createElement("div");
                 column.className = "je-calendar-day";
                 column.dataset.date = date;
+
+                if (isEventDate(date)) { column.classList.add("is-event-day"); }
 
                 const dayStart = `${date}T00:00`;
                 const dayEnd = `${addDays(date, 1)}T00:00`;
@@ -1446,22 +1531,53 @@
             render();
         });
 
-        dateInput.addEventListener("change", render);
-        daysInput.addEventListener("change", render);
+        dateInput.addEventListener(
+            "change",
+            render
+        );
 
-        for (const [selector, direction] of [
-            ["[data-prev]", -1],
-            ["[data-next]", 1]
-        ]) {
-            root.querySelector(selector).addEventListener("click", () => {
-                if (!dateInput.value) return;
-                dateInput.value = addDays(
-                    dateInput.value,
-                    direction * Number(daysInput.value)
-                );
+        daysInput.addEventListener(
+            "change",
+            render
+        );
+
+        prevButton.addEventListener(
+            "click",
+            () => {
+                const dayCount =
+                    Number(daysInput.value);
+
+                dateInput.value =
+                    clampCalendarDate(
+                        addDays(
+                            dateInput.value,
+                            -dayCount
+                        ),
+                        dayCount
+                    );
+
                 render();
-            });
-        }
+            }
+        );
+
+        nextButton.addEventListener(
+            "click",
+            () => {
+                const dayCount =
+                    Number(daysInput.value);
+
+                dateInput.value =
+                    clampCalendarDate(
+                        addDays(
+                            dateInput.value,
+                            dayCount
+                        ),
+                        dayCount
+                    );
+
+                render();
+            }
+        );
 
         root.querySelector("[data-add]").addEventListener("click", () => {
             createActivity(dateInput.value);
