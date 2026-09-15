@@ -808,6 +808,9 @@
 
             syncCreators();
 
+            const dayCount =
+                Number(daysInput.value) || 3;
+
             grid.style.gridTemplateColumns =
                 `64px repeat(${dayCount}, minmax(190px, 1fr))`;
             grid.replaceChildren();
