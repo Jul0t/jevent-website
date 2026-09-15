@@ -937,8 +937,8 @@
           <h1>Gérer le programme</h1>
 
           <p>
-            Crée les activités d’un streamer pour les
-            journées du 25, 26 et 27 octobre 2026.
+            Crée les activités de tes streams durant
+            la durée de l'event.
             Le créateur principal définit le programme dans
             lequel l’activité apparaît. Les autres créateurs
             sont uniquement des invités facultatifs.
@@ -1243,6 +1243,9 @@
   <script>
     const API_URL =
       "https://api-beta.jevent.julot.fr";
+
+    const EVENT_START_DATE = "2026-10-25";
+    const EVENT_UTC_OFFSET = "+01:00";
 
     const loading =
       document.querySelector("#loading");
@@ -1873,7 +1876,7 @@
        * le JEvent se déroule en UTC+1.
        */
       const date = new Date(
-        `${value}:00+01:00`
+        `${value}:00${EVENT_UTC_OFFSET}`
       );
 
       if (Number.isNaN(date.getTime())) {
@@ -2127,11 +2130,12 @@
         "Renseigne les informations du programme.";
 
       titleInput.value = "";
+
       startInput.value =
-        "2026-10-25T16:00";
+        `${EVENT_START_DATE}T16:00`;
 
       endInput.value =
-        "2026-10-25T17:00";
+        `${EVENT_START_DATE}T17:00`;
 
       categoryInput.value = "other";
       statusInput.value = "draft";
