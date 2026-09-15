@@ -1238,7 +1238,7 @@
 
   <div id="pageMessage" class="page-message" role="status" aria-live="polite" hidden></div>
 
-  <script src="/assets/js/programme-calendar-beta.js?v=6"></script>
+  <script src="/assets/js/programme-calendar-beta.js?v=7"></script>
 
   <script>
     const API_URL =
@@ -1519,12 +1519,7 @@
         return Array.of();
       }
 
-      if (
-        currentUser.permissions
-          ?.isSuperAdmin ||
-        currentUser.permissions
-          ?.isGlobalModerator
-      ) {
+      if (currentUser.permissions?.isSuperAdmin) {
         return creators;
       }
 
@@ -1538,12 +1533,7 @@
       const manageableIds = memberships
         .filter(
           membership =>
-            Array.of(
-              "owner",
-              "delegate"
-            ).includes(
-              membership.memberRole
-            )
+            membership.memberRole === "owner"
         )
         .map(
           membership =>
@@ -2359,18 +2349,10 @@
           : Array.of();
 
       const canManage =
-        data.user.permissions
-          ?.isSuperAdmin ||
-        data.user.permissions
-          ?.isGlobalModerator ||
+        data.user.permissions?.isSuperAdmin ||
         memberships.some(
           membership =>
-            Array.of(
-              "owner",
-              "delegate"
-            ).includes(
-              membership.memberRole
-            )
+            membership.memberRole === "owner"
         );
 
       if (!canManage) {
