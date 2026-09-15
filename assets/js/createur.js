@@ -12,7 +12,6 @@
     errorMessage: $("#errorMessage"),
     profile: $("#profile"),
 
-    profileBanner: $("#profileBanner"),
     creatorAvatar: $("#creatorAvatar"),
     creatorName: $("#creatorName"),
     creatorLogin: $("#creatorLogin"),
@@ -218,10 +217,6 @@
     addInfo("Catégorie", live.gameName || "—");
     addInfo("Spectateurs", fmtNumber(live.viewerCount || 0));
     addInfo("Démarré le", fmtDate(live.startedAt));
-    if (live.thumbnailUrl) {
-      elements.profileBanner.style.backgroundImage = `url("${live.thumbnailUrl}")`;
-      elements.profileBanner.classList.add("has-image");
-    }
   }
 
   function addInfo(label, value) {
