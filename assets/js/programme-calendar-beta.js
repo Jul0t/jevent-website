@@ -518,8 +518,18 @@
         ownerInput.closest(".field").hidden = true;
 
         function addDays(date, amount) {
-            const value = new Date(`${date}T12:00:00Z`);
-            value.setUTCDate(value.getUTCDate() + amount);
+            const safeDate =
+                /^\d{4}-\d{2}-\d{2}$/.test(date)
+                    ? date
+                    : EVENT_START_DATE;
+
+            const value =
+                new Date(`${safeDate}T12:00:00Z`);
+
+            value.setUTCDate(
+                value.getUTCDate() + Number(amount || 0)
+            );
+
             return value.toISOString().slice(0, 10);
         }
 
@@ -810,6 +820,20 @@
 
             const dayCount =
                 Number(daysInput.value) || 3;
+
+            if (
+                !initializedDate ||
+                !/^\d{4}-\d{2}-\d{2}$/.test(dateInput.value)
+            ) {
+                dateInput.value = EVENT_START_DATE;
+                initializedDate = true;
+            }
+
+            dateInput.value =
+                clampCalendarDate(
+                    dateInput.value,
+                    dayCount
+                );
 
             grid.style.gridTemplateColumns =
                 `64px repeat(${dayCount}, minmax(190px, 1fr))`;
