@@ -753,8 +753,7 @@
             // Pour un propriétaire non administrateur, privilégier son calendrier.
             const user = adapter.getUser();
             const globalAccess = Boolean(
-                user?.permissions?.isSuperAdmin ||
-                user?.permissions?.isGlobalModerator
+                user?.permissions?.isSuperAdmin
             );
 
             const ownedIds = new Set(
