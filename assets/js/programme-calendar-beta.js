@@ -8,7 +8,12 @@
         const CALENDAR_MIN_DATE = "2026-10-25";
 
         const EVENT_START_DATE = "2026-10-26";
-        const EVENT_END_DATE = "2026-10-28";
+        const EVENT_END_DATE = "2026-10-29";
+        const EVENT_HIGHLIGHT_START_DATE = "2026-10-26";
+        const EVENT_HIGHLIGHT_END_DATE = "2026-10-29";
+        const EVENT_HIGHLIGHT_START_MINUTE = 16 * 60;
+        const EVENT_HIGHLIGHT_END_MINUTE = 4 * 60;
+
 
         const CALENDAR_MAX_DATE = "2026-11-05";
 
@@ -388,6 +393,22 @@
     rgba(0, 178, 55, .09);
 }
 
+.je-calendar-event-window {
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 0;
+
+  background: rgba(0, 178, 55, .10);
+  border-top: 2px solid rgba(66, 232, 117, .65);
+  border-bottom: 2px solid rgba(66, 232, 117, .65);
+
+  pointer-events: none;
+}
+
+.je-calendar-event {
+  z-index: 2;
+}
     `;
         document.head.append(style);
 
@@ -812,6 +833,27 @@
             );
         }
 
+        function getEventHighlightRange(date) {
+            if (
+                date < EVENT_HIGHLIGHT_START_DATE ||
+                date > EVENT_HIGHLIGHT_END_DATE
+            ) {
+                return null;
+            }
+
+            return {
+                start:
+                    date === EVENT_HIGHLIGHT_START_DATE
+                        ? EVENT_HIGHLIGHT_START_MINUTE
+                        : 0,
+
+                end:
+                    date === EVENT_HIGHLIGHT_END_DATE
+                        ? EVENT_HIGHLIGHT_END_MINUTE
+                        : DAY_MINUTES
+            };
+        }
+
         function render() {
             if (gesture) return;
 
@@ -885,7 +927,33 @@
                 column.className = "je-calendar-day";
                 column.dataset.date = date;
 
-                if (isEventDate(date)) { column.classList.add("is-event-day"); }
+                const highlightRange =
+                    getEventHighlightRange(date);
+
+                if (highlightRange) {
+                    const highlight =
+                        document.createElement("div");
+
+                    highlight.className =
+                        "je-calendar-event-window";
+
+                    highlight.style.top =
+                        `${highlightRange.start /
+                        DAY_MINUTES *
+                        HEIGHT
+                        }px`;
+
+                    highlight.style.height =
+                        `${(
+                            highlightRange.end -
+                            highlightRange.start
+                        ) /
+                        DAY_MINUTES *
+                        HEIGHT
+                        }px`;
+
+                    column.append(highlight);
+                }
 
                 const dayStart = `${date}T00:00`;
                 const dayEnd = `${addDays(date, 1)}T00:00`;
