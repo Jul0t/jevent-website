@@ -175,14 +175,13 @@ button {
 }
 
 .profile-summary {
-  position: relative;
-  margin-top: 0;
-  padding: 28px;
-  align-items: center;
-  padding: 0 24px 24px;
   display: flex;
-  align-items: flex-end;
-  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+
+  margin-top: 0;
+  padding: 32px;
 }
 
 .creator-avatar {
@@ -196,18 +195,16 @@ button {
 }
 
 .profile-identity {
-  position: relative;
-  z-index: 2;
+  flex: 0 1 auto;
   min-width: 0;
-  flex: 1;
-  padding-bottom: 6px;
+  padding: 0;
+  text-align: center;
 }
 
 .profile-title-line {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
+  align-items: center;
+  justify-content: center;
 }
 
 .profile-title-line h1 {
@@ -244,12 +241,9 @@ button {
   fill: currentColor;
 }
 
-.live-status {
-  margin-top: 14px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
+.live-status,
+.profile-actions {
+  justify-content: center;
 }
 
 .status-badge {
@@ -648,10 +642,14 @@ button {
   }
 
   .profile-summary {
-    margin-top: -58px;
+    align-items: center;
     flex-direction: column;
-    padding: 0 16px 18px;
-    align-items: flex-start;
+    padding: 24px 18px;
+  }
+
+  .profile-identity {
+    width: 100%;
+    text-align: center;
   }
 
   .creator-avatar {

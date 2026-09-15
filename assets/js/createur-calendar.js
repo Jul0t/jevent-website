@@ -1017,8 +1017,10 @@
         }
 
         try {
-            const data =
-                await apiFetch("/api/program");
+            const data = await apiFetch(
+                "/api/program/creator/" +
+                encodeURIComponent(creator.slug)
+            );
 
             const entries =
                 Array.isArray(data?.entries)
@@ -1028,7 +1030,6 @@
                         : [];
 
             programEntries = entries
-                .filter(belongsToCreator)
                 .map(resolvePublicEntry)
                 .filter(Boolean)
                 .sort(
