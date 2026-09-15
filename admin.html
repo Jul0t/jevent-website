@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Admin — JEvent 26</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/admin.css?v=1"
+  >
+</head>
+
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="/">
+        <img
+          class="brand-logo"
+          src="/assets/jevent_logo.png"
+          alt="JEvent 26"
+        >
+
+        <span>
+          <strong>JEvent 26</strong>
+          <small>Administration</small>
+        </span>
+      </a>
+
+      <nav class="navigation">
+        <a href="/">Accueil</a>
+        <a href="/createurs.html">Créateurs</a>
+        <a href="/programme-panel-beta.html">
+          Programme
+        </a>
+      </nav>
+    </header>
+
+    <main>
+      <section
+        id="loadingState"
+        class="page-state"
+      >
+        <div class="spinner"></div>
+        <p>Chargement de l’administration…</p>
+      </section>
+
+      <section
+        id="errorState"
+        class="page-state"
+        hidden
+      >
+        <div class="state-icon">!</div>
+
+        <h1>Accès impossible</h1>
+
+        <p id="errorMessage">
+          Cette page est réservée aux administrateurs.
+        </p>
+
+        <a
+          class="button button-secondary"
+          href="/"
+        >
+          Retour à l’accueil
+        </a>
+      </section>
+
+      <div id="adminApplication" hidden>
+        <section class="admin-heading">
+          <div>
+            <p class="eyebrow">
+              Administration
+            </p>
+
+            <h1>Gestion des streamers</h1>
+
+            <p>
+              Importe les membres de l’équipe
+              Streamlabs Charity dans JEvent.
+            </p>
+          </div>
+
+          <button
+            id="refreshButton"
+            class="button button-secondary"
+            type="button"
+          >
+            Actualiser
+          </button>
+        </section>
+
+        <section class="statistics-grid">
+          <article class="statistic-card">
+            <span>Membres Streamlabs</span>
+            <strong id="membersCount">0</strong>
+          </article>
+
+          <article class="statistic-card">
+            <span>Déjà importés</span>
+            <strong id="importedCount">0</strong>
+          </article>
+
+          <article class="statistic-card">
+            <span>À importer</span>
+            <strong id="availableCount">0</strong>
+          </article>
+        </section>
+
+        <section class="content-card">
+          <header class="card-heading">
+            <div>
+              <p class="eyebrow">
+                Streamlabs Charity
+              </p>
+
+              <h2>Membres de l’équipe</h2>
+
+              <p>
+                Les streamers déjà présents ne peuvent
+                pas être importés une seconde fois.
+              </p>
+            </div>
+
+            <label class="search-field">
+              <span class="sr-only">
+                Rechercher un streamer
+              </span>
+
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Rechercher un streamer…"
+              >
+            </label>
+          </header>
+
+          <p
+            id="pageMessage"
+            class="page-message"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+          <div
+            id="membersList"
+            class="members-list"
+          ></div>
+
+          <p
+            id="emptyState"
+            class="empty-state"
+            hidden
+          >
+            Aucun membre ne correspond à la recherche.
+          </p>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="/assets/js/admin.js?v=1"></script>
+</body>
+</html>
