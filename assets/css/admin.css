@@ -758,3 +758,73 @@ button {
     justify-content: flex-start;
   }
 }
+
+/* Message de mise à jour */
+
+.page-message {
+  min-height: 24px;
+  margin: 0 0 16px;
+  padding: 0 4px;
+
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.page-message.is-success {
+  color: var(--green-light);
+}
+
+.page-message.is-error {
+  color: #ff9dac;
+}
+
+/* Cartes statistiques */
+
+.statistics-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.statistic-card {
+  display: grid;
+  gap: 10px;
+
+  min-height: 120px;
+  padding: 20px;
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.statistic-card span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.statistic-card strong {
+  color: var(--green-light);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+@media (max-width: 900px) {
+  .statistics-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .statistics-grid {
+    grid-template-columns: 1fr;
+  }
+}
