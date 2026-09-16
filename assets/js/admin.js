@@ -71,9 +71,9 @@
 
           ...(options.body
             ? {
-                "Content-Type":
-                  "application/json"
-              }
+              "Content-Type":
+                "application/json"
+            }
             : {}),
 
           ...(options.headers ?? {})
@@ -162,7 +162,33 @@
       );
   }
 
-  function selectTab(tabName) {
+  const TAB_HASHES = {
+    overview: "accueil",
+    creators: "createurs",
+    stats: "statistiques",
+    tools: "outils"
+  };
+
+  const HASH_TABS = Object.fromEntries(
+    Object.entries(TAB_HASHES)
+      .map(([tab, hash]) => [hash, tab])
+  );
+
+  function selectTab(
+    tabName,
+    updateUrl = true
+  ) {
+    const validTabs = [
+      "overview",
+      "creators",
+      "stats",
+      "tools"
+    ];
+
+    if (!validTabs.includes(tabName)) {
+      tabName = "overview";
+    }
+
     document
       .querySelectorAll(".admin-tab")
       .forEach(button => {
@@ -178,6 +204,17 @@
         panel.hidden =
           panel.dataset.panel !== tabName;
       });
+
+    if (updateUrl) {
+      const hash =
+        TAB_HASHES[tabName];
+
+      history.replaceState(
+        null,
+        "",
+        `#${hash}`
+      );
+    }
   }
 
   function createAvatar(creator) {
@@ -464,8 +501,7 @@
         "Voir le profil";
 
       profileLink.href =
-        `/createur.html?slug=${
-          encodeURIComponent(creator.slug)
+        `/createur.html?slug=${encodeURIComponent(creator.slug)
         }`;
 
       actions.append(profileLink);
@@ -602,10 +638,9 @@
         "Voir le profil";
 
       link.href =
-        `/createur.html?slug=${
-          encodeURIComponent(
-            member.creatorSlug
-          )
+        `/createur.html?slug=${encodeURIComponent(
+          member.creatorSlug
+        )
         }`;
 
       actions.append(link);
@@ -667,6 +702,15 @@
         createMemberCard(member)
       );
     });
+  }
+
+  function getInitialTab() {
+    const hash =
+      window.location.hash
+        .replace(/^#/, "")
+        .toLowerCase();
+
+    return HASH_TABS[hash] ?? "overview";
   }
 
   async function loadCreators() {
@@ -829,6 +873,12 @@
 
       elements.application.hidden =
         false;
+
+      selectTab(
+        getInitialTab(),
+        false
+      );
+
     } catch (error) {
       console.error(error);
 
@@ -869,6 +919,16 @@
   elements.memberSearchInput.addEventListener(
     "input",
     renderMembers
+  );
+
+  window.addEventListener(
+    "hashchange",
+    () => {
+      selectTab(
+        getInitialTab(),
+        false
+      );
+    }
   );
 
   init();

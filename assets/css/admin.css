@@ -38,16 +38,12 @@ body {
   margin: 0;
 
   background:
-    radial-gradient(
-      circle at 10% 0%,
+    radial-gradient(circle at 10% 0%,
       rgba(0, 178, 55, 0.2),
-      transparent 34%
-    ),
-    linear-gradient(
-      180deg,
+      transparent 34%),
+    linear-gradient(180deg,
       var(--background),
-      var(--background-soft)
-    );
+      var(--background-soft));
 
   color: var(--text);
 }
@@ -433,8 +429,7 @@ button {
 .creator-admin-card {
   display: grid;
   grid-template-columns:
-    64px minmax(190px, 1fr)
-    minmax(300px, 1.2fr);
+    64px minmax(190px, 1fr) minmax(300px, 1.2fr);
 
   gap: 16px;
   align-items: start;
@@ -515,8 +510,7 @@ button {
 .creator-admin-controls {
   display: grid;
   grid-template-columns:
-    minmax(140px, 1fr)
-    90px;
+    minmax(140px, 1fr) 90px;
 
   gap: 10px;
   align-items: end;
@@ -672,5 +666,95 @@ button {
 
   .creator-admin-controls {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Liste des membres Streamlabs */
+
+.members-list,
+.creators-list {
+  display: grid;
+  gap: 0;
+  padding: 10px 24px 24px;
+}
+
+.member-card {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+
+  min-width: 0;
+  padding: 17px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.member-card:last-child,
+.creator-admin-card:last-child {
+  border-bottom: 0;
+}
+
+.member-avatar,
+.creator-admin-avatar {
+  display: block;
+  width: 64px;
+  height: 64px;
+
+  border: 2px solid var(--border);
+  border-radius: 50%;
+
+  background: var(--surface-light);
+  object-fit: cover;
+}
+
+.member-name {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.member-login {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.member-status {
+  display: inline-flex;
+  margin-top: 8px;
+  padding: 5px 8px;
+
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--muted);
+
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+.member-status.is-imported {
+  background: rgba(0, 178, 55, 0.14);
+  color: #a9ffc2;
+}
+
+.member-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 650px) {
+  .member-card {
+    grid-template-columns: 54px minmax(0, 1fr);
+  }
+
+  .member-avatar {
+    width: 54px;
+    height: 54px;
+  }
+
+  .member-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
   }
 }
