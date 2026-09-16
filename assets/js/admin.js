@@ -20,28 +20,41 @@
     refreshButton:
       document.querySelector("#refreshButton"),
 
-    searchInput:
-      document.querySelector("#searchInput"),
-
-    membersList:
-      document.querySelector("#membersList"),
-
-    emptyState:
-      document.querySelector("#emptyState"),
-
     pageMessage:
       document.querySelector("#pageMessage"),
+
+    creatorsCount:
+      document.querySelector("#creatorsCount"),
+
+    activeCreatorsCount:
+      document.querySelector("#activeCreatorsCount"),
 
     membersCount:
       document.querySelector("#membersCount"),
 
-    importedCount:
-      document.querySelector("#importedCount"),
-
     availableCount:
-      document.querySelector("#availableCount")
+      document.querySelector("#availableCount"),
+
+    creatorsList:
+      document.querySelector("#creatorsList"),
+
+    creatorsEmpty:
+      document.querySelector("#creatorsEmpty"),
+
+    creatorSearchInput:
+      document.querySelector("#creatorSearchInput"),
+
+    membersList:
+      document.querySelector("#membersList"),
+
+    membersEmpty:
+      document.querySelector("#membersEmpty"),
+
+    memberSearchInput:
+      document.querySelector("#memberSearchInput")
   };
 
+  let creators = [];
   let members = [];
 
   async function apiFetch(
@@ -56,14 +69,12 @@
         headers: {
           Accept: "application/json",
 
-          ...(
-            options.body
-              ? {
-                  "Content-Type":
-                    "application/json"
-                }
-              : {}
-          ),
+          ...(options.body
+            ? {
+                "Content-Type":
+                  "application/json"
+              }
+            : {}),
 
           ...(options.headers ?? {})
         },
@@ -119,107 +130,511 @@
       .trim();
   }
 
+  function escapeText(value) {
+    return String(value ?? "");
+  }
+
   function updateStatistics() {
-    const imported =
+    const activeCreators =
+      creators.filter(
+        creator =>
+          creator.active &&
+          !creator.archived
+      ).length;
+
+    const importedMembers =
       members.filter(
         member => member.imported
       ).length;
 
+    elements.creatorsCount.textContent =
+      String(creators.length);
+
+    elements.activeCreatorsCount.textContent =
+      String(activeCreators);
+
     elements.membersCount.textContent =
       String(members.length);
 
-    elements.importedCount.textContent =
-      String(imported);
-
     elements.availableCount.textContent =
-      String(members.length - imported);
+      String(
+        members.length - importedMembers
+      );
   }
 
-  function createAvatar(member) {
-    const avatar =
+  function selectTab(tabName) {
+    document
+      .querySelectorAll(".admin-tab")
+      .forEach(button => {
+        button.classList.toggle(
+          "is-active",
+          button.dataset.tab === tabName
+        );
+      });
+
+    document
+      .querySelectorAll(".admin-tab-panel")
+      .forEach(panel => {
+        panel.hidden =
+          panel.dataset.panel !== tabName;
+      });
+  }
+
+  function createAvatar(creator) {
+    const image =
       document.createElement("img");
 
-    avatar.className = "member-avatar";
-    avatar.alt =
-      `Avatar de ${member.twitchDisplayName}`;
+    image.className =
+      "creator-admin-avatar";
 
-    avatar.src =
-      member.twitchProfileImageUrl ||
+    image.alt =
+      `Avatar de ${creator.twitchDisplayName}`;
+
+    image.src =
+      creator.twitchProfileImageUrl ||
       "/assets/jevent_logo.png";
 
-    return avatar;
+    return image;
   }
 
-  function createMemberContent(member) {
+  function createCreatorStatus(creator) {
+    const wrapper =
+      document.createElement("div");
+
+    wrapper.className =
+      "creator-admin-statuses";
+
+    const status =
+      document.createElement("span");
+
+    status.className =
+      "creator-admin-status";
+
+    if (creator.archived) {
+      status.textContent = "Archivé";
+      status.classList.add("is-danger");
+    } else if (!creator.active) {
+      status.textContent = "Désactivé";
+      status.classList.add("is-warning");
+    } else {
+      status.textContent = "Actif";
+      status.classList.add("is-success");
+    }
+
+    wrapper.append(status);
+
+    if (creator.streamlabsConfigured) {
+      const streamlabs =
+        document.createElement("span");
+
+      streamlabs.className =
+        "creator-admin-status is-success";
+
+      streamlabs.textContent =
+        "Streamlabs configuré";
+
+      wrapper.append(streamlabs);
+    } else {
+      const streamlabs =
+        document.createElement("span");
+
+      streamlabs.className =
+        "creator-admin-status is-warning";
+
+      streamlabs.textContent =
+        "Streamlabs absent";
+
+      wrapper.append(streamlabs);
+    }
+
+    return wrapper;
+  }
+
+  function createCreatorCard(creator) {
+    const card =
+      document.createElement("article");
+
+    card.className =
+      "creator-admin-card";
+
+    if (creator.archived) {
+      card.classList.add("is-archived");
+    }
+
     const content =
       document.createElement("div");
 
-    const name =
+    content.className =
+      "creator-admin-content";
+
+    const title =
       document.createElement("h3");
 
-    name.className = "member-name";
-    name.textContent =
+    title.textContent =
+      creator.twitchDisplayName;
+
+    const login =
+      document.createElement("p");
+
+    login.className =
+      "creator-admin-login";
+
+    login.textContent =
+      `@${creator.twitchLogin}`;
+
+    const meta =
+      document.createElement("p");
+
+    meta.className =
+      "creator-admin-meta";
+
+    meta.textContent =
+      `Slug actuel : ${creator.slug}`;
+
+    content.append(
+      title,
+      login,
+      meta,
+      createCreatorStatus(creator)
+    );
+
+    const controls =
+      document.createElement("div");
+
+    controls.className =
+      "creator-admin-controls";
+
+    const slugLabel =
+      document.createElement("label");
+
+    slugLabel.className =
+      "admin-control";
+
+    const slugText =
+      document.createElement("span");
+
+    slugText.textContent =
+      "Slug";
+
+    const slugInput =
+      document.createElement("input");
+
+    slugInput.type = "text";
+    slugInput.value = creator.slug;
+    slugInput.placeholder = "slug";
+
+    slugLabel.append(slugText, slugInput);
+
+    const orderLabel =
+      document.createElement("label");
+
+    orderLabel.className =
+      "admin-control";
+
+    const orderText =
+      document.createElement("span");
+
+    orderText.textContent =
+      "Ordre";
+
+    const orderInput =
+      document.createElement("input");
+
+    orderInput.type = "number";
+    orderInput.min = "0";
+    orderInput.step = "1";
+    orderInput.value =
+      String(creator.displayOrder ?? 100);
+
+    orderLabel.append(orderText, orderInput);
+
+    const checkLine =
+      document.createElement("label");
+
+    checkLine.className =
+      "admin-checkbox";
+
+    const activeInput =
+      document.createElement("input");
+
+    activeInput.type = "checkbox";
+    activeInput.checked =
+      Boolean(creator.active);
+
+    const activeText =
+      document.createElement("span");
+
+    activeText.textContent =
+      "Créateur actif";
+
+    checkLine.append(
+      activeInput,
+      activeText
+    );
+
+    const archivedLine =
+      document.createElement("label");
+
+    archivedLine.className =
+      "admin-checkbox";
+
+    const archivedInput =
+      document.createElement("input");
+
+    archivedInput.type = "checkbox";
+    archivedInput.checked =
+      Boolean(creator.archived);
+
+    const archivedText =
+      document.createElement("span");
+
+    archivedText.textContent =
+      "Archivé";
+
+    archivedLine.append(
+      archivedInput,
+      archivedText
+    );
+
+    const actions =
+      document.createElement("div");
+
+    actions.className =
+      "creator-admin-actions";
+
+    const saveButton =
+      document.createElement("button");
+
+    saveButton.type = "button";
+    saveButton.className =
+      "button button-primary";
+
+    saveButton.textContent =
+      "Enregistrer";
+
+    saveButton.addEventListener(
+      "click",
+      async () => {
+        saveButton.disabled = true;
+
+        try {
+          await apiFetch(
+            `/api/admin/creators/${creator.id}`,
+            {
+              method: "PUT",
+
+              body: JSON.stringify({
+                slug: slugInput.value.trim(),
+                active: activeInput.checked,
+                archived: archivedInput.checked,
+                displayOrder: Number(
+                  orderInput.value
+                )
+              })
+            }
+          );
+
+          showMessage(
+            `${creator.twitchDisplayName} a été mis à jour.`,
+            "success"
+          );
+
+          await loadCreators();
+        } catch (error) {
+          showMessage(
+            error.message,
+            "error"
+          );
+        } finally {
+          saveButton.disabled = false;
+        }
+      }
+    );
+
+    actions.append(saveButton);
+
+    if (!creator.archived) {
+      const profileLink =
+        document.createElement("a");
+
+      profileLink.className =
+        "button button-secondary";
+
+      profileLink.textContent =
+        "Voir le profil";
+
+      profileLink.href =
+        `/createur.html?slug=${
+          encodeURIComponent(creator.slug)
+        }`;
+
+      actions.append(profileLink);
+    }
+
+    controls.append(
+      slugLabel,
+      orderLabel,
+      checkLine,
+      archivedLine,
+      actions
+    );
+
+    card.append(
+      createAvatar(creator),
+      content,
+      controls
+    );
+
+    return card;
+  }
+
+  function renderCreators() {
+    elements.creatorsList.replaceChildren();
+
+    const search =
+      normalizeSearch(
+        elements.creatorSearchInput.value
+      );
+
+    const filtered =
+      creators.filter(creator => {
+        const searchable =
+          normalizeSearch(
+            [
+              creator.twitchDisplayName,
+              creator.twitchLogin,
+              creator.slug
+            ].join(" ")
+          );
+
+        return searchable.includes(search);
+      });
+
+    elements.creatorsEmpty.hidden =
+      filtered.length !== 0;
+
+    filtered.forEach(creator => {
+      elements.creatorsList.append(
+        createCreatorCard(creator)
+      );
+    });
+  }
+
+  function createMemberAvatar(member) {
+    const image =
+      document.createElement("img");
+
+    image.className =
+      "member-avatar";
+
+    image.alt =
+      `Avatar de ${member.twitchDisplayName}`;
+
+    image.src =
+      member.twitchProfileImageUrl ||
+      "/assets/jevent_logo.png";
+
+    return image;
+  }
+
+  function createMemberCard(member) {
+    const card =
+      document.createElement("article");
+
+    card.className =
+      "member-card";
+
+    const content =
+      document.createElement("div");
+
+    const title =
+      document.createElement("h3");
+
+    title.className =
+      "member-name";
+
+    title.textContent =
       member.twitchDisplayName;
 
     const login =
       document.createElement("p");
 
-    login.className = "member-login";
+    login.className =
+      "member-login";
+
     login.textContent =
       `@${member.twitchLogin}`;
 
     const status =
       document.createElement("span");
 
-    status.className = "member-status";
-    status.textContent = member.imported
-      ? "Déjà importé"
-      : "Disponible à l’import";
+    status.className =
+      "member-status";
+
+    status.textContent =
+      member.imported
+        ? "Déjà importé"
+        : "Disponible à l’import";
 
     if (member.imported) {
       status.classList.add("is-imported");
     }
 
-    content.append(name, login, status);
+    content.append(title, login, status);
 
-    return content;
-  }
+    const actions =
+      document.createElement("div");
 
-  function createProfileLink(member) {
-    const link =
-      document.createElement("a");
+    actions.className =
+      "member-actions";
 
-    link.className =
-      "button button-secondary";
+    if (
+      member.imported &&
+      member.creatorSlug
+    ) {
+      const link =
+        document.createElement("a");
 
-    link.textContent = "Voir le profil";
+      link.className =
+        "button button-secondary";
 
-    link.href =
-      `/createur.html?slug=${
-        encodeURIComponent(
-          member.creatorSlug
-        )
-      }`;
+      link.textContent =
+        "Voir le profil";
 
-    return link;
-  }
+      link.href =
+        `/createur.html?slug=${
+          encodeURIComponent(
+            member.creatorSlug
+          )
+        }`;
 
-  function createImportButton(member) {
-    const button =
-      document.createElement("button");
+      actions.append(link);
+    } else if (!member.imported) {
+      const button =
+        document.createElement("button");
 
-    button.type = "button";
-    button.className =
-      "button button-primary";
+      button.type = "button";
+      button.className =
+        "button button-primary";
 
-    button.textContent = "Importer";
+      button.textContent =
+        "Importer";
 
-    button.addEventListener(
-      "click",
-      () => importMember(member, button)
+      button.addEventListener(
+        "click",
+        () => importMember(member, button)
+      );
+
+      actions.append(button);
+    }
+
+    card.append(
+      createMemberAvatar(member),
+      content,
+      actions
     );
 
-    return button;
+    return card;
   }
 
   function renderMembers() {
@@ -227,11 +642,11 @@
 
     const search =
       normalizeSearch(
-        elements.searchInput.value
+        elements.memberSearchInput.value
       );
 
-    const filtered = members.filter(
-      member => {
+    const filtered =
+      members.filter(member => {
         const searchable =
           normalizeSearch(
             [
@@ -242,45 +657,32 @@
           );
 
         return searchable.includes(search);
-      }
-    );
+      });
 
-    elements.emptyState.hidden =
+    elements.membersEmpty.hidden =
       filtered.length !== 0;
 
-    for (const member of filtered) {
-      const card =
-        document.createElement("article");
+    filtered.forEach(member => {
+      elements.membersList.append(
+        createMemberCard(member)
+      );
+    });
+  }
 
-      card.className = "member-card";
-
-      const actions =
-        document.createElement("div");
-
-      actions.className =
-        "member-actions";
-
-      if (
-        member.imported &&
-        member.creatorSlug
-      ) {
-        actions.append(
-          createProfileLink(member)
-        );
-      } else if (!member.imported) {
-        actions.append(
-          createImportButton(member)
-        );
-      }
-
-      card.append(
-        createAvatar(member),
-        createMemberContent(member),
-        actions
+  async function loadCreators() {
+    const data =
+      await apiFetch(
+        "/api/admin/creators"
       );
 
-      elements.membersList.append(card);
-    }
+    creators = Array.isArray(
+      data.creators
+    )
+      ? data.creators
+      : [];
+
+    updateStatistics();
+    renderCreators();
   }
 
   async function loadMembers({
@@ -292,29 +694,25 @@
       );
     }
 
-    elements.refreshButton.disabled = true;
-
-    try {
-      const data = await apiFetch(
+    const data =
+      await apiFetch(
         "/api/admin/streamlabs/members"
       );
 
-      members = Array.isArray(data.members)
-        ? data.members
-        : [];
+    members = Array.isArray(
+      data.members
+    )
+      ? data.members
+      : [];
 
-      updateStatistics();
-      renderMembers();
+    updateStatistics();
+    renderMembers();
 
-      if (!silent) {
-        showMessage(
-          `${members.length} membre(s) récupéré(s).`,
-          "success"
-        );
-      }
-    } finally {
-      elements.refreshButton.disabled =
-        false;
+    if (!silent) {
+      showMessage(
+        `${members.length} membre(s) récupéré(s).`,
+        "success"
+      );
     }
   }
 
@@ -322,33 +720,31 @@
     member,
     button
   ) {
-    const confirmed = window.confirm(
-      `Importer ${member.twitchDisplayName} dans JEvent ?`
-    );
-
-    if (!confirmed) {
+    if (
+      !window.confirm(
+        `Importer ${member.twitchDisplayName} dans JEvent ?`
+      )
+    ) {
       return;
     }
 
     button.disabled = true;
-    button.textContent = "Import…";
-
-    showMessage(
-      `Import de ${member.twitchDisplayName}…`
-    );
+    button.textContent =
+      "Import…";
 
     try {
-      const result = await apiFetch(
-        "/api/admin/streamlabs/import",
-        {
-          method: "POST",
+      const result =
+        await apiFetch(
+          "/api/admin/streamlabs/import",
+          {
+            method: "POST",
 
-          body: JSON.stringify({
-            teamMemberId:
-              member.teamMemberId
-          })
-        }
-      );
+            body: JSON.stringify({
+              teamMemberId:
+                member.teamMemberId
+            })
+          }
+        );
 
       showMessage(
         `${member.twitchDisplayName} a été importé.`,
@@ -363,7 +759,7 @@
         result.creator?.slug ??
         member.suggestedSlug;
 
-      updateStatistics();
+      await loadCreators();
       renderMembers();
     } catch (error) {
       showMessage(
@@ -373,14 +769,44 @@
       );
 
       button.disabled = false;
-      button.textContent = "Importer";
+      button.textContent =
+        "Importer";
+    }
+  }
+
+  async function reloadAll() {
+    elements.refreshButton.disabled =
+      true;
+
+    try {
+      await Promise.all([
+        loadCreators(),
+        loadMembers({
+          silent: true
+        })
+      ]);
+
+      showMessage(
+        "Données actualisées.",
+        "success"
+      );
+    } catch (error) {
+      showMessage(
+        error.message,
+        "error"
+      );
+    } finally {
+      elements.refreshButton.disabled =
+        false;
     }
   }
 
   async function init() {
     try {
       const authData =
-        await apiFetch("/api/auth/me");
+        await apiFetch(
+          "/api/auth/me"
+        );
 
       const user =
         authData.user ?? authData;
@@ -389,23 +815,31 @@
         !user?.permissions?.isSuperAdmin
       ) {
         throw new Error(
-          "Cette page est réservée aux administrateurs."
+          "Cette page est réservée aux Admins."
         );
       }
 
-      await loadMembers({
-        silent: true
-      });
+      await reloadAll();
 
-      elements.loadingState.hidden = true;
-      elements.errorState.hidden = true;
-      elements.application.hidden = false;
+      elements.loadingState.hidden =
+        true;
+
+      elements.errorState.hidden =
+        true;
+
+      elements.application.hidden =
+        false;
     } catch (error) {
       console.error(error);
 
-      elements.loadingState.hidden = true;
-      elements.application.hidden = true;
-      elements.errorState.hidden = false;
+      elements.loadingState.hidden =
+        true;
+
+      elements.application.hidden =
+        true;
+
+      elements.errorState.hidden =
+        false;
 
       elements.errorMessage.textContent =
         error.message ||
@@ -413,12 +847,26 @@
     }
   }
 
+  document
+    .querySelectorAll(".admin-tab")
+    .forEach(button => {
+      button.addEventListener(
+        "click",
+        () => selectTab(button.dataset.tab)
+      );
+    });
+
   elements.refreshButton.addEventListener(
     "click",
-    () => loadMembers()
+    reloadAll
   );
 
-  elements.searchInput.addEventListener(
+  elements.creatorSearchInput.addEventListener(
+    "input",
+    renderCreators
+  );
+
+  elements.memberSearchInput.addEventListener(
     "input",
     renderMembers
   );
