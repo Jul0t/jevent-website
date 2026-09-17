@@ -51,7 +51,28 @@
       document.querySelector("#membersEmpty"),
 
     memberSearchInput:
-      document.querySelector("#memberSearchInput")
+      document.querySelector("#memberSearchInput"),
+
+    statsCreatorsCount:
+      document.querySelector("#statsCreatorsCount"),
+
+    statsActiveCreatorsCount:
+      document.querySelector("#statsActiveCreatorsCount"),
+
+    statsGoalsCount:
+      document.querySelector("#statsGoalsCount"),
+
+    statsProgramEntriesCount:
+      document.querySelector("#statsProgramEntriesCount"),
+
+    statsStreamlabsCount:
+      document.querySelector("#statsStreamlabsCount"),
+
+    statsCreatorsList:
+      document.querySelector("#statsCreatorsList"),
+
+    statsCreatorsEmpty:
+      document.querySelector("#statsCreatorsEmpty")
   };
 
   let creators = [];
@@ -713,6 +734,114 @@
     return HASH_TABS[hash] ?? "overview";
   }
 
+  function renderAdminStats(data) {
+    const overview =
+      data?.overview ?? {};
+
+    elements.statsCreatorsCount.textContent =
+      String(overview.creators ?? 0);
+
+    elements.statsActiveCreatorsCount.textContent =
+      String(overview.activeCreators ?? 0);
+
+    elements.statsGoalsCount.textContent =
+      String(overview.goals ?? 0);
+
+    elements.statsProgramEntriesCount.textContent =
+      String(overview.programEntries ?? 0);
+
+    elements.statsStreamlabsCount.textContent =
+      String(
+        overview.streamlabsConfigured ?? 0
+      );
+
+    elements.statsCreatorsList.replaceChildren();
+
+    const creatorStats =
+      Array.isArray(data?.creators)
+        ? data.creators
+        : [];
+
+    elements.statsCreatorsEmpty.hidden =
+      creatorStats.length !== 0;
+
+    for (const creator of creatorStats) {
+      const row =
+        document.createElement("article");
+
+      row.className =
+        "stats-creator-row";
+
+      const name =
+        document.createElement("strong");
+
+      name.textContent =
+        creator.displayName;
+
+      const slug =
+        document.createElement("span");
+
+      slug.textContent =
+        `@${creator.slug}`;
+
+      const goals =
+        document.createElement("span");
+
+      goals.textContent =
+        `${creator.goals} goal(s)`;
+
+      const program =
+        document.createElement("span");
+
+      program.textContent =
+        `${creator.programEntries} activité(s)`;
+
+      const status =
+        document.createElement("span");
+
+      status.className =
+        "stats-creator-status";
+
+      status.textContent =
+        creator.archived
+          ? "Archivé"
+          : creator.active
+            ? "Actif"
+            : "Désactivé";
+
+      row.append(
+        name,
+        slug,
+        goals,
+        program,
+        status
+      );
+
+      elements.statsCreatorsList.append(row);
+    }
+  }
+
+  async function loadAdminStats() {
+    try {
+      const data =
+        await apiFetch(
+          "/api/admin/stats/overview"
+        );
+
+      renderAdminStats(data);
+    } catch (error) {
+      console.error(
+        "Impossible de charger les statistiques :",
+        error
+      );
+
+      renderAdminStats({
+        overview: {},
+        creators: []
+      });
+    }
+  }
+
   async function loadCreators() {
     const data =
       await apiFetch(
@@ -843,6 +972,14 @@
       elements.refreshButton.disabled =
         false;
     }
+
+    await Promise.all([
+      loadCreators(),
+      loadMembers({
+        silent: true
+      }),
+      loadAdminStats()
+    ]);
   }
 
   async function init() {
