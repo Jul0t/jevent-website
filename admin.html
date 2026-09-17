@@ -56,9 +56,7 @@
           <div>
             <p class="eyebrow">Administration</p>
             <h1>Panel Admin</h1>
-            <p>
-              Gestion centralisée de JEvent 26.
-            </p>
+            <p>Gestion centralisée de JEvent 26.</p>
           </div>
 
           <button id="refreshButton" class="button button-secondary" type="button">
@@ -119,188 +117,164 @@
             <div class="overview-list">
               <div class="overview-row">
                 <span>Objectifs</span>
-                <strong>
-                  Gestion depuis les pages créateur
-                </strong>
+                <strong>Gestion depuis les pages créateur</strong>
               </div>
 
               <div class="overview-row">
                 <span>Programme</span>
-                <strong>
-                  Gestion depuis le panel programme
+                <strong>Gestion depuis le panel programme</strong>
+              </div>
+
+              <div class="overview-row">
+                <span>Statistiques</span>
+                <strong class="status-soon">
+                  Statistiques disponibles prochainement
                 </strong>
               </div>
-
-              <section class="admin-tab-panel" data-panel="stats" hidden>
-                <section class="content-card">
-                  <header class="card-heading">
-                    <p class="eyebrow">Statistiques</p>
-                    <h2>Vue globale</h2>
-                  </header>
-
-                  <div class="statistics-grid stats-overview-grid">
-                    <article class="statistic-card">
-                      <span>Créateurs</span>
-                      <strong id="statsCreatorsCount">0</strong>
-                    </article>
-
-                    <article class="statistic-card">
-                      <span>Créateurs actifs</span>
-                      <strong id="statsActiveCreatorsCount">0</strong>
-                    </article>
-
-                    <article class="statistic-card">
-                      <span>Objectifs actifs</span>
-                      <strong id="statsGoalsCount">0</strong>
-                    </article>
-
-                    <article class="statistic-card">
-                      <span>Activités</span>
-                      <strong id="statsProgramEntriesCount">0</strong>
-                    </article>
-
-                    <article class="statistic-card">
-                      <span>Streamlabs configuré</span>
-                      <strong id="statsStreamlabsCount">0</strong>
-                    </article>
-                  </div>
-                </section>
-
-                <section class="content-card">
-                  <header class="card-heading">
-                    <p class="eyebrow">Par streamer</p>
-                    <h2>Résumé des créateurs</h2>
-                  </header>
-
-                  <div id="statsCreatorsList" class="stats-creators-list"></div>
-
-                  <p id="statsCreatorsEmpty" class="empty-state" hidden>
-                    Aucune statistique disponible.
-                  </p>
-                </section>
-              </section>
+            </div>
           </section>
-          <!-- Créateurs -->
-          <section class="admin-tab-panel" data-panel="creators" hidden>
-            <section class="content-card">
-              <header class="card-heading">
-                <div>
-                  <p class="eyebrow">JEvent</p>
-                  <h2>Créateurs existants</h2>
-                  <p>
-                    Modifie leur slug, leur statut ou ouvre leur page.
-                  </p>
-                </div>
+        </section>
 
-                <label class="search-field">
-                  <span class="sr-only">
-                    Rechercher un créateur
-                  </span>
-
-                  <input id="creatorSearchInput" type="search" placeholder="Rechercher…">
-                </label>
-              </header>
-
-              <div id="creatorsList" class="creators-list"></div>
-
-              <p id="creatorsEmpty" class="empty-state" hidden>
-                Aucun créateur trouvé.
-              </p>
-            </section>
-
-            <section class="content-card">
-              <header class="card-heading">
-                <div>
-                  <p class="eyebrow">Streamlabs Charity</p>
-                  <h2>Importer un créateur</h2>
-                  <p>
-                    Importe un membre de l’équipe Streamlabs.
-                  </p>
-                </div>
-
-                <label class="search-field">
-                  <span class="sr-only">
-                    Rechercher un membre Streamlabs
-                  </span>
-
-                  <input id="memberSearchInput" type="search" placeholder="Rechercher…">
-                </label>
-              </header>
-
-              <div id="membersList" class="members-list"></div>
-
-              <p id="membersEmpty" class="empty-state" hidden>
-                Aucun membre trouvé.
-              </p>
-            </section>
-          </section>
-
-          <!-- Statistiques -->
-          <section class="admin-tab-panel" data-panel="stats" hidden>
-            <section class="content-card">
-              <header class="card-heading">
-                <p class="eyebrow">Statistiques</p>
-                <h2>Suivi de l’événement</h2>
-              </header>
-
-              <div class="stats-placeholder">
-                <div class="state-icon">i</div>
-
-                <h3>Collecte à mettre en place</h3>
-
+        <!-- Créateurs -->
+        <section class="admin-tab-panel" data-panel="creators" hidden>
+          <section class="content-card">
+            <header class="card-heading">
+              <div>
+                <p class="eyebrow">JEvent</p>
+                <h2>Créateurs existants</h2>
                 <p>
-                  Cette section accueillera les statistiques globales
-                  et les statistiques par streamer.
+                  Modifie leur slug, leur statut ou ouvre leur page.
                 </p>
-
-                <div class="planned-stats">
-                  <span>Viewers Twitch</span>
-                  <span>Messages du chat</span>
-                  <span>Emotes utilisées</span>
-                  <span>Dons reçus</span>
-                  <span>Temps de live</span>
-                </div>
               </div>
-            </section>
+
+              <label class="search-field">
+                <span class="sr-only">
+                  Rechercher un créateur
+                </span>
+
+                <input id="creatorSearchInput" type="search" placeholder="Rechercher…">
+              </label>
+            </header>
+
+            <div id="creatorsList" class="creators-list"></div>
+
+            <p id="creatorsEmpty" class="empty-state" hidden>
+              Aucun créateur trouvé.
+            </p>
           </section>
 
-          <!-- Outils -->
-          <section class="admin-tab-panel" data-panel="tools" hidden>
-            <section class="content-card">
-              <header class="card-heading">
-                <p class="eyebrow">Navigation</p>
-                <h2>Outils Admin</h2>
-              </header>
-
-              <div class="tools-grid">
-                <a class="tool-card" href="programme-panel-beta.html">
-                  <strong>Programme</strong>
-                  <span>
-                    Gérer les créneaux et les objectifs associés.
-                  </span>
-                </a>
-
-                <a class="tool-card" href="moderation-panel-beta.html">
-                  <strong>Modération</strong>
-                  <span>
-                    Ouvrir le panel de modération.
-                  </span>
-                </a>
-
-                <a class="tool-card" href="createurs.html">
-                  <strong>Pages créateur</strong>
-                  <span>
-                    Consulter les profils publics.
-                  </span>
-                </a>
+          <section class="content-card">
+            <header class="card-heading">
+              <div>
+                <p class="eyebrow">Streamlabs Charity</p>
+                <h2>Importer un créateur</h2>
+                <p>
+                  Importe un membre de l’équipe Streamlabs.
+                </p>
               </div>
-            </section>
+
+              <label class="search-field">
+                <span class="sr-only">
+                  Rechercher un membre Streamlabs
+                </span>
+
+                <input id="memberSearchInput" type="search" placeholder="Rechercher…">
+              </label>
+            </header>
+
+            <div id="membersList" class="members-list"></div>
+
+            <p id="membersEmpty" class="empty-state" hidden>
+              Aucun membre trouvé.
+            </p>
           </section>
+        </section>
+
+        <!-- Statistiques -->
+        <section class="admin-tab-panel" data-panel="stats" hidden>
+          <section class="content-card">
+            <header class="card-heading">
+              <p class="eyebrow">Statistiques</p>
+              <h2>Vue globale</h2>
+            </header>
+
+            <div class="statistics-grid stats-overview-grid">
+              <article class="statistic-card">
+                <span>Créateurs</span>
+                <strong id="statsCreatorsCount">0</strong>
+              </article>
+
+              <article class="statistic-card">
+                <span>Créateurs actifs</span>
+                <strong id="statsActiveCreatorsCount">0</strong>
+              </article>
+
+              <article class="statistic-card">
+                <span>Objectifs actifs</span>
+                <strong id="statsGoalsCount">0</strong>
+              </article>
+
+              <article class="statistic-card">
+                <span>Activités</span>
+                <strong id="statsProgramEntriesCount">0</strong>
+              </article>
+
+              <article class="statistic-card">
+                <span>Streamlabs configuré</span>
+                <strong id="statsStreamlabsCount">0</strong>
+              </article>
+            </div>
+          </section>
+
+          <section class="content-card">
+            <header class="card-heading">
+              <p class="eyebrow">Par streamer</p>
+              <h2>Résumé des créateurs</h2>
+            </header>
+
+            <div id="statsCreatorsList" class="stats-creators-list"></div>
+
+            <p id="statsCreatorsEmpty" class="empty-state" hidden>
+              Aucune statistique disponible.
+            </p>
+          </section>
+        </section>
+
+        <!-- Outils -->
+        <section class="admin-tab-panel" data-panel="tools" hidden>
+          <section class="content-card">
+            <header class="card-heading">
+              <p class="eyebrow">Navigation</p>
+              <h2>Outils Admin</h2>
+            </header>
+
+            <div class="tools-grid">
+              <a class="tool-card" href="/programme-panel-beta.html">
+                <strong>Programme</strong>
+                <span>
+                  Gérer les créneaux et les objectifs associés.
+                </span>
+              </a>
+
+              <a class="tool-card" href="/moderation-panel-beta.html">
+                <strong>Modération</strong>
+                <span>
+                  Ouvrir le panel de modération.
+                </span>
+              </a>
+
+              <a class="tool-card" href="/createurs.html">
+                <strong>Pages créateur</strong>
+                <span>
+                  Consulter les profils publics.
+                </span>
+              </a>
+            </div>
+          </section>
+        </section>
       </div>
-    </main>
-  </div>
 
-  <script src="/assets/js/admin.js?v=4"></script>
+      <script src="/assets/js/admin.js?v=4"></script>
 </body>
 
 </html>
