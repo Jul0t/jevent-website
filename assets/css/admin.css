@@ -874,6 +874,15 @@ button {
   font-weight: 850;
 }
 
+.admin-tab-panel[hidden] {
+  display: none !important;
+}
+
+.admin-tab-panel:not([hidden]) {
+  display: grid;
+  gap: 24px;
+}
+
 @media (max-width: 700px) {
   .stats-creator-row {
     grid-template-columns: 1fr 1fr;

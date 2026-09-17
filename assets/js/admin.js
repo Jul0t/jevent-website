@@ -195,10 +195,7 @@
       .map(([tab, hash]) => [hash, tab])
   );
 
-  function selectTab(
-    tabName,
-    updateUrl = true
-  ) {
+  function selectTab(tabName) {
     const validTabs = [
       "overview",
       "creators",
@@ -210,32 +207,23 @@
       tabName = "overview";
     }
 
-    document
-      .querySelectorAll(".admin-tab")
-      .forEach(button => {
-        button.classList.toggle(
-          "is-active",
-          button.dataset.tab === tabName
-        );
-      });
-
-    document
-      .querySelectorAll(".admin-tab-panel")
-      .forEach(panel => {
-        panel.hidden =
-          panel.dataset.panel !== tabName;
-      });
-
-    if (updateUrl) {
-      const hash =
-        TAB_HASHES[tabName];
-
-      history.replaceState(
-        null,
-        "",
-        `#${hash}`
+    document.querySelectorAll(".admin-tab").forEach(button => {
+      button.classList.toggle(
+        "is-active",
+        button.dataset.tab === tabName
       );
-    }
+    });
+
+    document.querySelectorAll(".admin-tab-panel").forEach(panel => {
+      panel.hidden =
+        panel.dataset.panel !== tabName;
+    });
+
+    history.replaceState(
+      null,
+      "",
+      `#${tabName}`
+    );
   }
 
   function createAvatar(creator) {
