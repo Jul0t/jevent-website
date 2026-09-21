@@ -942,20 +942,18 @@
                 "strong",
                 "",
                 creatorName(creator)
-            ),
-
-            makeElement(
-                "span",
-                "",
-                creator.isLive
-                    ? "En direct"
-                    : (
-                        `@${creator.twitchLogin ||
-                        creatorSlug(creator)
-                        }`
-                    )
             )
         );
+
+        if (creator.isLive) {
+            content.append(
+                makeElement(
+                    "span",
+                    "",
+                    "En direct"
+                )
+            );
+        }
 
         const arrow =
             makeElement(
@@ -1408,12 +1406,35 @@
         const creatorLink =
             makeElement(
                 "a",
-                "current-activity-creator",
-                creatorName(creator)
+                "upcoming-creator"
             );
 
         creatorLink.href =
             creatorPageUrl(creator);
+
+        const creatorImage =
+            makeElement(
+                "img",
+                "upcoming-creator-avatar"
+            );
+
+        creatorImage.src =
+            creatorAvatar(creator);
+
+        creatorImage.alt = "";
+        creatorImage.loading = "lazy";
+
+        const creatorLabel =
+            makeElement(
+                "span",
+                "",
+                creatorName(creator)
+            );
+
+        creatorLink.append(
+            creatorImage,
+            creatorLabel
+        );
 
         const condition =
             createConditionBadge(entry);
