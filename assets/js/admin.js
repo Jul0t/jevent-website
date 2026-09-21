@@ -68,6 +68,12 @@
     statsStreamlabsCount:
       document.querySelector("#statsStreamlabsCount"),
 
+    statsMessagesCount:
+      document.querySelector("#statsMessagesCount"),
+
+    statsEmotesCount:
+      document.querySelector("#statsEmotesCount"),
+
     statsCreatorsList:
       document.querySelector("#statsCreatorsList"),
 
@@ -726,22 +732,37 @@
     const overview =
       data?.overview ?? {};
 
+    const formatNumber = value =>
+      Number(value ?? 0).toLocaleString(
+        "fr-FR"
+      );
+
     elements.statsCreatorsCount.textContent =
-      String(overview.creators ?? 0);
+      formatNumber(overview.creators);
 
     elements.statsActiveCreatorsCount.textContent =
-      String(overview.activeCreators ?? 0);
+      formatNumber(
+        overview.activeCreators
+      );
 
     elements.statsGoalsCount.textContent =
-      String(overview.goals ?? 0);
+      formatNumber(overview.goals);
 
     elements.statsProgramEntriesCount.textContent =
-      String(overview.programEntries ?? 0);
+      formatNumber(
+        overview.programEntries
+      );
 
     elements.statsStreamlabsCount.textContent =
-      String(
-        overview.streamlabsConfigured ?? 0
+      formatNumber(
+        overview.streamlabsConfigured
       );
+
+    elements.statsMessagesCount.textContent =
+      formatNumber(overview.messages);
+
+    elements.statsEmotesCount.textContent =
+      formatNumber(overview.emotes);
 
     elements.statsCreatorsList.replaceChildren();
 
@@ -764,7 +785,8 @@
         document.createElement("strong");
 
       name.textContent =
-        creator.displayName;
+        creator.displayName ||
+        creator.slug;
 
       const slug =
         document.createElement("span");
@@ -772,17 +794,21 @@
       slug.textContent =
         `@${creator.slug}`;
 
-      const goals =
+      const messages =
         document.createElement("span");
 
-      goals.textContent =
-        `${creator.goals} goal(s)`;
+      messages.textContent =
+        `${formatNumber(
+          creator.messages
+        )} messages`;
 
-      const program =
+      const emotes =
         document.createElement("span");
 
-      program.textContent =
-        `${creator.programEntries} activité(s)`;
+      emotes.textContent =
+        `${formatNumber(
+          creator.emotes
+        )} emotes`;
 
       const status =
         document.createElement("span");
@@ -800,8 +826,8 @@
       row.append(
         name,
         slug,
-        goals,
-        program,
+        messages,
+        emotes,
         status
       );
 
@@ -936,15 +962,17 @@
   }
 
   async function reloadAll() {
-    elements.refreshButton.disabled =
-      true;
+    elements.refreshButton.disabled = true;
 
     try {
       await Promise.all([
         loadCreators(),
+
         loadMembers({
           silent: true
-        })
+        }),
+
+        loadAdminStats()
       ]);
 
       showMessage(
@@ -957,17 +985,8 @@
         "error"
       );
     } finally {
-      elements.refreshButton.disabled =
-        false;
+      elements.refreshButton.disabled = false;
     }
-
-    await Promise.all([
-      loadCreators(),
-      loadMembers({
-        silent: true
-      }),
-      loadAdminStats()
-    ]);
   }
 
   async function init() {
