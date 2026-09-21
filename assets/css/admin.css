@@ -1209,3 +1209,137 @@ button {
     justify-self: start;
   }
 }
+
+/* Gestion des administrateurs */
+
+.admin-users-message {
+  min-height: 22px;
+  margin: 16px 24px 0;
+
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.admin-users-message.is-success {
+  color: var(--green-light);
+}
+
+.admin-users-message.is-error {
+  color: #ff9dac;
+}
+
+.admin-users-list {
+  display: grid;
+  padding: 10px 24px 24px;
+}
+
+.admin-user-card {
+  display: grid;
+  grid-template-columns:
+    64px minmax(0, 1fr) auto;
+
+  gap: 16px;
+  align-items: center;
+
+  padding: 17px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-user-card:last-child {
+  border-bottom: 0;
+}
+
+.admin-user-card.is-disabled {
+  opacity: 0.65;
+}
+
+.admin-user-avatar {
+  display: block;
+  width: 64px;
+  height: 64px;
+
+  border: 2px solid var(--border);
+  border-radius: 50%;
+
+  background: var(--surface-light);
+  object-fit: cover;
+}
+
+.admin-user-content {
+  min-width: 0;
+}
+
+.admin-user-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.admin-user-heading h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.admin-user-login,
+.admin-user-meta {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.admin-user-badge {
+  display: inline-flex;
+  padding: 5px 8px;
+
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--muted);
+
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+.admin-user-badge.is-admin {
+  background: rgba(0, 178, 55, 0.14);
+  color: #a9ffc2;
+}
+
+.admin-user-badge.is-current {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+
+.admin-user-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button-danger {
+  border-color: rgba(255, 100, 121, 0.4);
+  background: rgba(255, 100, 121, 0.1);
+  color: #ff9dac;
+}
+
+.button-danger:hover:not(:disabled) {
+  border-color: #ff6479;
+  background: rgba(255, 100, 121, 0.18);
+}
+
+@media (max-width: 650px) {
+  .admin-user-card {
+    grid-template-columns:
+      54px minmax(0, 1fr);
+  }
+
+  .admin-user-avatar {
+    width: 54px;
+    height: 54px;
+  }
+
+  .admin-user-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}

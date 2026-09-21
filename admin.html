@@ -7,7 +7,7 @@
 
   <title>Admin — JEvent 26</title>
 
-  <link rel="stylesheet" href="/assets/css/admin.css?v=8">
+  <link rel="stylesheet" href="/assets/css/admin.css?v=9">
 </head>
 
 <body>
@@ -71,6 +71,10 @@
 
           <button class="admin-tab" type="button" data-tab="creators">
             Créateurs
+          </button>
+
+          <button class="admin-tab" type="button" data-tab="administrators">
+            Administrateurs
           </button>
 
           <button class="admin-tab" type="button" data-tab="stats">
@@ -257,6 +261,41 @@
           </section>
         </section>
 
+        <!-- Administrateurs -->
+        <section class="admin-tab-panel" data-panel="administrators" hidden>
+          <section class="content-card">
+            <header class="card-heading">
+              <div>
+                <p class="eyebrow">
+                  Comptes Twitch
+                </p>
+
+                <h2>Administrateurs</h2>
+
+                <p>
+                  Donne ou retire l’accès au panel Admin.
+                </p>
+              </div>
+
+              <label class="search-field">
+                <span class="sr-only">
+                  Rechercher un compte
+                </span>
+
+                <input id="adminUserSearchInput" type="search" placeholder="Rechercher un compte…">
+              </label>
+            </header>
+
+            <p id="adminUsersMessage" class="admin-users-message" role="status" aria-live="polite" hidden></p>
+
+            <div id="adminUsersList" class="admin-users-list"></div>
+
+            <p id="adminUsersEmpty" class="empty-state" hidden>
+              Aucun compte trouvé.
+            </p>
+          </section>
+        </section>
+
         <!-- Statistiques -->
         <section class="admin-tab-panel" data-panel="stats" hidden>
           <!-- Données générales non filtrables -->
@@ -406,8 +445,9 @@
         </section>
       </div>
 
-      <script src="/assets/js/admin.js?v=9"></script>
-      <script src="/assets/js/admin-dashboard.js?v=1"></script>
+<script src="/assets/js/admin.js?v=10"></script>
+<script src="/assets/js/admin-dashboard.js?v=1"></script>
+<script src="/assets/js/admin-users.js?v=1"></script>
 </body>
 
 </html>
