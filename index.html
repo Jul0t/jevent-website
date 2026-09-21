@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="JEvent 26, événement caritatif sur Twitch au profit de l’Association Petits Princes, du 26 au 29 octobre 2026."
+  >
+
+  <meta
+    name="theme-color"
+    content="#050b07"
+  >
+
+  <title>
+    JEvent 26 — Ensemble pour réaliser des rêves
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/home.css?v=1"
+  >
+
+  <script
+    src="/assets/js/home.js?v=1"
+    defer
+  ></script>
+</head>
+
+<body>
+  <a
+    class="skip-link"
+    href="#mainContent"
+  >
+    Aller au contenu
+  </a>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a
+        class="brand"
+        href="/"
+        aria-label="Accueil du JEvent 26"
+      >
+        <img
+          class="brand-logo"
+          src="/assets/jevent_logo.png"
+          alt=""
+        >
+
+        <span class="brand-copy">
+          <strong>JEvent 26</strong>
+
+          <small>
+            Association Petits Princes
+          </small>
+        </span>
+      </a>
+
+      <button
+        id="navigationToggle"
+        class="navigation-toggle"
+        type="button"
+        aria-label="Ouvrir le menu"
+        aria-controls="mainNavigation"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav
+        id="mainNavigation"
+        class="main-navigation"
+        aria-label="Navigation principale"
+      >
+        <a
+          class="is-active"
+          href="/"
+        >
+          Accueil
+        </a>
+
+        <a href="#live">
+          En direct
+        </a>
+
+        <a href="#programme">
+          Programme
+        </a>
+
+        <a href="/createurs.html">
+          Créateurs
+        </a>
+
+        <a href="#association">
+          L’association
+        </a>
+
+        <a
+          id="shopNavigationLink"
+          class="shop-navigation-link"
+          href="#boutique"
+          data-shop-link
+        >
+          Boutique
+
+          <span
+            id="shopNavigationBadge"
+            class="navigation-badge"
+          >
+            12 oct.
+          </span>
+        </a>
+
+        <a
+          class="navigation-account"
+          href="/compte.html"
+        >
+          Mon compte
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="mainContent">
+    <!-- Présentation principale -->
+
+    <section class="hero">
+      <div
+        class="hero-decoration hero-decoration-one"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        class="hero-decoration hero-decoration-two"
+        aria-hidden="true"
+      ></div>
+
+      <div class="page-container hero-layout">
+        <div class="hero-content">
+          <p class="eyebrow">
+            <span
+              class="eyebrow-dot"
+              aria-hidden="true"
+            ></span>
+
+            Du 26 au 29 octobre 2026
+          </p>
+
+          <h1>
+            Ensemble, réalisons
+            <span>des rêves.</span>
+          </h1>
+
+          <p class="hero-description">
+            Plusieurs créateurs se réunissent sur Twitch
+            pendant trois jours pour soutenir
+            l’Association Petits Princes et aider des
+            enfants gravement malades à réaliser leurs
+            rêves.
+          </p>
+
+          <div class="hero-actions">
+            <a
+              class="button button-primary"
+              href="/createurs.html"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 21s-7-4.6-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 6.4-7 11-7 11Z"
+                />
+              </svg>
+
+              Faire un don
+            </a>
+
+            <a
+              class="button button-secondary"
+              href="#programme"
+            >
+              Découvrir le programme
+            </a>
+          </div>
+
+          <dl class="event-information">
+            <div>
+              <dt>Début</dt>
+              <dd>
+                26 octobre
+                <strong>à 16 h</strong>
+              </dd>
+            </div>
+
+            <div>
+              <dt>Fin</dt>
+              <dd>
+                29 octobre
+                <strong>à 4 h</strong>
+              </dd>
+            </div>
+
+            <div>
+              <dt>En direct</dt>
+              <dd>
+                Sur les chaînes
+                <strong>Twitch</strong>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <aside class="countdown-card">
+          <div class="countdown-heading">
+            <p class="eyebrow">
+              Prochain rendez-vous
+            </p>
+
+            <h2 id="countdownTitle">
+              Le JEvent commence dans
+            </h2>
+          </div>
+
+          <div
+            id="countdown"
+            class="countdown"
+            aria-live="polite"
+          >
+            <div class="countdown-unit">
+              <strong id="countdownDays">
+                --
+              </strong>
+
+              <span>jours</span>
+            </div>
+
+            <div class="countdown-unit">
+              <strong id="countdownHours">
+                --
+              </strong>
+
+              <span>heures</span>
+            </div>
+
+            <div class="countdown-unit">
+              <strong id="countdownMinutes">
+                --
+              </strong>
+
+              <span>minutes</span>
+            </div>
+
+            <div class="countdown-unit">
+              <strong id="countdownSeconds">
+                --
+              </strong>
+
+              <span>secondes</span>
+            </div>
+          </div>
+
+          <div class="countdown-separator"></div>
+
+          <div class="association-highlight">
+            <span class="association-icon">
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 3 14.3 8l5.4.6-4 3.7 1.1 5.3L12 15l-4.8 2.6 1.1-5.3-4-3.7L9.7 8 12 3Z"
+                />
+              </svg>
+            </span>
+
+            <div>
+              <strong>
+                Association Petits Princes
+              </strong>
+
+              <span>
+                Pour que les rêves deviennent réalité
+              </span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Cagnotte -->
+
+    <section class="fundraising-section">
+      <div class="page-container">
+        <article class="fundraising-card">
+          <div class="fundraising-copy">
+            <p class="eyebrow">
+              Collecte caritative
+            </p>
+
+            <h2>
+              La cagnotte du JEvent
+            </h2>
+
+            <p>
+              Chaque don effectué auprès d’un créateur
+              participant soutient directement
+              l’Association Petits Princes.
+            </p>
+          </div>
+
+          <div class="fundraising-amount">
+            <span>Montant collecté</span>
+
+            <strong id="globalRaisedAmount">
+              Chargement…
+            </strong>
+
+            <small id="globalRaisedDetail">
+              Total des cagnottes des créateurs
+            </small>
+          </div>
+
+          <a
+            class="button button-primary"
+            href="/createurs.html"
+          >
+            Choisir un créateur
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- En direct -->
+
+    <section
+      id="live"
+      class="page-section"
+    >
+      <div class="page-container">
+        <header class="section-heading">
+          <div>
+            <p class="eyebrow">
+              Maintenant
+            </p>
+
+            <h2>En direct</h2>
+
+            <p>
+              Retrouve les créateurs actuellement en
+              live pour le JEvent.
+            </p>
+          </div>
+
+          <a
+            class="section-link"
+            href="/createurs.html"
+          >
+            Voir tous les créateurs
+
+            <span aria-hidden="true">→</span>
+          </a>
+        </header>
+
+        <div
+          id="liveCreators"
+          class="live-grid"
+        ></div>
+
+        <div
+          id="liveEmpty"
+          class="public-empty-state"
+          hidden
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M5 5h14v10H5V5Zm4 14h6M12 15v4M2.5 3.5l19 17"
+            />
+          </svg>
+
+          <div>
+            <h3>Aucune chaîne en direct</h3>
+
+            <p>
+              Les lives apparaîtront ici dès leur
+              lancement.
+            </p>
+          </div>
+        </div>
+
+        <div
+          id="liveError"
+          class="public-error-state"
+          hidden
+        >
+          Impossible de charger les directs pour le
+          moment.
+        </div>
+      </div>
+    </section>
+
+    <!-- Programme -->
+
+    <section
+      id="programme"
+      class="page-section section-soft"
+    >
+      <div class="page-container">
+        <header class="section-heading">
+          <div>
+            <p class="eyebrow">
+              À ne pas manquer
+            </p>
+
+            <h2>Le programme</h2>
+
+            <p>
+              Les activités en cours et les prochains
+              rendez-vous du JEvent.
+            </p>
+          </div>
+
+          <a
+            class="section-link"
+            href="/createurs.html"
+          >
+            Programmes par créateur
+
+            <span aria-hidden="true">→</span>
+          </a>
+        </header>
+
+        <div class="programme-layout">
+          <article
+            id="currentActivityCard"
+            class="current-activity-card"
+          >
+            <div class="current-activity-heading">
+              <span class="live-indicator">
+                <span></span>
+                En ce moment
+              </span>
+            </div>
+
+            <div id="currentActivityContent">
+              <p class="loading-text">
+                Chargement de l’activité…
+              </p>
+            </div>
+          </article>
+
+          <div class="upcoming-programme">
+            <h3>Prochainement</h3>
+
+            <div
+              id="upcomingActivities"
+              class="upcoming-list"
+            ></div>
+
+            <p
+              id="programmeEmpty"
+              class="programme-empty"
+              hidden
+            >
+              Le programme sera bientôt disponible.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Créateurs -->
+
+    <section class="page-section">
+      <div class="page-container">
+        <header class="section-heading">
+          <div>
+            <p class="eyebrow">
+              Les participants
+            </p>
+
+            <h2>Les créateurs du JEvent</h2>
+
+            <p>
+              Découvre les chaînes mobilisées pour
+              soutenir l’Association Petits Princes.
+            </p>
+          </div>
+
+          <a
+            class="section-link"
+            href="/createurs.html"
+          >
+            Voir la liste complète
+
+            <span aria-hidden="true">→</span>
+          </a>
+        </header>
+
+        <div
+          id="creatorPreview"
+          class="creator-preview-grid"
+        ></div>
+
+        <div
+          id="creatorPreviewError"
+          class="public-error-state"
+          hidden
+        >
+          Impossible de charger les créateurs.
+        </div>
+      </div>
+    </section>
+
+    <!-- Boutique -->
+
+    <section
+      id="boutique"
+      class="shop-section"
+    >
+      <div class="page-container">
+        <article class="shop-card">
+          <div
+            class="shop-pattern"
+            aria-hidden="true"
+          ></div>
+
+          <div class="shop-icon">
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M4 8h16l-1 12H5L4 8Zm3 0a5 5 0 0 1 10 0M9 12v1m6-1v1"
+              />
+            </svg>
+          </div>
+
+          <div class="shop-content">
+            <p class="eyebrow">
+              Boutique solidaire
+            </p>
+
+            <h2>
+              Porte les couleurs du JEvent
+            </h2>
+
+            <p>
+              Découvre les produits officiels du JEvent
+              2026. La boutique ouvrira deux semaines
+              avant le début de l’événement.
+            </p>
+
+            <p
+              id="shopOpeningMessage"
+              class="shop-opening-message"
+            >
+              Ouverture officielle le 12 octobre 2026.
+            </p>
+          </div>
+
+          <a
+            id="shopButton"
+            class="button button-shop is-disabled"
+            href="#"
+            data-shop-link
+            aria-disabled="true"
+          >
+            Ouverture le 12 octobre
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- Association -->
+
+    <section
+      id="association"
+      class="page-section association-section"
+    >
+      <div class="page-container association-layout">
+        <div class="association-visual">
+          <img
+            src="/assets/jevent_logo.png"
+            alt="JEvent 26"
+          >
+        </div>
+
+        <div class="association-content">
+          <p class="eyebrow">
+            Notre engagement
+          </p>
+
+          <h2>
+            Soutenir l’Association Petits Princes
+          </h2>
+
+          <p>
+            Depuis 1987, l’Association Petits Princes
+            réalise les rêves d’enfants et adolescents
+            gravement malades.
+          </p>
+
+          <p>
+            Pendant le JEvent, les créateurs et leurs
+            communautés se mobilisent pour récolter des
+            dons et permettre la réalisation de nouveaux
+            rêves.
+          </p>
+
+          <div class="association-actions">
+            <a
+              class="button button-primary"
+              href="/createurs.html"
+            >
+              Participer à la collecte
+            </a>
+
+            <a
+              class="button button-secondary"
+              href="https://www.petitsprinces.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Découvrir l’association
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dernier appel -->
+
+    <section class="final-call">
+      <div class="page-container">
+        <div class="final-call-card">
+          <div>
+            <p class="eyebrow">
+              Rendez-vous en octobre
+            </p>
+
+            <h2>
+              Rejoins l’aventure JEvent 26
+            </h2>
+
+            <p>
+              Suis les créateurs, découvre les défis et
+              aide-nous à réaliser toujours plus de
+              rêves.
+            </p>
+          </div>
+
+          <div class="final-call-actions">
+            <a
+              class="button button-primary"
+              href="/createurs.html"
+            >
+              Voir les créateurs
+            </a>
+
+            <a
+              class="button button-secondary"
+              href="/compte.html"
+            >
+              Se connecter
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-container footer-layout">
+      <div class="footer-brand">
+        <img
+          src="/assets/jevent_logo.png"
+          alt=""
+        >
+
+        <div>
+          <strong>JEvent 26</strong>
+
+          <span>
+            Au profit de l’Association Petits Princes
+          </span>
+        </div>
+      </div>
+
+      <nav
+        class="footer-navigation"
+        aria-label="Navigation de pied de page"
+      >
+        <a href="/createurs.html">
+          Créateurs
+        </a>
+
+        <a href="#programme">
+          Programme
+        </a>
+
+        <a href="#association">
+          Association
+        </a>
+
+        <a
+          id="footerShopLink"
+          href="#boutique"
+          data-shop-link
+        >
+          Boutique
+        </a>
+
+        <a href="/compte.html">
+          Mon compte
+        </a>
+      </nav>
+
+      <p class="footer-legal">
+        © 2026 JEvent. Événement caritatif indépendant.
+      </p>
+    </div>
+  </footer>
+</body>
+
+</html>
