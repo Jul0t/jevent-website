@@ -7,7 +7,7 @@
 
   <title>Admin — JEvent 26</title>
 
-  <link rel="stylesheet" href="/assets/css/admin.css?v=7">
+  <link rel="stylesheet" href="/assets/css/admin.css?v=8">
 </head>
 
 <body>
@@ -86,53 +86,120 @@
 
         <!-- Vue d'ensemble -->
         <section class="admin-tab-panel" data-panel="overview">
-          <div class="statistics-grid">
-            <article class="statistic-card">
+          <section class="dashboard-customizer">
+            <div>
+              <p class="eyebrow">
+                Tableau de bord
+              </p>
+
+              <h2>Vue d’ensemble</h2>
+
+              <p>
+                Organise les blocs selon tes besoins.
+              </p>
+            </div>
+
+            <button id="customizeDashboardButton" class="button button-secondary" type="button">
+              Personnaliser
+            </button>
+          </section>
+
+          <div id="dashboardEditor" class="dashboard-editor" hidden>
+            <div>
+              <strong>Blocs masqués</strong>
+
+              <p>
+                Clique sur un bloc pour l’ajouter.
+              </p>
+            </div>
+
+            <div id="dashboardAvailableWidgets" class="dashboard-available-widgets"></div>
+
+            <button id="resetDashboardButton" class="button button-secondary" type="button">
+              Réinitialiser
+            </button>
+          </div>
+
+          <p id="dashboardStatus" class="dashboard-status" role="status" aria-live="polite" hidden></p>
+
+          <div id="dashboardGrid" class="statistics-grid dashboard-grid">
+            <article class="statistic-card dashboard-widget" data-dashboard-widget="creators"
+              data-dashboard-label="Créateurs JEvent">
               <span>Créateurs JEvent</span>
               <strong id="creatorsCount">0</strong>
             </article>
 
-            <article class="statistic-card">
+            <article class="statistic-card dashboard-widget" data-dashboard-widget="active-creators"
+              data-dashboard-label="Créateurs actifs">
               <span>Créateurs actifs</span>
               <strong id="activeCreatorsCount">0</strong>
             </article>
 
-            <article class="statistic-card">
+            <article class="statistic-card dashboard-widget" data-dashboard-widget="streamlabs-members"
+              data-dashboard-label="Membres Streamlabs">
               <span>Membres Streamlabs</span>
               <strong id="membersCount">0</strong>
             </article>
 
-            <article class="statistic-card">
+            <article class="statistic-card dashboard-widget" data-dashboard-widget="available-imports"
+              data-dashboard-label="Créateurs à importer">
               <span>À importer</span>
               <strong id="availableCount">0</strong>
             </article>
+
+            <article class="statistic-card dashboard-widget" data-dashboard-widget="global-raised"
+              data-dashboard-label="Cagnotte globale">
+              <span>Cagnotte globale</span>
+              <strong id="dashboardRaisedAmount">
+                0,00 €
+              </strong>
+            </article>
+
+            <article class="statistic-card dashboard-widget" data-dashboard-widget="messages"
+              data-dashboard-label="Messages du chat">
+              <span>Messages du chat</span>
+              <strong id="dashboardMessagesCount">
+                0
+              </strong>
+            </article>
+
+            <article class="statistic-card dashboard-widget" data-dashboard-widget="emotes"
+              data-dashboard-label="Emotes utilisées">
+              <span>Emotes utilisées</span>
+              <strong id="dashboardEmotesCount">
+                0
+              </strong>
+            </article>
+
+            <article class="statistic-card dashboard-widget" data-dashboard-widget="goals"
+              data-dashboard-label="Objectifs actifs">
+              <span>Objectifs actifs</span>
+              <strong id="dashboardGoalsCount">
+                0
+              </strong>
+            </article>
+
+            <article class="statistic-card dashboard-widget" data-dashboard-widget="program-entries"
+              data-dashboard-label="Activités">
+              <span>Activités</span>
+              <strong id="dashboardProgramEntriesCount">
+                0
+              </strong>
+            </article>
+
+            <article class="statistic-card dashboard-widget" data-dashboard-widget="streamlabs-configured"
+              data-dashboard-label="Streamlabs configuré">
+              <span>Streamlabs configuré</span>
+              <strong id="dashboardStreamlabsCount">
+                0
+              </strong>
+            </article>
           </div>
 
-          <section class="content-card">
-            <header class="card-heading">
-              <p class="eyebrow">Résumé</p>
-              <h2>État de la plateforme</h2>
-            </header>
-
-            <div class="overview-list">
-              <div class="overview-row">
-                <span>Objectifs</span>
-                <strong>Gestion depuis les pages créateur</strong>
-              </div>
-
-              <div class="overview-row">
-                <span>Programme</span>
-                <strong>Gestion depuis le panel programme</strong>
-              </div>
-
-              <div class="overview-row">
-                <span>Statistiques</span>
-                <strong class="status-soon">
-                  Statistiques disponibles prochainement
-                </strong>
-              </div>
-            </div>
-          </section>
+          <p id="dashboardEmpty" class="empty-state" hidden>
+            Aucun bloc affiché. Clique sur
+            « Personnaliser » pour en ajouter.
+          </p>
         </section>
 
         <!-- Créateurs -->
@@ -339,7 +406,8 @@
         </section>
       </div>
 
-      <script src="/assets/js/admin.js?v=8"></script>
+      <script src="/assets/js/admin.js?v=9"></script>
+      <script src="/assets/js/admin-dashboard.js?v=1"></script>
 </body>
 
 </html>
