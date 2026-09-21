@@ -71,6 +71,9 @@
     statsEmotesCount:
       document.querySelector("#statsEmotesCount"),
 
+    statsRaisedAmount:
+      document.querySelector("#statsRaisedAmount"),
+
     statsCreatorsList:
       document.querySelector("#statsCreatorsList"),
 
@@ -857,6 +860,20 @@
         "fr-FR"
       );
 
+    const formatMoney = value =>
+      new Intl.NumberFormat(
+        "fr-FR",
+        {
+          style: "currency",
+          currency: "EUR"
+        }
+      ).format(
+        Number(value ?? 0) / 100
+      );
+
+    elements.statsRaisedAmount.textContent =
+      formatMoney(overview.raisedCents);
+
     elements.statsGoalsCount.textContent =
       formatNumber(overview.goals);
 
@@ -924,6 +941,16 @@
 
       const status =
         document.createElement("span");
+
+      const raised =
+        document.createElement("span");
+
+      raised.textContent =
+        creator.raisedCents === null
+          ? "Cagnotte non configurée"
+          : `${formatMoney(
+            creator.raisedCents
+          )} collectés`;
 
       status.className =
         "stats-creator-status";
