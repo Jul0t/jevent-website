@@ -53,12 +53,6 @@
     memberSearchInput:
       document.querySelector("#memberSearchInput"),
 
-    statsCreatorsCount:
-      document.querySelector("#statsCreatorsCount"),
-
-    statsActiveCreatorsCount:
-      document.querySelector("#statsActiveCreatorsCount"),
-
     statsGoalsCount:
       document.querySelector("#statsGoalsCount"),
 
@@ -834,14 +828,6 @@
     const formatNumber = value =>
       Number(value ?? 0).toLocaleString(
         "fr-FR"
-      );
-
-    elements.statsCreatorsCount.textContent =
-      formatNumber(overview.creators);
-
-    elements.statsActiveCreatorsCount.textContent =
-      formatNumber(
-        overview.activeCreators
       );
 
     elements.statsGoalsCount.textContent =
