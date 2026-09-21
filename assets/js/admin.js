@@ -78,7 +78,28 @@
       document.querySelector("#statsCreatorsList"),
 
     statsCreatorsEmpty:
-      document.querySelector("#statsCreatorsEmpty")
+      document.querySelector("#statsCreatorsEmpty"),
+
+    statsMessagesCount:
+      document.querySelector("#statsMessagesCount"),
+
+    statsEmotesCount:
+      document.querySelector("#statsEmotesCount"),
+
+    statsFiltersForm:
+      document.querySelector("#statsFiltersForm"),
+
+    statsCreatorFilter:
+      document.querySelector("#statsCreatorFilter"),
+
+    statsFromInput:
+      document.querySelector("#statsFromInput"),
+
+    statsToInput:
+      document.querySelector("#statsToInput"),
+
+    statsResetButton:
+      document.querySelector("#statsResetButton")
   };
 
   let creators = [];
@@ -228,7 +249,7 @@
     history.replaceState(
       null,
       "",
-      `#${tabName}`
+      `#${TAB_HASHES[tabName]}`
     );
   }
 
@@ -728,6 +749,90 @@
     return HASH_TABS[hash] ?? "overview";
   }
 
+  function renderStatsCreatorFilter() {
+    const previousValue =
+      elements.statsCreatorFilter.value;
+
+    elements.statsCreatorFilter
+      .replaceChildren();
+
+    const allOption =
+      document.createElement("option");
+
+    allOption.value = "";
+    allOption.textContent =
+      "Tous les créateurs";
+
+    elements.statsCreatorFilter.append(
+      allOption
+    );
+
+    for (const creator of creators) {
+      const option =
+        document.createElement("option");
+
+      option.value =
+        String(creator.id);
+
+      option.textContent =
+        creator.twitchDisplayName ||
+        creator.slug;
+
+      elements.statsCreatorFilter.append(
+        option
+      );
+    }
+
+    const stillExists =
+      [...elements.statsCreatorFilter.options]
+        .some(
+          option =>
+            option.value === previousValue
+        );
+
+    if (stillExists) {
+      elements.statsCreatorFilter.value =
+        previousValue;
+    }
+  }
+
+  function getAdminStatsPath() {
+    const parameters =
+      new URLSearchParams();
+
+    const creatorId =
+      elements.statsCreatorFilter.value;
+
+    const from =
+      elements.statsFromInput.value;
+
+    const to =
+      elements.statsToInput.value;
+
+    if (creatorId) {
+      parameters.set(
+        "creatorId",
+        creatorId
+      );
+    }
+
+    if (from) {
+      parameters.set("from", from);
+    }
+
+    if (to) {
+      parameters.set("to", to);
+    }
+
+    const query =
+      parameters.toString();
+
+    return (
+      "/api/admin/stats/overview" +
+      (query ? `?${query}` : "")
+    );
+  }
+
   function renderAdminStats(data) {
     const overview =
       data?.overview ?? {};
@@ -838,9 +943,7 @@
   async function loadAdminStats() {
     try {
       const data =
-        await apiFetch(
-          "/api/admin/stats/overview"
-        );
+        await apiFetch(getAdminStatsPath());
 
       renderAdminStats(data);
     } catch (error) {
@@ -870,6 +973,7 @@
 
     updateStatistics();
     renderCreators();
+    renderStatsCreatorFilter();
   }
 
   async function loadMembers({
@@ -988,6 +1092,63 @@
       elements.refreshButton.disabled = false;
     }
   }
+
+  elements.statsFiltersForm.addEventListener(
+    "submit",
+    async event => {
+      event.preventDefault();
+
+      const from =
+        elements.statsFromInput.value;
+
+      const to =
+        elements.statsToInput.value;
+
+      if (from && to && from > to) {
+        showMessage(
+          "La date de début doit être avant la date de fin.",
+          "error"
+        );
+
+        return;
+      }
+
+      try {
+        await loadAdminStats();
+
+        showMessage(
+          "Statistiques filtrées.",
+          "success"
+        );
+      } catch (error) {
+        showMessage(
+          error.message,
+          "error"
+        );
+      }
+    }
+  );
+
+  elements.statsResetButton.addEventListener(
+    "click",
+    async () => {
+      elements.statsCreatorFilter.value =
+        "";
+
+      elements.statsFromInput.value =
+        "";
+
+      elements.statsToInput.value =
+        "";
+
+      await loadAdminStats();
+
+      showMessage(
+        "Filtres réinitialisés.",
+        "success"
+      );
+    }
+  );
 
   async function init() {
     try {
