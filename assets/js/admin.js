@@ -967,7 +967,8 @@
         slug,
         messages,
         emotes,
-        status
+        status,
+        raised
       );
 
       elements.statsCreatorsList.append(row);
