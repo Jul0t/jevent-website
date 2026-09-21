@@ -62,6 +62,9 @@
     statsStreamlabsCount:
       document.querySelector("#statsStreamlabsCount"),
 
+    statsMessage:
+      document.querySelector("#statsMessage"),
+
     statsMessagesCount:
       document.querySelector("#statsMessagesCount"),
 
@@ -153,6 +156,30 @@
 
     if (type) {
       elements.pageMessage.classList.add(
+        `is-${type}`
+      );
+    }
+  }
+
+  function showStatsMessage(
+    message = "",
+    type = ""
+  ) {
+    if (!elements.statsMessage) {
+      return;
+    }
+
+    elements.statsMessage.textContent =
+      message;
+
+    elements.statsMessage.className =
+      "stats-message";
+
+    elements.statsMessage.hidden =
+      !message;
+
+    if (type) {
+      elements.statsMessage.classList.add(
         `is-${type}`
       );
     }
@@ -1076,7 +1103,7 @@
         elements.statsToInput.value;
 
       if (from && to && from > to) {
-        showMessage(
+        showStatsMessage(
           "La date de début doit être avant la date de fin.",
           "error"
         );
@@ -1087,12 +1114,12 @@
       try {
         await loadAdminStats();
 
-        showMessage(
+        showStatsMessage(
           "Statistiques filtrées.",
           "success"
         );
       } catch (error) {
-        showMessage(
+        showStatsMessage(
           error.message,
           "error"
         );
@@ -1114,7 +1141,7 @@
 
       await loadAdminStats();
 
-      showMessage(
+      showStatsMessage(
         "Filtres réinitialisés.",
         "success"
       );

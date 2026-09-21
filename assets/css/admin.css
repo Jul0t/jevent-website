@@ -974,3 +974,43 @@ button {
     flex: 1;
   }
 }
+
+.stats-general-grid {
+  grid-template-columns:
+    repeat(3, minmax(220px, 280px));
+
+  justify-content: center;
+
+  padding: 24px;
+  margin: 0;
+}
+
+.stats-message {
+  min-height: 22px;
+  margin: 16px 24px 0;
+
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.stats-message.is-success {
+  color: var(--green-light);
+}
+
+.stats-message.is-error {
+  color: #ff9dac;
+}
+
+@media (max-width: 900px) {
+  .stats-general-grid {
+    grid-template-columns:
+      repeat(2, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .stats-general-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -7,7 +7,7 @@
 
   <title>Admin — JEvent 26</title>
 
-  <link rel="stylesheet" href="/assets/css/admin.css?v=6">
+  <link rel="stylesheet" href="/assets/css/admin.css?v=7">
 </head>
 
 <body>
@@ -204,7 +204,7 @@
               </div>
             </header>
 
-            <div class="statistics-grid">
+            <div class="statistics-grid stats-general-grid">
               <article class="statistic-card">
                 <span>Objectifs actifs</span>
                 <strong id="statsGoalsCount">0</strong>
@@ -267,6 +267,8 @@
                 </button>
               </div>
             </form>
+
+            <p id="statsMessage" class="stats-message" role="status" aria-live="polite" hidden></p>
 
             <div class="statistics-grid stats-overview-grid">
               <article class="statistic-card">
@@ -332,7 +334,7 @@
         </section>
       </div>
 
-      <script src="/assets/js/admin.js?v=6"></script>
+      <script src="/assets/js/admin.js?v=7"></script>
 </body>
 
 </html>
