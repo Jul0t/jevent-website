@@ -80,12 +80,6 @@
     statsCreatorsEmpty:
       document.querySelector("#statsCreatorsEmpty"),
 
-    statsMessagesCount:
-      document.querySelector("#statsMessagesCount"),
-
-    statsEmotesCount:
-      document.querySelector("#statsEmotesCount"),
-
     statsFiltersForm:
       document.querySelector("#statsFiltersForm"),
 
@@ -941,22 +935,13 @@
   }
 
   async function loadAdminStats() {
-    try {
-      const data =
-        await apiFetch(getAdminStatsPath());
+    const data = await apiFetch(
+      getAdminStatsPath()
+    );
 
-      renderAdminStats(data);
-    } catch (error) {
-      console.error(
-        "Impossible de charger les statistiques :",
-        error
-      );
+    renderAdminStats(data);
 
-      renderAdminStats({
-        overview: {},
-        creators: []
-      });
-    }
+    return data;
   }
 
   async function loadCreators() {
