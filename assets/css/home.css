@@ -2476,80 +2476,73 @@ svg {
 /* Logo principal du hero */
 
 .hero-side {
-    display: grid;
-    gap: 30px;
-    align-items: center;
+  display: grid;
+  gap: 18px;
+  align-items: center;
 }
 
 .hero-logo-showcase {
-    position: relative;
+  position: relative;
 
-    display: grid;
-    min-height: 260px;
+  display: flex;
+  min-height: 275px;
 
-    place-items: center;
+  align-items: center;
+  justify-content: flex-start;
 
-    overflow: hidden;
+  /*
+   * Le logo déborde vers le texte afin de ne pas
+   * être parfaitement aligné avec le compte à rebours.
+   */
+  margin-left: -105px;
+
+  overflow: visible;
+  pointer-events: none;
 }
 
 .hero-logo-showcase img {
-    position: relative;
-    z-index: 2;
+  display: block;
 
-    width: min(82%, 410px);
-    max-height: 250px;
+  width: min(125%, 570px);
+  max-width: none;
+  max-height: 285px;
 
-    object-fit: contain;
+  object-fit: contain;
 
-    filter:
-        drop-shadow(0 25px 45px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 30px rgba(0, 178, 55, 0.16));
-}
-
-.hero-logo-glow {
-    position: absolute;
-
-    width: 290px;
-    height: 180px;
-
-    border-radius: 50%;
-
-    background: rgba(0, 178, 55, 0.16);
-
-    filter: blur(70px);
-    pointer-events: none;
+  /* Aucun glow */
+  filter: none;
 }
 
 @media (max-width: 1100px) {
-    .hero-side {
-        width: min(100%, 650px);
-    }
+  .hero-side {
+    width: min(100%, 720px);
+  }
 
-    .hero-logo-showcase {
-        min-height: 210px;
-    }
+  .hero-logo-showcase {
+    min-height: 220px;
+    margin-left: 0;
 
-    .hero-logo-showcase img {
-        width: min(72%, 350px);
-        max-height: 200px;
-    }
+    justify-content: flex-start;
+  }
+
+  .hero-logo-showcase img {
+    width: min(90%, 470px);
+    max-height: 220px;
+  }
 }
 
 @media (max-width: 600px) {
-    .hero-side {
-        gap: 20px;
-    }
+  .hero-side {
+    gap: 16px;
+  }
 
-    .hero-logo-showcase {
-        min-height: 150px;
-    }
+  .hero-logo-showcase {
+    min-height: 150px;
+    margin-left: -12px;
+  }
 
-    .hero-logo-showcase img {
-        width: min(76%, 270px);
-        max-height: 145px;
-    }
-
-    .hero-logo-glow {
-        width: 210px;
-        height: 120px;
-    }
+  .hero-logo-showcase img {
+    width: min(96%, 350px);
+    max-height: 160px;
+  }
 }
