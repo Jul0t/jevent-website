@@ -889,86 +889,6 @@
     elements.statsEmotesCount.textContent =
       formatNumber(overview.emotes);
 
-    const creatorStats =
-      Array.isArray(data?.creators)
-        ? data.creators
-        : [];
-
-    elements.statsCreatorsEmpty.hidden =
-      creatorStats.length !== 0;
-
-    for (const creator of creatorStats) {
-      const row =
-        document.createElement("article");
-
-      row.className =
-        "stats-creator-row";
-
-      const name =
-        document.createElement("strong");
-
-      name.textContent =
-        creator.displayName ||
-        creator.slug;
-
-      const slug =
-        document.createElement("span");
-
-      slug.textContent =
-        `@${creator.slug}`;
-
-      const messages =
-        document.createElement("span");
-
-      messages.textContent =
-        `${formatNumber(
-          creator.messages
-        )} messages`;
-
-      const emotes =
-        document.createElement("span");
-
-      emotes.textContent =
-        `${formatNumber(
-          creator.emotes
-        )} emotes`;
-
-      const status =
-        document.createElement("span");
-
-      const raised =
-        document.createElement("span");
-
-      raised.textContent =
-        creator.raisedCents === null
-          ? "Cagnotte non configurée"
-          : `${formatMoney(
-            creator.raisedCents
-          )} collectés`;
-
-      status.className =
-        "stats-creator-status";
-
-      status.textContent =
-        creator.archived
-          ? "Archivé"
-          : creator.active
-            ? "Actif"
-            : "Désactivé";
-
-      row.append(
-        name,
-        slug,
-        messages,
-        emotes,
-        status,
-        raised
-      );
-
-      elements.statsCreatorsList.append(row);
-    }
-  }
-
   async function loadAdminStats() {
     const data = await apiFetch(
       getAdminStatsPath()
@@ -1257,4 +1177,4 @@
   );
 
   init();
-})();
+}})();
