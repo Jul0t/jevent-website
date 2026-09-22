@@ -74,12 +74,6 @@
     statsRaisedAmount:
       document.querySelector("#statsRaisedAmount"),
 
-    statsCreatorsList:
-      document.querySelector("#statsCreatorsList"),
-
-    statsCreatorsEmpty:
-      document.querySelector("#statsCreatorsEmpty"),
-
     statsFiltersForm:
       document.querySelector("#statsFiltersForm"),
 
@@ -894,8 +888,6 @@
 
     elements.statsEmotesCount.textContent =
       formatNumber(overview.emotes);
-
-    elements.statsCreatorsList.replaceChildren();
 
     const creatorStats =
       Array.isArray(data?.creators)
