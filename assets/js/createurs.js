@@ -75,11 +75,6 @@
                 "#offlineFilterCount"
             ),
 
-        donationFilterCount:
-            document.querySelector(
-                "#donationFilterCount"
-            ),
-
         sortMenu:
             document.querySelector(
                 "#creatorSortMenu"
@@ -157,8 +152,7 @@
     const FILTER_LABELS = {
         all: "Tous les créateurs",
         live: "Créateurs en direct",
-        offline: "Créateurs hors ligne",
-        donation: "Dons disponibles"
+        offline: "Créateurs hors ligne"
     };
 
     let creators = [];
@@ -1196,10 +1190,6 @@
         elements.offlineFilterCount
             .textContent =
             formatNumber(offlineCount);
-
-        elements.donationFilterCount
-            .textContent =
-            formatNumber(donationCount);
     }
 
     function updateFilterButtons() {
