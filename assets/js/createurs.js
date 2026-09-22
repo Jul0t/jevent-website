@@ -38,11 +38,6 @@
                 "#liveCreatorsCount"
             ),
 
-        donationCreatorsCount:
-            document.querySelector(
-                "#donationCreatorsCount"
-            ),
-
         searchInput:
             document.querySelector(
                 "#creatorSearchInput"
@@ -1174,10 +1169,6 @@
 
         elements.liveCreatorsCount.textContent =
             formatNumber(liveCount);
-
-        elements.donationCreatorsCount
-            .textContent =
-            formatNumber(donationCount);
 
         elements.allFilterCount.textContent =
             formatNumber(
