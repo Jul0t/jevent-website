@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Découvre le programme complet du JEvent 26 et retrouve les activités de tous les créateurs."
+  >
+
+  <meta
+    name="theme-color"
+    content="#030806"
+  >
+
+  <title>
+    Programme — JEvent 26
+  </title>
+
+  <!-- Base visuelle commune avec l’accueil -->
+  <link
+    rel="stylesheet"
+    href="/assets/css/home.css?v=3"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/programme.css?v=1"
+  >
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/marked@18.0.12/lib/marked.umd.min.js"
+    defer
+  ></script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/dompurify@3.4.15/dist/purify.min.js"
+    defer
+  ></script>
+
+  <script
+    src="/assets/js/programme.js?v=1"
+    defer
+  ></script>
+</head>
+
+<body>
+  <a
+    class="skip-link"
+    href="#mainContent"
+  >
+    Aller au contenu
+  </a>
+
+  <!-- Navigation -->
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a
+        class="brand"
+        href="/"
+        aria-label="Accueil du JEvent 26"
+      >
+        <img
+          class="brand-logo"
+          src="/assets/jevent_logo.png"
+          alt=""
+        >
+
+        <span class="brand-copy">
+          <strong>JEvent 26</strong>
+
+          <small>
+            Association Petits Princes
+          </small>
+        </span>
+      </a>
+
+      <button
+        id="navigationToggle"
+        class="navigation-toggle"
+        type="button"
+        aria-label="Ouvrir le menu"
+        aria-controls="mainNavigation"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav
+        id="mainNavigation"
+        class="main-navigation"
+        aria-label="Navigation principale"
+      >
+        <a href="/">
+          Accueil
+        </a>
+
+        <a
+          class="is-active"
+          href="/programme.html"
+        >
+          Programme
+        </a>
+
+        <a href="/createurs.html">
+          Créateurs
+        </a>
+
+        <a href="/#association">
+          L’association
+        </a>
+
+        <a href="/#boutique">
+          Boutique
+
+          <span class="navigation-badge">
+            12 oct.
+          </span>
+        </a>
+
+        <a
+          class="navigation-account"
+          href="/compte.html"
+        >
+          Mon compte
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="mainContent">
+    <!-- Présentation -->
+
+    <section class="program-hero">
+      <div class="page-container program-hero-layout">
+        <div class="program-hero-copy">
+          <p class="eyebrow">
+            Du 26 au 29 octobre 2026
+          </p>
+
+          <h1>
+            Le programme
+            <span>du JEvent 26</span>
+          </h1>
+
+          <p>
+            Explore les activités de tous les créateurs,
+            filtre le calendrier et clique sur un créneau
+            pour afficher tous ses détails.
+          </p>
+        </div>
+
+        <div
+          id="currentProgramStatus"
+          class="program-status-card"
+        >
+          <span
+            class="program-status-icon"
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 7v5l3.5 2M21 12a9 9 0 1 1-18 0
+                   9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </span>
+
+          <div>
+            <span id="programStatusLabel">
+              Prochaine activité
+            </span>
+
+            <strong id="programStatusTitle">
+              Chargement…
+            </strong>
+
+            <small id="programStatusTime"></small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtres -->
+
+    <section
+      class="program-controls-section"
+      aria-label="Filtres du programme"
+    >
+      <div class="page-container">
+        <div class="program-controls">
+          <div class="program-controls-heading">
+            <div>
+              <span class="controls-label">
+                Explorer le programme
+              </span>
+
+              <strong id="filterResultCount">
+                Chargement…
+              </strong>
+            </div>
+
+            <button
+              id="resetFiltersButton"
+              class="reset-filters-button"
+              type="button"
+              hidden
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 7h11a5 5 0 1 1 0 10H9M4 7l4-4M4 7l4 4"
+                />
+              </svg>
+
+              Tout afficher
+            </button>
+          </div>
+
+          <!-- Journées -->
+
+          <div class="filter-group">
+            <div class="filter-group-heading">
+              <span>Journée</span>
+
+              <small>
+                Sélectionne une date
+              </small>
+            </div>
+
+            <div
+              id="dayFilterList"
+              class="day-filter-list"
+              role="tablist"
+              aria-label="Journées du programme"
+            >
+              <!-- Généré par programme.js -->
+            </div>
+          </div>
+
+          <!-- Créateurs -->
+
+          <div class="filter-group creator-filter-group">
+            <div class="filter-group-heading">
+              <span>Créateurs</span>
+
+              <small>
+                Clique sur un avatar pour filtrer
+              </small>
+            </div>
+
+            <div class="creator-filter-scroll">
+              <div
+                id="creatorFilterList"
+                class="creator-filter-list"
+                aria-label="Filtrer par créateur"
+              >
+                <!-- Généré par programme.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Résumé des filtres -->
+
+          <div
+            id="activeFilters"
+            class="active-filters"
+            aria-live="polite"
+            hidden
+          ></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Programme -->
+
+    <section class="program-main-section">
+      <div class="page-container">
+        <div
+          id="programLoading"
+          class="program-loading"
+        >
+          <span class="program-loader"></span>
+
+          <strong>
+            Chargement du programme…
+          </strong>
+
+          <p>
+            Préparation des activités et des créateurs.
+          </p>
+        </div>
+
+        <div
+          id="programError"
+          class="program-error"
+          hidden
+        >
+          <span class="program-error-icon">
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 8v5M12 17h.01M10.3 3.6
+                   2.2 17.8a2 2 0 0 0 1.7 3h16.2
+                   a2 2 0 0 0 1.7-3L13.7 3.6
+                   a2 2 0 0 0-3.4 0Z"
+              />
+            </svg>
+          </span>
+
+          <div>
+            <strong>
+              Impossible de charger le programme
+            </strong>
+
+            <p id="programErrorMessage">
+              Réessaie dans quelques instants.
+            </p>
+          </div>
+
+          <button
+            id="retryProgramButton"
+            class="button button-secondary"
+            type="button"
+          >
+            Réessayer
+          </button>
+        </div>
+
+        <section
+          id="programContent"
+          class="program-content"
+          hidden
+        >
+          <header class="calendar-heading">
+            <div>
+              <p
+                id="selectedDayEyebrow"
+                class="eyebrow"
+              >
+                Journée sélectionnée
+              </p>
+
+              <h2 id="selectedDayTitle">
+                Lundi 26 octobre
+              </h2>
+            </div>
+
+            <div class="calendar-legend">
+              <span>
+                <i class="legend-color is-standard"></i>
+                Activité
+              </span>
+
+              <span>
+                <i class="legend-color is-goal"></i>
+                Sous objectif
+              </span>
+
+              <span>
+                <i class="legend-color is-live"></i>
+                En cours
+              </span>
+            </div>
+          </header>
+
+          <!-- Calendrier ordinateur -->
+
+          <div
+            id="calendarContainer"
+            class="public-program-calendar"
+          >
+            <div class="calendar-scroll">
+              <div
+                id="calendarGrid"
+                class="calendar-grid"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Liste mobile -->
+
+          <div
+            id="mobileProgramList"
+            class="mobile-program-list"
+          ></div>
+
+          <!-- Aucun résultat -->
+
+          <div
+            id="programEmpty"
+            class="program-empty"
+            hidden
+          >
+            <span class="program-empty-icon">
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 4v3M19 4v3M4 9h16M5 6h14
+                     a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1
+                     H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z
+                     M8 13h8M8 16h5"
+                />
+              </svg>
+            </span>
+
+            <h3>
+              Aucune activité trouvée
+            </h3>
+
+            <p>
+              Essaie une autre journée ou affiche tous
+              les créateurs.
+            </p>
+
+            <button
+              id="emptyResetButton"
+              class="button button-secondary"
+              type="button"
+            >
+              Réinitialiser les filtres
+            </button>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <!-- Détails d’une activité -->
+
+  <dialog
+    id="activityDialog"
+    class="activity-dialog"
+    aria-labelledby="activityDialogTitle"
+  >
+    <div class="activity-dialog-shell">
+      <header class="activity-dialog-header">
+        <div>
+          <p
+            id="activityDialogEyebrow"
+            class="eyebrow"
+          >
+            Activité
+          </p>
+
+          <h2 id="activityDialogTitle">
+            Détails de l’activité
+          </h2>
+        </div>
+
+        <button
+          id="closeActivityDialog"
+          class="activity-dialog-close"
+          type="button"
+          aria-label="Fermer"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M6 6l12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+      </header>
+
+      <div
+        id="activityDialogContent"
+        class="activity-dialog-content"
+      ></div>
+
+      <footer class="activity-dialog-footer">
+        <a
+          id="activityCreatorLink"
+          class="button button-primary"
+          href="/createurs.html"
+        >
+          Voir le créateur
+        </a>
+
+        <a
+          id="activityExternalLink"
+          class="button button-secondary"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          hidden
+        >
+          Ouvrir le lien
+        </a>
+      </footer>
+    </div>
+  </dialog>
+
+  <footer class="site-footer">
+    <div class="page-container footer-layout">
+      <div class="footer-brand">
+        <img
+          src="/assets/jevent_logo.png"
+          alt=""
+        >
+
+        <div>
+          <strong>JEvent 26</strong>
+
+          <span>
+            Au profit de l’Association Petits Princes
+          </span>
+        </div>
+      </div>
+
+      <nav
+        class="footer-navigation"
+        aria-label="Navigation de pied de page"
+      >
+        <a href="/">
+          Accueil
+        </a>
+
+        <a href="/programme.html">
+          Programme
+        </a>
+
+        <a href="/createurs.html">
+          Créateurs
+        </a>
+
+        <a href="/#association">
+          Association
+        </a>
+
+        <a href="/#boutique">
+          Boutique
+        </a>
+      </nav>
+
+      <p class="footer-legal">
+        © 2026 JEvent
+      </p>
+    </div>
+  </footer>
+</body>
+
+</html>

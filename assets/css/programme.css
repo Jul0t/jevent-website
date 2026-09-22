@@ -1,0 +1,1761 @@
+/* =========================================================
+   Programme public
+   ========================================================= */
+
+.program-hero {
+    position: relative;
+    overflow: hidden;
+
+    padding-block:
+        clamp(65px, 8vw, 105px);
+
+    border-bottom:
+        1px solid var(--border);
+
+    background:
+        radial-gradient(circle at 82% 30%,
+            rgba(0, 178, 55, 0.16),
+            transparent 27rem),
+        linear-gradient(180deg,
+            rgba(255, 255, 255, 0.02),
+            transparent);
+}
+
+.program-hero::after {
+    position: absolute;
+    top: -240px;
+    right: -160px;
+
+    width: 620px;
+    height: 620px;
+
+    border:
+        1px solid rgba(108, 245, 143, 0.08);
+
+    border-radius: 50%;
+
+    content: "";
+    pointer-events: none;
+}
+
+.program-hero-layout {
+    position: relative;
+    z-index: 1;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr) minmax(300px, 430px);
+
+    gap: clamp(35px, 7vw, 90px);
+    align-items: center;
+}
+
+.program-hero-copy h1 {
+    margin: 0;
+
+    font-size:
+        clamp(3rem, 7vw, 6.2rem);
+
+    font-weight: 950;
+    letter-spacing: -0.065em;
+    line-height: 0.95;
+}
+
+.program-hero-copy h1 span {
+    display: block;
+
+    background:
+        linear-gradient(90deg,
+            var(--green-light),
+            var(--green));
+
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    color: transparent;
+}
+
+.program-hero-copy>p:not(.eyebrow) {
+    max-width: 680px;
+    margin: 25px 0 0;
+
+    color: var(--muted-light);
+
+    font-size: 1.08rem;
+    line-height: 1.75;
+}
+
+/* Statut en haut */
+
+.program-status-card {
+    display: flex;
+    min-width: 0;
+    padding: 23px;
+
+    gap: 15px;
+    align-items: center;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 20px;
+
+    background:
+        rgba(10, 20, 14, 0.88);
+
+    box-shadow: var(--shadow-small);
+}
+
+.program-status-card.is-live {
+    border-color:
+        rgba(0, 178, 55, 0.4);
+
+    background:
+        linear-gradient(135deg,
+            rgba(0, 178, 55, 0.13),
+            rgba(10, 20, 14, 0.95));
+}
+
+.program-status-icon {
+    display: grid;
+    flex: 0 0 auto;
+
+    width: 52px;
+    height: 52px;
+
+    place-items: center;
+
+    border:
+        1px solid rgba(0, 178, 55, 0.25);
+
+    border-radius: 15px;
+
+    background:
+        rgba(0, 178, 55, 0.1);
+
+    color: var(--green-light);
+}
+
+.program-status-icon svg {
+    width: 25px;
+    height: 25px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.program-status-card>div {
+    display: grid;
+    min-width: 0;
+}
+
+.program-status-card>div>span {
+    color: var(--green-light);
+
+    font-size: 0.69rem;
+    font-weight: 900;
+
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.program-status-card strong {
+    margin-top: 3px;
+
+    overflow: hidden;
+
+    font-size: 1rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.program-status-card small {
+    margin-top: 4px;
+
+    overflow: hidden;
+
+    color: var(--muted);
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   Zone des filtres
+   ========================================================= */
+
+.program-controls-section {
+    position: relative;
+    z-index: 10;
+
+    padding-block: 28px;
+
+    border-bottom:
+        1px solid var(--border);
+
+    background: #061009;
+}
+
+.program-controls {
+    display: grid;
+    gap: 25px;
+
+    padding: 25px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.11);
+
+    border-radius: 23px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, 0.035),
+            rgba(0, 178, 55, 0.025)),
+        var(--surface);
+
+    box-shadow: var(--shadow-small);
+}
+
+.program-controls-heading {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.program-controls-heading>div {
+    display: grid;
+}
+
+.controls-label {
+    color: var(--muted);
+
+    font-size: 0.7rem;
+    font-weight: 900;
+
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.program-controls-heading strong {
+    margin-top: 3px;
+    font-size: 1.02rem;
+}
+
+/* Bouton réinitialiser */
+
+.reset-filters-button {
+    display: inline-flex;
+    min-height: 39px;
+    padding: 8px 12px;
+
+    gap: 7px;
+    align-items: center;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    color: var(--muted-light);
+
+    cursor: pointer;
+
+    font-size: 0.76rem;
+    font-weight: 800;
+}
+
+.reset-filters-button:hover {
+    border-color: var(--green);
+    color: var(--green-light);
+}
+
+.reset-filters-button svg {
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Groupes de filtres */
+
+.filter-group {
+    display: grid;
+    gap: 12px;
+}
+
+.filter-group-heading {
+    display: flex;
+    gap: 13px;
+    align-items: baseline;
+}
+
+.filter-group-heading>span {
+    font-size: 0.84rem;
+    font-weight: 900;
+}
+
+.filter-group-heading small {
+    color: var(--muted);
+    font-size: 0.72rem;
+}
+
+/* Cartes des journées */
+
+.day-filter-list {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit,
+            minmax(135px, 1fr));
+
+    gap: 9px;
+}
+
+.day-filter-button {
+    position: relative;
+
+    display: grid;
+    min-width: 0;
+    min-height: 114px;
+    padding: 14px;
+
+    align-content: space-between;
+    justify-items: start;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color:
+        var(--text);
+
+    cursor: pointer;
+    text-align: left;
+
+    transition:
+        border-color 160ms ease,
+        background-color 160ms ease,
+        color 160ms ease,
+        transform 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.day-filter-button::after {
+    position: absolute;
+    right: -24px;
+    bottom: -34px;
+
+    width: 90px;
+    height: 90px;
+
+    border-radius: 50%;
+
+    background: rgba(0, 178, 55, 0.1);
+
+    content: "";
+    pointer-events: none;
+
+    transform: scale(0);
+    transition: transform 180ms ease;
+}
+
+.day-filter-button:hover {
+    border-color: rgba(0, 178, 55, 0.45);
+
+    background: rgba(0, 178, 55, 0.06);
+
+    transform: translateY(-2px);
+}
+
+.day-filter-button:hover::after {
+    transform: scale(1);
+}
+
+.day-filter-button.is-selected {
+    border-color: var(--green);
+
+    background:
+        linear-gradient(145deg,
+            rgba(0, 178, 55, 0.18),
+            rgba(0, 178, 55, 0.05));
+
+    box-shadow:
+        0 10px 28px rgba(0, 178, 55, 0.12);
+}
+
+.day-filter-button.is-selected::after {
+    transform: scale(1);
+}
+
+.day-filter-weekday {
+    position: relative;
+    z-index: 1;
+
+    color: var(--muted);
+
+    font-size: 0.68rem;
+    font-weight: 850;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.day-filter-button.is-selected .day-filter-weekday {
+    color: var(--green-light);
+}
+
+.day-filter-date {
+    position: relative;
+    z-index: 1;
+
+    display: grid;
+
+    margin-top: 14px;
+}
+
+.day-filter-date strong {
+    font-size: 1.65rem;
+    line-height: 1;
+}
+
+.day-filter-date span {
+    margin-top: 5px;
+
+    color: var(--muted-light);
+
+    font-size: 0.78rem;
+    font-weight: 750;
+}
+
+.day-filter-count {
+    position: relative;
+    z-index: 1;
+
+    margin-top: 12px;
+
+    color: var(--muted);
+
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+/* Créateurs */
+
+.creator-filter-scroll {
+    position: relative;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scrollbar-color:
+        rgba(0, 178, 55, 0.35) transparent;
+
+    scrollbar-width: thin;
+}
+
+.creator-filter-scroll::-webkit-scrollbar {
+    height: 7px;
+}
+
+.creator-filter-scroll::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(0, 178, 55, 0.35);
+}
+
+.creator-filter-list {
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+    padding: 3px 2px 12px;
+
+    gap: 10px;
+}
+
+.creator-filter-button {
+    display: inline-flex;
+    min-width: max-content;
+    min-height: 48px;
+    padding: 6px 13px 6px 7px;
+
+    gap: 9px;
+    align-items: center;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--muted-light);
+
+    cursor: pointer;
+
+    font-size: 0.79rem;
+    font-weight: 800;
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        color 150ms ease,
+        transform 150ms ease;
+}
+
+.creator-filter-button:hover {
+    border-color: rgba(0, 178, 55, 0.45);
+
+    background: rgba(0, 178, 55, 0.07);
+    color: var(--text);
+
+    transform: translateY(-2px);
+}
+
+.creator-filter-button.is-selected {
+    border-color: var(--green);
+
+    background: rgba(0, 178, 55, 0.15);
+    color: var(--green-light);
+}
+
+.creator-filter-avatar {
+    width: 34px;
+    height: 34px;
+
+    border: 2px solid var(--border-strong);
+    border-radius: 50%;
+
+    background: var(--surface-lighter);
+    object-fit: cover;
+}
+
+.creator-filter-button.is-selected .creator-filter-avatar {
+    border-color: var(--green);
+
+    box-shadow:
+        0 0 0 3px rgba(0, 178, 55, 0.12);
+}
+
+.creator-filter-name {
+    max-width: 150px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.creator-filter-check {
+    display: none;
+
+    width: 20px;
+    height: 20px;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: var(--green);
+    color: #001d09;
+}
+
+.creator-filter-check svg {
+    width: 12px;
+    height: 12px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.creator-filter-button.is-selected .creator-filter-check {
+    display: grid;
+}
+
+/* Filtres actifs */
+
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 15px;
+
+    gap: 8px;
+    align-items: center;
+
+    border-top: 1px solid var(--border);
+}
+
+.active-filters-label {
+    margin-right: 3px;
+
+    color: var(--muted);
+
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.active-filter-chip {
+    display: inline-flex;
+    min-height: 32px;
+    padding: 6px 10px;
+
+    gap: 7px;
+    align-items: center;
+
+    border: 1px solid rgba(0, 178, 55, 0.3);
+    border-radius: 999px;
+
+    background: rgba(0, 178, 55, 0.09);
+    color: var(--green-light);
+
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+.active-filter-chip button {
+    display: grid;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+
+    place-items: center;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.09);
+    color: currentColor;
+
+    cursor: pointer;
+}
+
+.active-filter-chip button:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.active-filter-chip svg {
+    width: 10px;
+    height: 10px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+}
+
+/* Responsive des filtres */
+
+@media (max-width: 800px) {
+    .program-controls {
+        padding: 20px;
+    }
+
+    .program-controls-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .day-filter-list {
+        grid-template-columns:
+            repeat(3, minmax(130px, 1fr));
+
+        overflow-x: auto;
+    }
+
+    .day-filter-button {
+        min-width: 130px;
+    }
+}
+
+@media (max-width: 560px) {
+    .program-controls-section {
+        padding-block: 18px;
+    }
+
+    .program-controls {
+        padding: 17px 14px;
+        border-radius: 18px;
+    }
+
+    .day-filter-list {
+        display: flex;
+        padding-bottom: 8px;
+
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+    }
+
+    .day-filter-button {
+        flex: 0 0 138px;
+        min-height: 104px;
+
+        scroll-snap-align: start;
+    }
+
+    .creator-filter-button {
+        min-height: 44px;
+    }
+
+    .creator-filter-avatar {
+        width: 31px;
+        height: 31px;
+    }
+}
+
+/* =========================================================
+   Contenu principal du programme
+   ========================================================= */
+
+.program-main-section {
+    min-height: 620px;
+    padding-block: 42px 100px;
+
+    background:
+        radial-gradient(circle at 85% 15%,
+            rgba(0, 178, 55, 0.06),
+            transparent 30rem),
+        var(--background);
+}
+
+/* =========================================================
+   Chargement
+   ========================================================= */
+
+.program-loading {
+    display: grid;
+    min-height: 360px;
+    padding: 40px;
+
+    place-content: center;
+    justify-items: center;
+
+    text-align: center;
+}
+
+.program-loader {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 19px;
+
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--green);
+    border-radius: 50%;
+
+    animation:
+        program-loading-spin 0.8s linear infinite;
+}
+
+.program-loading strong {
+    font-size: 1.05rem;
+}
+
+.program-loading p {
+    margin: 6px 0 0;
+    color: var(--muted);
+}
+
+/* =========================================================
+   Erreur
+   ========================================================= */
+
+.program-error {
+    display: grid;
+    grid-template-columns:
+        auto minmax(0, 1fr) auto;
+
+    gap: 18px;
+    align-items: center;
+
+    padding: 25px;
+
+    border:
+        1px solid rgba(255, 100, 121, 0.3);
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 100, 121, 0.07);
+}
+
+.program-error-icon {
+    display: grid;
+    width: 48px;
+    height: 48px;
+
+    place-items: center;
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 100, 121, 0.12);
+
+    color: #ff9dac;
+}
+
+.program-error-icon svg {
+    width: 25px;
+    height: 25px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.program-error strong {
+    color: #ffd5db;
+}
+
+.program-error p {
+    margin: 4px 0 0;
+    color: var(--muted-light);
+}
+
+/* =========================================================
+   En-tête du calendrier
+   ========================================================= */
+
+.calendar-heading {
+    display: flex;
+    margin-bottom: 23px;
+
+    gap: 30px;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.calendar-heading h2 {
+    margin: 0;
+
+    font-size: clamp(1.8rem,
+            4vw,
+            2.8rem);
+
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+}
+
+.calendar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.calendar-legend>span {
+    display: inline-flex;
+
+    gap: 7px;
+    align-items: center;
+
+    color: var(--muted-light);
+
+    font-size: 0.72rem;
+    font-weight: 750;
+}
+
+.legend-color {
+    display: block;
+    width: 11px;
+    height: 11px;
+
+    border: 1px solid var(--border-strong);
+    border-radius: 3px;
+}
+
+.legend-color.is-standard {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.legend-color.is-goal {
+    border-color: rgba(0, 178, 55, 0.55);
+    background: rgba(0, 178, 55, 0.28);
+}
+
+.legend-color.is-live {
+    border-color: var(--green);
+    background: var(--green);
+
+    box-shadow:
+        0 0 0 4px rgba(0, 178, 55, 0.12);
+}
+
+/* =========================================================
+   Calendrier
+   ========================================================= */
+
+.public-program-calendar {
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 22px;
+
+    background: var(--surface);
+
+    box-shadow: var(--shadow-small);
+}
+
+.calendar-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scrollbar-color:
+        rgba(0, 178, 55, 0.35) transparent;
+
+    scrollbar-width: thin;
+}
+
+.calendar-scroll::-webkit-scrollbar {
+    height: 9px;
+}
+
+.calendar-scroll::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(0, 178, 55, 0.35);
+}
+
+.calendar-grid {
+    --calendar-hour-height: 92px;
+
+    position: relative;
+
+    display: grid;
+    grid-template-columns:
+        76px minmax(820px, 1fr);
+
+    min-width: 900px;
+}
+
+/* Colonne des heures */
+
+.calendar-hours {
+    position: relative;
+    z-index: 4;
+
+    border-right: 1px solid var(--border);
+
+    background:
+        rgba(3, 8, 6, 0.94);
+}
+
+.calendar-hour-label {
+    position: absolute;
+    right: 13px;
+
+    color: var(--muted);
+
+    font-size: 0.7rem;
+    font-weight: 750;
+
+    font-variant-numeric: tabular-nums;
+
+    transform: translateY(-50%);
+}
+
+.calendar-hour-label:first-child {
+    transform: translateY(0);
+}
+
+/* Zone des activités */
+
+.calendar-timeline {
+    position: relative;
+
+    min-height: 600px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(90deg,
+            rgba(255, 255, 255, 0.012),
+            transparent 35%);
+}
+
+.calendar-hour-line {
+    position: absolute;
+    right: 0;
+    left: 0;
+
+    height: 1px;
+
+    background:
+        rgba(255, 255, 255, 0.075);
+
+    pointer-events: none;
+}
+
+.calendar-half-hour-line {
+    position: absolute;
+    right: 0;
+    left: 0;
+
+    height: 1px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    pointer-events: none;
+}
+
+/* Ligne de l’heure actuelle */
+
+.calendar-now-line {
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 8;
+
+    height: 2px;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 12px rgba(0, 178, 55, 0.65);
+
+    pointer-events: none;
+}
+
+.calendar-now-line::before {
+    position: absolute;
+    top: 50%;
+    left: -6px;
+
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 0 5px rgba(0, 178, 55, 0.13);
+
+    content: "";
+
+    transform: translateY(-50%);
+}
+
+/* =========================================================
+   Créneaux
+   ========================================================= */
+
+.calendar-entry {
+    position: absolute;
+    z-index: 3;
+
+    top: var(--entry-top);
+    left: var(--entry-left);
+
+    width: var(--entry-width);
+    height: var(--entry-height);
+    min-height: 44px;
+    padding: 10px 12px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border-strong);
+    border-left: 4px solid #87938a;
+    border-radius: 11px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, 0.105),
+            rgba(255, 255, 255, 0.045));
+
+    color: var(--text);
+
+    cursor: pointer;
+    text-align: left;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.22);
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        box-shadow 150ms ease,
+        transform 150ms ease;
+}
+
+.calendar-entry:hover {
+    z-index: 10;
+
+    border-color: rgba(255, 255, 255, 0.35);
+
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, 0.15),
+            rgba(255, 255, 255, 0.07));
+
+    box-shadow:
+        0 14px 30px rgba(0, 0, 0, 0.34);
+
+    transform: translateY(-2px);
+}
+
+.calendar-entry.is-goal {
+    border-color: rgba(0, 178, 55, 0.4);
+    border-left-color: var(--green);
+
+    background:
+        linear-gradient(145deg,
+            rgba(0, 178, 55, 0.2),
+            rgba(0, 178, 55, 0.07));
+}
+
+.calendar-entry.is-live {
+    z-index: 6;
+
+    border-color: var(--green);
+    border-left-color: var(--green-light);
+
+    background:
+        linear-gradient(145deg,
+            rgba(0, 178, 55, 0.3),
+            rgba(0, 178, 55, 0.11));
+
+    box-shadow:
+        0 0 0 2px rgba(0, 178, 55, 0.1),
+        0 15px 34px rgba(0, 0, 0, 0.33);
+}
+
+.calendar-entry.is-past {
+    opacity: 0.65;
+}
+
+.calendar-entry.is-short {
+    display: flex;
+    padding-block: 6px;
+
+    gap: 8px;
+    align-items: center;
+}
+
+.calendar-entry-time {
+    display: block;
+
+    color: var(--muted-light);
+
+    font-size: 0.67rem;
+    font-weight: 850;
+
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+}
+
+.calendar-entry-title {
+    display: -webkit-box;
+    margin-top: 4px;
+
+    overflow: hidden;
+
+    font-size: 0.84rem;
+    font-weight: 850;
+    line-height: 1.25;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.calendar-entry.is-short .calendar-entry-title {
+    display: block;
+    margin: 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.calendar-entry-creator {
+    display: flex;
+    min-width: 0;
+    margin-top: 7px;
+
+    gap: 6px;
+    align-items: center;
+
+    color: var(--muted-light);
+
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.calendar-entry-avatar {
+    flex: 0 0 auto;
+
+    width: 20px;
+    height: 20px;
+
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+
+    background: var(--surface-lighter);
+    object-fit: cover;
+}
+
+.calendar-entry-creator-name {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.calendar-entry-goal {
+    display: inline-flex;
+    max-width: 100%;
+    margin-top: 7px;
+    padding: 4px 6px;
+
+    gap: 5px;
+    align-items: center;
+
+    border-radius: 6px;
+
+    background: rgba(0, 0, 0, 0.22);
+    color: var(--green-light);
+
+    font-size: 0.6rem;
+    font-weight: 800;
+}
+
+.calendar-entry-goal svg {
+    flex: 0 0 auto;
+
+    width: 12px;
+    height: 12px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* =========================================================
+   Liste mobile
+   ========================================================= */
+
+.mobile-program-list {
+    display: none;
+}
+
+.mobile-program-group {
+    display: grid;
+    gap: 11px;
+}
+
+.mobile-program-hour {
+    display: flex;
+    margin-top: 16px;
+
+    gap: 11px;
+    align-items: center;
+
+    color: var(--green-light);
+
+    font-size: 0.74rem;
+    font-weight: 850;
+
+    font-variant-numeric: tabular-nums;
+}
+
+.mobile-program-hour::after {
+    flex: 1;
+    height: 1px;
+
+    background: var(--border);
+
+    content: "";
+}
+
+.mobile-program-entry {
+    display: grid;
+    width: 100%;
+    padding: 16px;
+
+    gap: 10px;
+
+    border: 1px solid var(--border);
+    border-left: 4px solid #87938a;
+    border-radius: 14px;
+
+    background: var(--surface);
+    color: var(--text);
+
+    cursor: pointer;
+    text-align: left;
+
+    box-shadow: var(--shadow-small);
+}
+
+.mobile-program-entry.is-goal {
+    border-left-color: var(--green);
+
+    background:
+        linear-gradient(145deg,
+            rgba(0, 178, 55, 0.12),
+            var(--surface));
+}
+
+.mobile-program-entry.is-live {
+    border-color: var(--green);
+    border-left-color: var(--green-light);
+}
+
+.mobile-entry-time {
+    color: var(--green-light);
+
+    font-size: 0.7rem;
+    font-weight: 850;
+}
+
+.mobile-entry-title {
+    font-size: 1rem;
+    font-weight: 850;
+    line-height: 1.3;
+}
+
+.mobile-entry-creator {
+    display: flex;
+
+    gap: 8px;
+    align-items: center;
+
+    color: var(--muted-light);
+
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.mobile-entry-avatar {
+    width: 27px;
+    height: 27px;
+
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+/* =========================================================
+   Aucun résultat
+   ========================================================= */
+
+.program-empty {
+    display: grid;
+    min-height: 330px;
+    padding: 42px 24px;
+
+    place-content: center;
+    justify-items: center;
+
+    border: 1px dashed var(--border-strong);
+    border-radius: 21px;
+
+    background: rgba(255, 255, 255, 0.018);
+
+    text-align: center;
+}
+
+.program-empty-icon {
+    display: grid;
+    width: 60px;
+    height: 60px;
+
+    place-items: center;
+
+    border: 1px solid rgba(0, 178, 55, 0.25);
+    border-radius: 18px;
+
+    background: rgba(0, 178, 55, 0.08);
+    color: var(--green-light);
+}
+
+.program-empty-icon svg {
+    width: 29px;
+    height: 29px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.program-empty h3 {
+    margin: 19px 0 0;
+    font-size: 1.2rem;
+}
+
+.program-empty p {
+    max-width: 420px;
+    margin: 7px 0 20px;
+
+    color: var(--muted);
+}
+
+/* =========================================================
+   Popup d’activité
+   ========================================================= */
+
+.activity-dialog {
+    width: min(calc(100% - 30px),
+            680px);
+
+    max-height: min(88vh,
+            850px);
+
+    padding: 0;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border-strong);
+    border-radius: 23px;
+
+    background: var(--surface);
+    color: var(--text);
+
+    box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.7);
+}
+
+.activity-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.76);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.activity-dialog-shell {
+    display: flex;
+    max-height: min(88vh,
+            850px);
+
+    flex-direction: column;
+}
+
+.activity-dialog-header {
+    display: flex;
+    flex: 0 0 auto;
+    padding: 23px 24px;
+
+    gap: 20px;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--border);
+
+    background:
+        radial-gradient(circle at 100% 0,
+            rgba(0, 178, 55, 0.12),
+            transparent 18rem);
+}
+
+.activity-dialog-header h2 {
+    margin: 0;
+
+    font-size: clamp(1.45rem,
+            4vw,
+            2rem);
+
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+}
+
+.activity-dialog-close {
+    display: grid;
+    flex: 0 0 auto;
+
+    width: 40px;
+    height: 40px;
+    padding: 0;
+
+    place-items: center;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
+
+    cursor: pointer;
+}
+
+.activity-dialog-close:hover {
+    border-color: rgba(255, 100, 121, 0.4);
+
+    background: rgba(255, 100, 121, 0.08);
+    color: #ff9dac;
+}
+
+.activity-dialog-close svg {
+    width: 18px;
+    height: 18px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.activity-dialog-content {
+    display: grid;
+    padding: 24px;
+
+    gap: 22px;
+
+    overflow-y: auto;
+}
+
+.activity-dialog-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.activity-dialog-chip {
+    display: inline-flex;
+    min-height: 34px;
+    padding: 7px 10px;
+
+    gap: 7px;
+    align-items: center;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.035);
+    color: var(--muted-light);
+
+    font-size: 0.72rem;
+    font-weight: 750;
+}
+
+.activity-dialog-chip.is-goal {
+    border-color: rgba(0, 178, 55, 0.3);
+
+    background: rgba(0, 178, 55, 0.08);
+    color: var(--green-light);
+}
+
+.activity-dialog-chip svg {
+    width: 15px;
+    height: 15px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.activity-dialog-description {
+    color: var(--muted-light);
+    line-height: 1.75;
+}
+
+.activity-dialog-description> :first-child {
+    margin-top: 0;
+}
+
+.activity-dialog-description> :last-child {
+    margin-bottom: 0;
+}
+
+.activity-dialog-description a {
+    color: var(--green-light);
+    text-decoration: underline;
+}
+
+.activity-dialog-description h1,
+.activity-dialog-description h2,
+.activity-dialog-description h3 {
+    color: var(--text);
+}
+
+.activity-dialog-creators {
+    display: grid;
+    gap: 10px;
+}
+
+.activity-dialog-creators>strong {
+    font-size: 0.82rem;
+}
+
+.activity-dialog-creator-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.activity-dialog-creator {
+    display: inline-flex;
+    padding: 7px 11px 7px 7px;
+
+    gap: 8px;
+    align-items: center;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.activity-dialog-creator img {
+    width: 31px;
+    height: 31px;
+
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+.activity-dialog-creator span {
+    font-size: 0.76rem;
+    font-weight: 750;
+}
+
+.activity-dialog-goal {
+    padding: 17px;
+
+    border: 1px solid rgba(0, 178, 55, 0.28);
+    border-radius: 14px;
+
+    background: rgba(0, 178, 55, 0.07);
+}
+
+.activity-dialog-goal strong {
+    color: var(--green-light);
+}
+
+.activity-dialog-goal p {
+    margin: 6px 0 0;
+
+    color: var(--muted-light);
+    font-size: 0.82rem;
+}
+
+.activity-dialog-footer {
+    display: flex;
+    flex: 0 0 auto;
+    padding: 18px 24px;
+
+    gap: 9px;
+    align-items: center;
+
+    border-top: 1px solid var(--border);
+
+    background: rgba(0, 0, 0, 0.16);
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 800px) {
+    .calendar-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .calendar-legend {
+        justify-content: flex-start;
+    }
+
+    .public-program-calendar {
+        display: none;
+    }
+
+    .mobile-program-list {
+        display: grid;
+    }
+
+    .program-error {
+        grid-template-columns:
+            auto minmax(0, 1fr);
+    }
+
+    .program-error .button {
+        grid-column: 1 / -1;
+        justify-self: start;
+    }
+}
+
+@media (max-width: 560px) {
+    .program-main-section {
+        padding-block: 30px 70px;
+    }
+
+    .calendar-heading {
+        margin-bottom: 18px;
+    }
+
+    .calendar-legend {
+        gap: 8px 13px;
+    }
+
+    .activity-dialog {
+        width: calc(100% - 16px);
+        max-height: 94vh;
+
+        border-radius: 18px;
+    }
+
+    .activity-dialog-shell {
+        max-height: 94vh;
+    }
+
+    .activity-dialog-header,
+    .activity-dialog-content,
+    .activity-dialog-footer {
+        padding-inline: 17px;
+    }
+
+    .activity-dialog-footer {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .activity-dialog-footer .button {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   Animations
+   ========================================================= */
+
+@keyframes program-loading-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .program-loader {
+        animation-duration: 1.8s;
+    }
+
+    .calendar-entry,
+    .day-filter-button,
+    .creator-filter-button {
+        transition: none;
+    }
+}
