@@ -1126,7 +1126,6 @@ svg {
     line-height: 1.35;
 
     -webkit-box-orient: vertical;
-    line-clamp: 2;
     -webkit-line-clamp: 2;
 }
 
@@ -2471,5 +2470,86 @@ svg {
             50px minmax(0, 1fr);
 
         gap: 10px;
+    }
+}
+
+/* Logo principal du hero */
+
+.hero-side {
+    display: grid;
+    gap: 30px;
+    align-items: center;
+}
+
+.hero-logo-showcase {
+    position: relative;
+
+    display: grid;
+    min-height: 260px;
+
+    place-items: center;
+
+    overflow: hidden;
+}
+
+.hero-logo-showcase img {
+    position: relative;
+    z-index: 2;
+
+    width: min(82%, 410px);
+    max-height: 250px;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(0 25px 45px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 30px rgba(0, 178, 55, 0.16));
+}
+
+.hero-logo-glow {
+    position: absolute;
+
+    width: 290px;
+    height: 180px;
+
+    border-radius: 50%;
+
+    background: rgba(0, 178, 55, 0.16);
+
+    filter: blur(70px);
+    pointer-events: none;
+}
+
+@media (max-width: 1100px) {
+    .hero-side {
+        width: min(100%, 650px);
+    }
+
+    .hero-logo-showcase {
+        min-height: 210px;
+    }
+
+    .hero-logo-showcase img {
+        width: min(72%, 350px);
+        max-height: 200px;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero-side {
+        gap: 20px;
+    }
+
+    .hero-logo-showcase {
+        min-height: 150px;
+    }
+
+    .hero-logo-showcase img {
+        width: min(76%, 270px);
+        max-height: 145px;
+    }
+
+    .hero-logo-glow {
+        width: 210px;
+        height: 120px;
     }
 }
