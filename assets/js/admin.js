@@ -908,6 +908,16 @@
     }
   }
 
+  async function loadAdminStats() {
+    const data = await apiFetch(
+      getAdminStatsPath()
+    );
+
+    renderAdminStats(data);
+
+    return data;
+  }
+
   async function loadCreators() {
     const data =
       await apiFetch(
@@ -1186,4 +1196,4 @@
   );
 
   init();
-}) ();
+})();
