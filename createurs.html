@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
 
@@ -8,1077 +9,623 @@
     content="width=device-width, initial-scale=1"
   >
 
-  <title>Créateur — JEvent 26</title>
-
-  <style>
-    :root {
-      color-scheme: dark;
-
-      --background: #050b07;
-      --background-soft: #08110b;
-      --surface: rgba(15, 29, 19, 0.95);
-      --surface-light: rgba(24, 43, 29, 0.96);
-      --border: rgba(255, 255, 255, 0.1);
-      --text: #f4fff7;
-      --muted: #a8b8ad;
-      --green: #00b237;
-      --green-light: #38dc69;
-      --red: #ff647c;
-      --shadow:
-        0 24px 70px rgba(0, 0, 0, 0.36);
-
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      min-height: 100vh;
-      margin: 0;
-
-      background:
-        radial-gradient(
-          circle at 10% 0%,
-          rgba(0, 178, 55, 0.2),
-          transparent 34%
-        ),
-        linear-gradient(
-          180deg,
-          var(--background),
-          var(--background-soft)
-        );
-
-      color: var(--text);
-    }
-
-    img {
-      max-width: 100%;
-    }
-
-    [hidden] {
-      display: none !important;
-    }
-
-    .container {
-      width: min(
-        1100px,
-        calc(100% - 32px)
-      );
-
-      margin: 0 auto;
-      padding: 24px 0 80px;
-    }
-
-    .site-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 22px;
-
-      margin-bottom: 36px;
-      padding: 14px 0;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .brand-logo {
-      width: 64px;
-      height: 64px;
-      object-fit: contain;
-    }
-
-    .brand-title {
-      display: block;
-      font-size: 1.22rem;
-      font-weight: 900;
-    }
-
-    .brand-subtitle {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
-
-    .navigation {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .navigation a {
-      padding: 10px 14px;
-
-      border: 1px solid var(--border);
-      border-radius: 11px;
-
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 750;
-    }
-
-    .navigation a:hover {
-      border-color: var(--green);
-      background: rgba(0, 178, 55, 0.1);
-    }
-
-    .profile-header {
-      position: relative;
-      overflow: hidden;
-
-      margin-bottom: 24px;
-
-      border: 1px solid var(--border);
-      border-radius: 24px;
-
-      background: var(--surface);
-      box-shadow: var(--shadow);
-    }
-
-    .profile-banner {
-      position: relative;
-      min-height: 270px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(0, 178, 55, 0.28),
-          rgba(3, 12, 6, 0.95)
-        );
-    }
-
-    .stream-thumbnail {
-      display: block;
-      width: 100%;
-      height: 100%;
-      min-height: 270px;
-      max-height: 520px;
-      object-fit: cover;
-    }
-
-    .banner-overlay {
-      position: absolute;
-      inset: 0;
-
-      background:
-        linear-gradient(
-          180deg,
-          transparent 20%,
-          rgba(3, 10, 5, 0.88) 100%
-        );
-    }
-
-    .profile-identity {
-      position: relative;
-      z-index: 2;
-
-      display: flex;
-      align-items: flex-end;
-      gap: 19px;
-
-      margin-top: -64px;
-      padding: 0 26px 26px;
-    }
-
-    .creator-avatar {
-      width: 128px;
-      height: 128px;
-      flex: 0 0 auto;
-
-      border: 5px solid #0e1a12;
-      border-radius: 50%;
-      object-fit: cover;
-
-      background: var(--surface-light);
-    }
-
-    .identity-content {
-      min-width: 0;
-      padding-bottom: 8px;
-    }
-
-    .creator-name {
-      margin: 0;
-
-      font-size: clamp(
-        2rem,
-        6vw,
-        3.7rem
-      );
-
-      line-height: 1;
-      letter-spacing: -0.055em;
-    }
-
-    .creator-login {
-      margin: 8px 0 0;
-      color: var(--muted);
-    }
-
-    .live-line {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 9px;
-
-      margin-top: 13px;
-    }
-
-    .live-badge {
-      padding: 6px 9px;
-      border-radius: 7px;
-
-      background: var(--red);
-      color: white;
-
-      font-size: 0.74rem;
-      font-weight: 900;
-      text-transform: uppercase;
-    }
-
-    .offline-badge {
-      padding: 6px 9px;
-      border-radius: 7px;
-
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--muted);
-
-      font-size: 0.74rem;
-      font-weight: 850;
-    }
-
-    .viewer-count,
-    .game-name {
-      color: var(--muted);
-      font-size: 0.87rem;
-    }
-
-    .action-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 11px;
-
-      margin-top: 22px;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      min-height: 45px;
-      padding: 11px 18px;
-
-      border-radius: 11px;
-
-      background: var(--green);
-      color: #001c08;
-
-      text-decoration: none;
-      font-weight: 900;
-    }
-
-    .button:hover {
-      background: var(--green-light);
-    }
-
-    .button.secondary {
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-    }
-
-    .button.secondary:hover {
-      border-color: var(--green);
-      background: rgba(0, 178, 55, 0.1);
-    }
-
-    .button.disabled {
-      pointer-events: none;
-      opacity: 0.4;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns:
-        minmax(0, 1.35fr)
-        minmax(280px, 0.65fr);
-
-      gap: 24px;
-      align-items: start;
-    }
-
-    .card {
-      overflow: hidden;
-
-      border: 1px solid var(--border);
-      border-radius: 20px;
-
-      background: var(--surface);
-      box-shadow: var(--shadow);
-    }
-
-    .card-header {
-      padding: 20px 22px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .card-header h2 {
-      margin: 0;
-      letter-spacing: -0.025em;
-    }
-
-    .card-header p {
-      margin: 7px 0 0;
-      color: var(--muted);
-    }
-
-    .card-content {
-      padding: 22px;
-    }
-
-    .markdown-content {
-      line-height: 1.75;
-      overflow-wrap: anywhere;
-    }
-
-    .markdown-content > :first-child {
-      margin-top: 0;
-    }
-
-    .markdown-content > :last-child {
-      margin-bottom: 0;
-    }
-
-    .markdown-content h1,
-    .markdown-content h2,
-    .markdown-content h3,
-    .markdown-content h4 {
-      margin: 1.5em 0 0.55em;
-      line-height: 1.2;
-      letter-spacing: -0.035em;
-    }
-
-    .markdown-content strong {
-      color: #9dffba;
-    }
-
-    .markdown-content blockquote {
-      margin: 1.2em 0;
-      padding: 11px 16px;
-
-      border-left: 4px solid var(--green);
-      background: rgba(0, 178, 55, 0.08);
-      color: #d7e9dc;
-    }
-
-    .markdown-content code {
-      padding: 3px 6px;
-
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      color: #a8ffc1;
-
-      font-family:
-        "Cascadia Code",
-        Consolas,
-        monospace;
-    }
-
-    .markdown-content pre {
-      overflow: auto;
-      padding: 16px;
-
-      border: 1px solid var(--border);
-      border-radius: 12px;
-
-      background: #020704;
-    }
-
-    .markdown-content pre code {
-      padding: 0;
-      background: none;
-    }
-
-    .markdown-empty {
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    .live-information {
-      display: grid;
-      gap: 14px;
-    }
-
-    .information-row {
-      padding-bottom: 13px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .information-row:last-child {
-      padding-bottom: 0;
-      border-bottom: 0;
-    }
-
-    .information-label {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--muted);
-      font-size: 0.82rem;
-    }
-
-    .information-value {
-      display: block;
-      font-weight: 800;
-      line-height: 1.45;
-    }
-
-    .loading {
-      display: grid;
-      min-height: 65vh;
-      place-items: center;
-      text-align: center;
-      color: var(--muted);
-    }
-
-    .spinner {
-      width: 46px;
-      height: 46px;
-      margin: 0 auto 17px;
-
-      border: 4px solid
-        rgba(255, 255, 255, 0.1);
-
-      border-top-color: var(--green);
-      border-radius: 50%;
-
-      animation: spin 800ms linear infinite;
-    }
-
-    .error-state {
-      padding: 60px 22px;
-      text-align: center;
-      color: var(--muted);
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    @media (max-width: 850px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 650px) {
-      .site-header {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .profile-identity {
-        align-items: flex-start;
-        flex-direction: column;
-
-        margin-top: -55px;
-        padding: 0 19px 22px;
-      }
-
-      .creator-avatar {
-        width: 110px;
-        height: 110px;
-      }
-
-      .brand-logo {
-        width: 56px;
-        height: 56px;
-      }
-
-      .button {
-        width: 100%;
-      }
-    }
-  </style>
+  <meta
+    name="description"
+    content="Découvre les créateurs participant au JEvent 26, leurs directs et leurs cagnottes."
+  >
+
+  <meta
+    name="theme-color"
+    content="#030806"
+  >
+
+  <title>
+    Les créateurs — JEvent 26
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/home.css?v=6"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/createurs.css?v=2"
+  >
+
+  <script
+    src="/assets/js/createurs.js?v=2"
+    defer
+  ></script>
 </head>
 
 <body>
-  <div class="container">
-    <header class="site-header">
-      <a class="brand" href="/">
+  <a
+    class="skip-link"
+    href="#mainContent"
+  >
+    Aller au contenu
+  </a>
+
+  <!-- Navigation -->
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a
+        class="brand"
+        href="/"
+        aria-label="Accueil du JEvent 26"
+      >
         <img
           class="brand-logo"
           src="/assets/jevent_logo.png"
-          alt="Logo du JEvent 26"
+          alt=""
         >
 
-        <span>
-          <span class="brand-title">
-            JEvent 26
-          </span>
+        <span class="brand-copy">
+          <strong>JEvent 26</strong>
 
-          <span class="brand-subtitle">
+          <small>
             Association Petits Princes
-          </span>
+          </small>
         </span>
       </a>
 
+      <button
+        id="navigationToggle"
+        class="navigation-toggle"
+        type="button"
+        aria-label="Ouvrir le menu"
+        aria-controls="mainNavigation"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
       <nav
-        class="navigation"
+        id="mainNavigation"
+        class="main-navigation"
         aria-label="Navigation principale"
       >
-        <a href="/createurs.html">
-          Créateurs
+        <a href="/">
+          Accueil
         </a>
 
         <a href="/programme.html">
           Programme
         </a>
 
+        <a
+          class="is-active"
+          href="/createurs.html"
+        >
+          Créateurs
+        </a>
+
+        <a href="/#association">
+          L’association
+        </a>
+
+        <a
+          href="/#boutique"
+          data-shop-link
+        >
+          Boutique
+
+          <span
+            id="shopNavigationBadge"
+            class="navigation-badge"
+          >
+            12 oct.
+          </span>
+        </a>
+
+        <a
+          class="navigation-account"
+          href="/compte.html"
+        >
+          Mon compte
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="mainContent">
+    <!-- Présentation -->
+
+    <section class="creators-hero">
+      <div class="page-container creators-hero-layout">
+        <div class="creators-hero-copy">
+          <p class="eyebrow">
+            Les participants
+          </p>
+
+          <h1>
+            Les créateurs
+            <span>du JEvent 26</span>
+          </h1>
+
+          <p>
+            Découvre les streamers mobilisés pour
+            l’Association Petits Princes, retrouve leurs
+            directs et choisis la cagnotte que tu souhaites
+            soutenir.
+          </p>
+        </div>
+
+        <div class="creators-overview">
+          <article class="creator-stat-card">
+            <span>Créateurs</span>
+
+            <strong id="creatorsCount">
+              —
+            </strong>
+
+            <small>
+              participants au JEvent
+            </small>
+          </article>
+
+          <article class="creator-stat-card is-live">
+            <span>En direct</span>
+
+            <strong id="liveCreatorsCount">
+              —
+            </strong>
+
+            <small>
+              chaînes actuellement en live
+            </small>
+          </article>
+
+          <article class="creator-stat-card">
+            <span>Collectes</span>
+
+            <strong id="donationCreatorsCount">
+              —
+            </strong>
+
+            <small>
+              cagnottes disponibles
+            </small>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recherche et filtres -->
+
+    <section
+      class="creators-controls-section"
+      aria-label="Rechercher et filtrer les créateurs"
+    >
+      <div class="page-container">
+        <div class="creators-controls">
+          <div class="creator-search">
+            <span
+              class="creator-search-icon"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24">
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="7"
+                ></circle>
+
+                <path d="m16.5 16.5 4 4"></path>
+              </svg>
+            </span>
+
+            <input
+              id="creatorSearchInput"
+              type="search"
+              autocomplete="off"
+              placeholder="Rechercher un créateur…"
+              aria-label="Rechercher un créateur"
+            >
+
+            <button
+              id="clearSearchButton"
+              class="clear-search-button"
+              type="button"
+              aria-label="Effacer la recherche"
+              hidden
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M6 6l12 12M18 6 6 18"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div
+            class="creator-filter-list"
+            role="group"
+            aria-label="Filtrer les créateurs"
+          >
+            <button
+              class="creator-filter-button is-active"
+              type="button"
+              data-filter="all"
+              aria-pressed="true"
+            >
+              Tous
+
+              <span id="allFilterCount">
+                0
+              </span>
+            </button>
+
+            <button
+              class="creator-filter-button"
+              type="button"
+              data-filter="live"
+              aria-pressed="false"
+            >
+              <span
+                class="filter-live-dot"
+                aria-hidden="true"
+              ></span>
+
+              En direct
+
+              <span id="liveFilterCount">
+                0
+              </span>
+            </button>
+
+            <button
+              class="creator-filter-button"
+              type="button"
+              data-filter="offline"
+              aria-pressed="false"
+            >
+              Hors ligne
+
+              <span id="offlineFilterCount">
+                0
+              </span>
+            </button>
+
+            <button
+              class="creator-filter-button"
+              type="button"
+              data-filter="donation"
+              aria-pressed="false"
+            >
+              Dons disponibles
+
+              <span id="donationFilterCount">
+                0
+              </span>
+            </button>
+          </div>
+
+          <!-- Menu de tri personnalisé -->
+
+          <details
+            id="creatorSortMenu"
+            class="creator-sort-menu"
+          >
+            <summary>
+              <span
+                class="sort-menu-icon"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path d="M8 6h12M4 6h.01M8 12h8M4 12h.01M8 18h5M4 18h.01"></path>
+                </svg>
+              </span>
+
+              <span id="creatorSortLabel">
+                En direct d’abord
+              </span>
+
+              <svg
+                class="sort-menu-arrow"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="m7 9 5 5 5-5"></path>
+              </svg>
+            </summary>
+
+            <div class="creator-sort-options">
+              <button
+                class="creator-sort-option is-selected"
+                type="button"
+                data-sort="default"
+              >
+                <span>
+                  En direct d’abord
+                </span>
+
+                <small>
+                  Ordre officiel du JEvent
+                </small>
+              </button>
+
+              <button
+                class="creator-sort-option"
+                type="button"
+                data-sort="name"
+              >
+                <span>
+                  Nom de A à Z
+                </span>
+
+                <small>
+                  Classement alphabétique
+                </small>
+              </button>
+
+              <button
+                class="creator-sort-option"
+                type="button"
+                data-sort="viewers"
+              >
+                <span>
+                  Plus regardés
+                </span>
+
+                <small>
+                  Nombre de spectateurs
+                </small>
+              </button>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Liste -->
+
+    <section class="creators-list-section">
+      <div class="page-container">
+        <header class="creators-results-heading">
+          <div>
+            <p class="eyebrow">
+              Participants
+            </p>
+
+            <h2 id="creatorsResultsTitle">
+              Tous les créateurs
+            </h2>
+
+            <p id="creatorsResultsDescription">
+              Chargement de la liste…
+            </p>
+          </div>
+
+          <button
+            id="resetCreatorsFilters"
+            class="reset-creators-filters"
+            type="button"
+            hidden
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M4 7h11a5 5 0 1 1 0 10H9M4 7l4-4M4 7l4 4"
+              ></path>
+            </svg>
+
+            Tout afficher
+          </button>
+        </header>
+
+        <!-- Chargement -->
+
+        <div
+          id="creatorsLoading"
+          class="creators-loading"
+        >
+          <span
+            class="creators-loader"
+            aria-hidden="true"
+          ></span>
+
+          <strong>
+            Chargement des créateurs…
+          </strong>
+
+          <p>
+            Récupération des participants et des directs.
+          </p>
+        </div>
+
+        <!-- Erreur -->
+
+        <div
+          id="creatorsError"
+          class="creators-error"
+          hidden
+        >
+          <span class="creators-error-icon">
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 8v5M12 17h.01M10.3 3.6
+                   2.2 17.8a2 2 0 0 0 1.7 3h16.2
+                   a2 2 0 0 0 1.7-3L13.7 3.6
+                   a2 2 0 0 0-3.4 0Z"
+              ></path>
+            </svg>
+          </span>
+
+          <div>
+            <strong>
+              Impossible de charger les créateurs
+            </strong>
+
+            <p id="creatorsErrorMessage">
+              Réessaie dans quelques instants.
+            </p>
+          </div>
+
+          <button
+            id="retryCreatorsButton"
+            class="button button-secondary"
+            type="button"
+          >
+            Réessayer
+          </button>
+        </div>
+
+        <!-- Grille -->
+
+        <div
+          id="creatorsGrid"
+          class="creators-grid"
+          hidden
+        ></div>
+
+        <!-- Aucun résultat -->
+
+        <div
+          id="creatorsEmpty"
+          class="creators-empty"
+          hidden
+        >
+          <span class="creators-empty-icon">
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <circle
+                cx="11"
+                cy="11"
+                r="7"
+              ></circle>
+
+              <path d="m16.5 16.5 4 4"></path>
+            </svg>
+          </span>
+
+          <h3>
+            Aucun créateur trouvé
+          </h3>
+
+          <p>
+            Essaie une autre recherche ou retire les
+            filtres sélectionnés.
+          </p>
+
+          <button
+            id="emptyResetCreatorsButton"
+            class="button button-secondary"
+            type="button"
+          >
+            Réinitialiser les filtres
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Appel au don -->
+
+    <section class="creators-donation-section">
+      <div class="page-container">
+        <article class="creators-donation-card">
+          <div class="creators-donation-icon">
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 21s-7-4.6-7-11a4 4 0 0 1
+                   7-2.6A4 4 0 0 1 19 10c0 6.4-7
+                   11-7 11Z"
+              ></path>
+            </svg>
+          </div>
+
+          <div>
+            <p class="eyebrow">
+              Ensemble pour les rêves
+            </p>
+
+            <h2>
+              Soutiens la cagnotte d’un créateur
+            </h2>
+
+            <p>
+              Chaque collecte est reliée à l’équipe du
+              JEvent et soutient l’Association Petits
+              Princes.
+            </p>
+          </div>
+
+          <a
+            class="button button-primary"
+            href="/programme.html"
+          >
+            Découvrir le programme
+          </a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-container footer-layout">
+      <div class="footer-brand">
+        <img
+          src="/assets/jevent_logo.png"
+          alt=""
+        >
+
+        <div>
+          <strong>JEvent 26</strong>
+
+          <span>
+            Au profit de l’Association Petits Princes
+          </span>
+        </div>
+      </div>
+
+      <nav
+        class="footer-navigation"
+        aria-label="Navigation de pied de page"
+      >
         <a href="/">
           Accueil
         </a>
+
+        <a href="/programme.html">
+          Programme
+        </a>
+
+        <a href="/createurs.html">
+          Créateurs
+        </a>
+
+        <a href="/#association">
+          Association
+        </a>
+
+        <a
+          href="/#boutique"
+          data-shop-link
+        >
+          Boutique
+        </a>
       </nav>
-    </header>
 
-    <main>
-      <section
-        id="loading"
-        class="loading"
-      >
-        <div>
-          <div
-            class="spinner"
-            aria-hidden="true"
-          ></div>
-
-          <p>
-            Chargement du profil…
-          </p>
-        </div>
-      </section>
-
-      <div id="profile" hidden>
-        <section class="profile-header">
-          <div
-            id="profileBanner"
-            class="profile-banner"
-          >
-            <div
-              id="bannerOverlay"
-              class="banner-overlay"
-            ></div>
-          </div>
-
-          <div class="profile-identity">
-            <img
-              id="creatorAvatar"
-              class="creator-avatar"
-              src="/assets/jevent_logo.png"
-              alt=""
-            >
-
-            <div class="identity-content">
-              <h1
-                id="creatorName"
-                class="creator-name"
-              >
-                Créateur
-              </h1>
-
-              <p
-                id="creatorLogin"
-                class="creator-login"
-              ></p>
-
-              <div
-                id="liveLine"
-                class="live-line"
-              ></div>
-
-              <div class="action-row">
-                <a
-                  id="twitchButton"
-                  class="button secondary"
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Voir la chaîne Twitch
-                </a>
-
-                <a
-                  id="donationButton"
-                  class="button"
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Faire un don
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div class="layout">
-          <section class="card">
-            <div class="card-header">
-              <h2>À propos</h2>
-
-              <p>
-                Présentation du créateur pour le JEvent 26.
-              </p>
-            </div>
-
-            <div class="card-content">
-              <div
-                id="description"
-                class="markdown-content"
-              ></div>
-            </div>
-          </section>
-
-          <aside class="card">
-            <div class="card-header">
-              <h2>La chaîne</h2>
-            </div>
-
-            <div class="card-content">
-              <div
-                id="liveInformation"
-                class="live-information"
-              ></div>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/marked@18.0.12/lib/marked.umd.js"
-  ></script>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/dompurify@3.4.15/dist/purify.min.js"
-  ></script>
-
-  <script>
-    const API_URL =
-      "https://api-beta.jevent.julot.fr";
-
-    const loading =
-      document.querySelector("#loading");
-
-    const profile =
-      document.querySelector("#profile");
-
-    const profileBanner =
-      document.querySelector("#profileBanner");
-
-    const creatorAvatar =
-      document.querySelector("#creatorAvatar");
-
-    const creatorName =
-      document.querySelector("#creatorName");
-
-    const creatorLogin =
-      document.querySelector("#creatorLogin");
-
-    const liveLine =
-      document.querySelector("#liveLine");
-
-    const twitchButton =
-      document.querySelector("#twitchButton");
-
-    const donationButton =
-      document.querySelector("#donationButton");
-
-    const description =
-      document.querySelector("#description");
-
-    const liveInformation =
-      document.querySelector(
-        "#liveInformation"
-      );
-
-    function getSlug() {
-      const url = new URL(
-        window.location.href
-      );
-
-      return url.searchParams.get("slug");
-    }
-
-    function formatNumber(value) {
-      return new Intl.NumberFormat(
-        "fr-FR"
-      ).format(Number(value ?? 0));
-    }
-
-    function formatDate(value) {
-      if (!value) {
-        return "—";
-      }
-
-      const date = new Date(value);
-
-      if (Number.isNaN(date.getTime())) {
-        return "—";
-      }
-
-      return new Intl.DateTimeFormat(
-        "fr-FR",
-        {
-          dateStyle: "medium",
-          timeStyle: "short",
-          timeZone: "Europe/Paris"
-        }
-      ).format(date);
-    }
-
-    function makeTextElement(
-      tagName,
-      className,
-      text
-    ) {
-      const element =
-        document.createElement(tagName);
-
-      element.className = className;
-      element.textContent = text;
-
-      return element;
-    }
-
-    function renderMarkdown(markdown) {
-      const source =
-        String(markdown ?? "").trim();
-
-      if (!source) {
-        description.replaceChildren();
-
-        const empty =
-          makeTextElement(
-            "p",
-            "markdown-empty",
-            "Ce créateur n’a pas encore publié de description."
-          );
-
-        description.append(empty);
-        return;
-      }
-
-      if (
-        typeof window.marked ===
-          "undefined" ||
-        typeof window.DOMPurify ===
-          "undefined"
-      ) {
-        description.textContent = source;
-        return;
-      }
-
-      const rendered =
-        window.marked.parse(source, {
-          gfm: true,
-          breaks: true
-        });
-
-      const cleaned =
-        window.DOMPurify.sanitize(
-          rendered,
-          {
-            ALLOWED_TAGS: Array.of(
-              "p",
-              "br",
-              "strong",
-              "em",
-              "del",
-              "h1",
-              "h2",
-              "h3",
-              "h4",
-              "ul",
-              "ol",
-              "li",
-              "blockquote",
-              "pre",
-              "code",
-              "hr"
-            ),
-
-            ALLOWED_ATTR: Array.of(),
-
-            ALLOW_DATA_ATTR: false,
-            ALLOW_ARIA_ATTR: false,
-            SANITIZE_NAMED_PROPS: true
-          }
-        );
-
-      description.innerHTML = cleaned;
-    }
-
-    function addInformation(
-      label,
-      value
-    ) {
-      const row =
-        document.createElement("div");
-
-      row.className = "information-row";
-
-      row.append(
-        makeTextElement(
-          "span",
-          "information-label",
-          label
-        ),
-
-        makeTextElement(
-          "span",
-          "information-value",
-          value
-        )
-      );
-
-      liveInformation.append(row);
-    }
-
-    function renderLiveInformation(
-      creator
-    ) {
-      liveLine.replaceChildren();
-      liveInformation.replaceChildren();
-
-      if (creator.isLive && creator.live) {
-        liveLine.append(
-          makeTextElement(
-            "span",
-            "live-badge",
-            "En direct"
-          ),
-
-          makeTextElement(
-            "span",
-            "viewer-count",
-            `${formatNumber(
-              creator.live.viewerCount
-            )} spectateur${
-              Number(
-                creator.live.viewerCount
-              ) > 1
-                ? "s"
-                : ""
-            }`
-          ),
-
-          makeTextElement(
-            "span",
-            "game-name",
-            creator.live.gameName ||
-              "Catégorie inconnue"
-          )
-        );
-
-        addInformation(
-          "Titre du direct",
-          creator.live.title ||
-            "Live du JEvent 26"
-        );
-
-        addInformation(
-          "Catégorie",
-          creator.live.gameName || "—"
-        );
-
-        addInformation(
-          "Spectateurs",
-          formatNumber(
-            creator.live.viewerCount
-          )
-        );
-
-        addInformation(
-          "Démarré le",
-          formatDate(
-            creator.live.startedAt
-          )
-        );
-
-        if (creator.live.thumbnailUrl) {
-          const thumbnail =
-            document.createElement("img");
-
-          thumbnail.className =
-            "stream-thumbnail";
-
-          thumbnail.src =
-            creator.live.thumbnailUrl;
-
-          thumbnail.alt =
-            `Aperçu du live de ` +
-            creator.twitchDisplayName;
-
-          profileBanner.prepend(
-            thumbnail
-          );
-        }
-      } else {
-        liveLine.append(
-          makeTextElement(
-            "span",
-            "offline-badge",
-            "Hors ligne"
-          )
-        );
-
-        addInformation(
-          "Statut",
-          "La chaîne est actuellement hors ligne."
-        );
-      }
-    }
-
-    function fillProfile(creator) {
-      document.title =
-        `${creator.twitchDisplayName} — JEvent 26`;
-
-      creatorAvatar.src =
-        creator.twitchProfileImageUrl ||
-        "/assets/jevent_logo.png";
-
-      creatorAvatar.alt =
-        `Avatar de ` +
-        creator.twitchDisplayName;
-
-      creatorName.textContent =
-        creator.twitchDisplayName;
-
-      creatorLogin.textContent =
-        `@${creator.twitchLogin}`;
-
-      twitchButton.href =
-        creator.twitchUrl;
-
-      if (creator.donationUrl) {
-        donationButton.href =
-          creator.donationUrl;
-
-        donationButton.classList.remove(
-          "disabled"
-        );
-
-        donationButton.removeAttribute(
-          "aria-disabled"
-        );
-      } else {
-        donationButton.href = "#";
-
-        donationButton.classList.add(
-          "disabled"
-        );
-
-        donationButton.setAttribute(
-          "aria-disabled",
-          "true"
-        );
-      }
-
-      renderMarkdown(
-        creator.descriptionMarkdown
-      );
-
-      renderLiveInformation(creator);
-    }
-
-    async function loadProfile() {
-      const slug = getSlug();
-
-      if (!slug) {
-        throw new Error(
-          "Aucun créateur n’a été sélectionné."
-        );
-      }
-
-      const response = await fetch(
-        API_URL +
-        "/api/creators/" +
-        encodeURIComponent(slug)
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error ??
-          `Erreur HTTP ${response.status}`
-        );
-      }
-
-      fillProfile(data.creator);
-
-      loading.hidden = true;
-      profile.hidden = false;
-    }
-
-    loadProfile().catch(error => {
-      loading.replaceChildren();
-
-      const state =
-        document.createElement("div");
-
-      state.className = "error-state";
-
-      const title =
-        document.createElement("h1");
-
-      title.textContent =
-        "Profil indisponible";
-
-      const message =
-        document.createElement("p");
-
-      message.textContent =
-        error.message;
-
-      const back =
-        document.createElement("a");
-
-      back.className =
-        "button secondary";
-
-      back.href = "/createurs.html";
-      back.textContent =
-        "Voir les créateurs";
-
-      state.append(
-        title,
-        message,
-        back
-      );
-
-      loading.append(state);
-    });
-  </script>
+      <p class="footer-legal">
+        © 2026 JEvent
+      </p>
+    </div>
+  </footer>
 </body>
+
 </html>
