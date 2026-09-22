@@ -867,36 +867,45 @@
         Number(value ?? 0) / 100
       );
 
-    elements.statsRaisedAmount.textContent =
-      formatMoney(overview.raisedCents);
+    if (elements.statsGoalsCount) {
+      elements.statsGoalsCount.textContent =
+        formatNumber(overview.goals);
+    }
 
-    elements.statsGoalsCount.textContent =
-      formatNumber(overview.goals);
+    if (elements.statsProgramEntriesCount) {
+      elements.statsProgramEntriesCount.textContent =
+        formatNumber(
+          overview.programEntries
+        );
+    }
 
-    elements.statsProgramEntriesCount.textContent =
-      formatNumber(
-        overview.programEntries
-      );
+    if (elements.statsStreamlabsCount) {
+      elements.statsStreamlabsCount.textContent =
+        formatNumber(
+          overview.streamlabsConfigured
+        );
+    }
 
-    elements.statsStreamlabsCount.textContent =
-      formatNumber(
-        overview.streamlabsConfigured
-      );
+    if (elements.statsMessagesCount) {
+      elements.statsMessagesCount.textContent =
+        formatNumber(
+          overview.messages
+        );
+    }
 
-    elements.statsMessagesCount.textContent =
-      formatNumber(overview.messages);
+    if (elements.statsEmotesCount) {
+      elements.statsEmotesCount.textContent =
+        formatNumber(
+          overview.emotes
+        );
+    }
 
-    elements.statsEmotesCount.textContent =
-      formatNumber(overview.emotes);
-
-  async function loadAdminStats() {
-    const data = await apiFetch(
-      getAdminStatsPath()
-    );
-
-    renderAdminStats(data);
-
-    return data;
+    if (elements.statsRaisedAmount) {
+      elements.statsRaisedAmount.textContent =
+        formatMoney(
+          overview.raisedCents
+        );
+    }
   }
 
   async function loadCreators() {
@@ -1177,4 +1186,4 @@
   );
 
   init();
-}})();
+}) ();
