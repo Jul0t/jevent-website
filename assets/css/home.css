@@ -2483,7 +2483,7 @@ svg {
 
 .hero-logo-showcase {
     position: relative;
-    transform: translateY(-30px);
+    transform: translateY(-100px);
 
     display: flex;
     min-height: 275px;
