@@ -2141,3 +2141,354 @@
 .calendar-event.is-compact .calendar-event-condition {
     display: none;
 }
+
+/* =========================================================
+   Nouvelle fenêtre de détails
+   ========================================================= */
+
+.activity-dialog {
+    width: min(calc(100% - 30px),
+            760px);
+
+    border-color:
+        rgba(108, 245, 143, 0.18);
+
+    background:
+        linear-gradient(145deg,
+            #09150e,
+            #061009);
+}
+
+.activity-dialog-header {
+    padding: 27px 30px;
+
+    background:
+        radial-gradient(circle at 100% 0,
+            rgba(0, 178, 55, 0.18),
+            transparent 21rem),
+        rgba(255, 255, 255, 0.015);
+}
+
+.activity-dialog-header .eyebrow {
+    width: fit-content;
+    margin-bottom: 10px;
+    padding: 6px 9px;
+
+    border: 1px solid rgba(0, 178, 55, 0.28);
+
+    border-radius: 999px;
+
+    background:
+        rgba(0, 178, 55, 0.09);
+
+    font-size: 0.68rem;
+}
+
+.activity-dialog-header h2 {
+    max-width: 600px;
+
+    font-size: clamp(1.7rem,
+            5vw,
+            2.4rem);
+
+    letter-spacing: -0.045em;
+}
+
+.activity-dialog-close {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+}
+
+/* Contenu */
+
+.activity-dialog-content {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    padding: 26px 30px;
+    gap: 14px;
+}
+
+/* Créateurs */
+
+.activity-creators {
+    display: grid;
+    grid-column: 1 / -1;
+
+    gap: 10px;
+}
+
+.activity-creators-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit,
+            minmax(210px, 1fr));
+
+    gap: 10px;
+}
+
+.activity-creator {
+    display: grid;
+
+    grid-template-columns:
+        52px minmax(0, 1fr) auto;
+
+    min-width: 0;
+    padding: 10px;
+
+    gap: 12px;
+    align-items: center;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        transform 150ms ease;
+}
+
+.activity-creator:hover {
+    border-color:
+        rgba(0, 178, 55, 0.45);
+
+    background:
+        rgba(0, 178, 55, 0.08);
+
+    transform: translateY(-2px);
+}
+
+.activity-creator img,
+.activity-creator-avatar {
+    display: block;
+
+    width: 52px;
+    height: 52px;
+
+    border: 2px solid rgba(0, 178, 55, 0.32);
+
+    border-radius: 50%;
+
+    background: var(--surface-lighter);
+    object-fit: cover;
+}
+
+.activity-creator-copy {
+    display: grid;
+    min-width: 0;
+}
+
+.activity-creator-copy strong {
+    overflow: hidden;
+
+    color: var(--text);
+
+    font-size: 0.9rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.activity-creator-copy span {
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 0.71rem;
+    font-weight: 700;
+}
+
+.activity-creator-arrow {
+    display: grid;
+
+    width: 28px;
+    height: 28px;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    color: var(--muted);
+}
+
+.activity-creator:hover .activity-creator-arrow {
+    background:
+        rgba(0, 178, 55, 0.14);
+
+    color: var(--green-light);
+}
+
+.activity-creator-arrow svg {
+    width: 15px;
+    height: 15px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Informations */
+
+.activity-detail-row {
+    display: grid;
+    min-width: 0;
+    padding: 15px;
+
+    gap: 6px;
+
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.activity-detail-label {
+    color: var(--muted);
+
+    font-size: 0.66rem;
+    font-weight: 850;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.activity-detail-value {
+    color: var(--text);
+
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.45;
+}
+
+/* Description */
+
+.activity-description {
+    grid-column: 1 / -1;
+
+    padding: 18px 20px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.022);
+
+    color: var(--muted-light);
+    line-height: 1.75;
+}
+
+.activity-description::before {
+    display: block;
+    margin-bottom: 10px;
+
+    color: var(--muted);
+
+    content: "DESCRIPTION";
+
+    font-size: 0.66rem;
+    font-weight: 850;
+
+    letter-spacing: 0.08em;
+}
+
+/* Objectif associé */
+
+.activity-goal-card {
+    display: grid;
+    grid-column: 1 / -1;
+
+    padding: 17px 19px;
+
+    gap: 6px;
+
+    border: 1px solid rgba(0, 178, 55, 0.3);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(0, 178, 55, 0.11),
+            rgba(0, 178, 55, 0.035));
+}
+
+.activity-goal-heading {
+    display: flex;
+
+    gap: 8px;
+    align-items: center;
+
+    color: var(--green-light);
+}
+
+.activity-goal-amount {
+    font-size: 1.4rem;
+    font-weight: 900;
+}
+
+.activity-goal-card small {
+    color: var(--muted-light);
+}
+
+.activity-goal-card.is-reached {
+    border-color:
+        rgba(108, 245, 143, 0.55);
+}
+
+/* Pied de la popup */
+
+.activity-dialog-footer {
+    padding: 18px 30px;
+
+    background:
+        rgba(0, 0, 0, 0.22);
+}
+
+/* Mobile */
+
+@media (max-width: 650px) {
+
+    .activity-dialog-header,
+    .activity-dialog-content,
+    .activity-dialog-footer {
+        padding-inline: 18px;
+    }
+
+    .activity-dialog-content {
+        grid-template-columns: 1fr;
+    }
+
+    .activity-creators,
+    .activity-description,
+    .activity-goal-card {
+        grid-column: auto;
+    }
+
+    .activity-creators-list {
+        grid-template-columns: 1fr;
+    }
+
+    .activity-creator {
+        grid-template-columns:
+            46px minmax(0, 1fr) auto;
+    }
+
+    .activity-creator img,
+    .activity-creator-avatar {
+        width: 46px;
+        height: 46px;
+    }
+}

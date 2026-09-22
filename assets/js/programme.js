@@ -504,6 +504,43 @@
         );
     }
 
+    const CATEGORY_LABELS = {
+        gaming: "Jeu vidéo",
+        talk: "Discussion",
+        challenge: "Défi",
+        creative: "Créatif",
+        charity: "Caritatif",
+        community: "Communauté",
+        special: "Spécial",
+        other: "Autre"
+    };
+
+    function formatCategory(value) {
+        const category =
+            String(value ?? "")
+                .trim()
+                .toLowerCase();
+
+        if (!category) {
+            return "Programme";
+        }
+
+        if (CATEGORY_LABELS[category]) {
+            return CATEGORY_LABELS[category];
+        }
+
+        const fallback =
+            category.replace(
+                /[_-]+/g,
+                " "
+            );
+
+        return (
+            fallback.charAt(0).toUpperCase() +
+            fallback.slice(1)
+        );
+    }
+
     function creatorName(creator) {
         return (
             creator?.twitchDisplayName ??
@@ -2121,7 +2158,7 @@
                 "span",
                 "activity-detail-label",
                 entryCreators.length > 1
-                    ? "Créateurs"
+                    ? "Créateurs participants"
                     : "Créateur"
             )
         );
@@ -2148,22 +2185,55 @@
             const avatar =
                 createElement(
                     "img",
-                    ""
+                    "activity-creator-avatar"
                 );
 
             avatar.src =
                 creatorAvatar(creator);
 
-            avatar.alt = "";
+            avatar.alt =
+                `Avatar de ${creatorName(creator)
+                }`;
 
-            link.append(
-                avatar,
+            const identity =
+                createElement(
+                    "div",
+                    "activity-creator-copy"
+                );
 
+            identity.append(
                 createElement(
                     "strong",
                     "",
                     creatorName(creator)
+                ),
+
+                createElement(
+                    "span",
+                    "",
+                    "Voir sa page"
                 )
+            );
+
+            const arrow =
+                createElement(
+                    "span",
+                    "activity-creator-arrow"
+                );
+
+            arrow.innerHTML = `
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+                <path d="m9 5 7 7-7 7"></path>
+            </svg>
+        `;
+
+            link.append(
+                avatar,
+                identity,
+                arrow
             );
 
             list.append(link);
@@ -2261,9 +2331,8 @@
         elements.dialogEyebrow.textContent =
             entry.isFallback
                 ? "Activité de remplacement"
-                : (
-                    entry.category ||
-                    "Programme"
+                : formatCategory(
+                    entry.category
                 );
 
         elements.dialogContent
@@ -2290,7 +2359,9 @@
         if (entry.category) {
             appendDialogDetail(
                 "Catégorie",
-                entry.category
+                formatCategory(
+                    entry.category
+                )
             );
         }
 
