@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Créateur — JEvent 26</title>
-  <link rel="stylesheet" href="/assets/css/createur.css?v=2" />
+  <link rel="stylesheet" href="/assets/css/createur.css?v=3" />
 </head>
 
 <body>
@@ -50,21 +50,21 @@
                   <p id="creatorLogin"></p>
                 </div>
 
-              <div id="liveStatus" class="live-status"></div>
+                <div id="liveStatus" class="live-status"></div>
 
-              <div class="profile-actions">
-                <a id="twitchButton" class="button button-secondary" href="#" target="_blank"
-                  rel="noopener noreferrer">Voir sur Twitch</a>
-                <a id="donationButton" class="button button-primary" href="#" target="_blank"
-                  rel="noopener noreferrer">Faire un don</a>
+                <div class="profile-actions">
+                  <a id="twitchButton" class="button button-secondary" href="#" target="_blank"
+                    rel="noopener noreferrer">Voir sur Twitch</a>
+                  <a id="donationButton" class="button button-primary" href="#" target="_blank"
+                    rel="noopener noreferrer">Faire un don</a>
+                </div>
               </div>
             </div>
-          </div>
         </section>
 
         <div class="profile-grid">
           <div class="main-column">
-            
+
             <!-- Description -->
             <section class="content-card">
               <header class="card-heading card-heading-row">
@@ -150,6 +150,37 @@
                 </header>
                 <div id="liveInformation" class="information-list"></div>
               </section>
+              <!-- Cagnotte du créateur -->
+              <section id="creatorFundraisingCard" class="content-card creator-fundraising-card" hidden>
+                <header class="card-heading">
+                  <div>
+                    <p class="eyebrow">
+                      Collecte personnelle
+                    </p>
+
+                    <h2>Cagnotte du créateur</h2>
+                  </div>
+                </header>
+
+                <div class="creator-fundraising-content">
+                  <span class="creator-fundraising-label">
+                    Montant collecté
+                  </span>
+
+                  <strong id="creatorRaisedAmount">
+                    0 €
+                  </strong>
+
+                  <p id="creatorRaisedState">
+                    Collectés pour l’Association Petits Princes.
+                  </p>
+
+                  <a id="creatorFundraisingButton" class="button button-primary" href="#" target="_blank"
+                    rel="noopener noreferrer">
+                    Contribuer à la cagnotte
+                  </a>
+                </div>
+              </section>
               <section class="content-card goals-card">
                 <header class="card-heading">
                   <div>
@@ -178,6 +209,48 @@
         </div>
     </main>
   </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="/assets/jevent_logo.png" alt="">
+
+        <div>
+          <strong>JEvent 26</strong>
+
+          <span>
+            Au profit de l’Association Petits Princes
+          </span>
+        </div>
+      </div>
+
+      <nav class="footer-navigation" aria-label="Navigation de pied de page">
+        <a href="/">
+          Accueil
+        </a>
+
+        <a href="/programme.html">
+          Programme
+        </a>
+
+        <a href="/createurs.html">
+          Créateurs
+        </a>
+
+        <a href="/#association">
+          Association
+        </a>
+
+        <a href="/#boutique">
+          Boutique
+        </a>
+      </nav>
+
+      <p class="footer-legal">
+        © 2026 JEvent
+      </p>
+    </div>
+  </footer>
 
   <!-- Détails d’une activité -->
   <dialog id="programDetailsDialog" class="program-details-dialog">
@@ -320,7 +393,7 @@
   <script src="https://cdn.jsdelivr.net/npm/marked@18.0.12/lib/marked.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.15/dist/purify.min.js"></script>
   <script src="/assets/js/createur-calendar.js?v=2"></script>
-  <script src="/assets/js/createur.js?v=5"></script>
+  <script src="/assets/js/createur.js?v=6"></script>
 </body>
 
 </html>

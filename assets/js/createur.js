@@ -20,6 +20,10 @@
     donationButton: $("#donationButton"),
     description: $("#description"),
     liveInformation: $("#liveInformation"),
+    creatorFundraisingCard: $("#creatorFundraisingCard"),
+    creatorRaisedAmount: $("#creatorRaisedAmount"),
+    creatorRaisedState: $("#creatorRaisedState"),
+    creatorFundraisingButton: $("#creatorFundraisingButton"),
     programList: $("#programList"),
     programEmpty: $("#programEmpty"),
     editProgramButton: $("#editProgramButton"),
@@ -216,6 +220,63 @@
     addInfo("Catégorie", live.gameName || "—");
     addInfo("Spectateurs", fmtNumber(live.viewerCount || 0));
     addInfo("Démarré le", fmtDate(live.startedAt));
+  }
+
+  function renderFundraising() {
+    if (
+      !elements.creatorFundraisingCard ||
+      !creator
+    ) {
+      return;
+    }
+
+    const raisedCents =
+      Number(creator.raisedCents);
+
+    const available =
+      creator.raisedAvailable === true &&
+      Number.isFinite(raisedCents);
+
+    elements.creatorFundraisingCard.hidden =
+      !available;
+
+    if (!available) {
+      return;
+    }
+
+    if (elements.creatorRaisedAmount) {
+      elements.creatorRaisedAmount.textContent =
+        fmtMoney(
+          raisedCents,
+          "EUR"
+        );
+    }
+
+    if (elements.creatorRaisedState) {
+      elements.creatorRaisedState.textContent =
+        raisedCents > 0
+          ? (
+            "Collectés pour l’Association " +
+            "Petits Princes."
+          )
+          : (
+            "La collecte est ouverte. " +
+            "Sois le premier à participer !"
+          );
+    }
+
+    if (elements.creatorFundraisingButton) {
+      if (creator.donationUrl) {
+        elements.creatorFundraisingButton.href =
+          creator.donationUrl;
+
+        elements.creatorFundraisingButton.hidden =
+          false;
+      } else {
+        elements.creatorFundraisingButton.hidden =
+          true;
+      }
+    }
   }
 
   function addInfo(label, value) {
@@ -641,9 +702,10 @@
     if (elements.editProgramButton) {
       elements.editProgramButton.hidden = !canManage;
     }
-    
+
     renderTwitchPlayer();
     renderLive();
+    renderFundraising();
     renderGoals();
   }
 

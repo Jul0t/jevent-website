@@ -1826,3 +1826,208 @@ iframe.twitch-player {
 .calendar-event-condition {
   display: none;
 }
+
+/* =========================================================
+   Position du pseudo
+   ========================================================= */
+
+.profile-title-line {
+  display: grid;
+  gap: 3px;
+}
+
+#creatorLogin {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* =========================================================
+   Cagnotte du créateur
+   ========================================================= */
+
+.creator-fundraising-card {
+  border-color:
+    rgba(0, 178, 55, 0.3);
+
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgba(0, 178, 55, 0.14),
+      transparent 16rem
+    ),
+    rgba(14, 26, 18, 0.96);
+}
+
+.creator-fundraising-content {
+  display: grid;
+  padding: 22px;
+
+  gap: 7px;
+}
+
+.creator-fundraising-label {
+  color: var(--muted);
+
+  font-size: 0.7rem;
+  font-weight: 850;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#creatorRaisedAmount {
+  margin-top: 2px;
+
+  color: var(--green2);
+
+  font-size: clamp(
+    2rem,
+    4vw,
+    2.8rem
+  );
+
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+#creatorRaisedState {
+  margin: 5px 0 15px;
+
+  color: var(--muted);
+
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+#creatorFundraisingButton {
+  width: 100%;
+}
+
+/* =========================================================
+   Footer public
+   ========================================================= */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+
+  background: #020503;
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns:
+    auto minmax(0, 1fr) auto;
+
+  width: min(
+    1180px,
+    calc(100% - 32px)
+  );
+
+  margin-inline: auto;
+  padding-block: 34px;
+
+  gap: 32px;
+  align-items: center;
+}
+
+.footer-brand {
+  display: flex;
+
+  gap: 11px;
+  align-items: center;
+}
+
+.footer-brand img {
+  width: 44px;
+  height: 44px;
+
+  object-fit: contain;
+}
+
+.footer-brand > div {
+  display: grid;
+}
+
+.footer-brand strong {
+  font-size: 0.9rem;
+}
+
+.footer-brand span {
+  margin-top: 2px;
+
+  color: var(--muted);
+
+  font-size: 0.7rem;
+}
+
+.footer-navigation {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 18px;
+  justify-content: center;
+}
+
+.footer-navigation a {
+  color: var(--muted);
+
+  font-size: 0.78rem;
+  font-weight: 750;
+  text-decoration: none;
+
+  transition: color 150ms ease;
+}
+
+.footer-navigation a:hover {
+  color: var(--green2);
+}
+
+.footer-legal {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 0.7rem;
+  text-align: right;
+}
+
+@media (max-width: 800px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+
+    justify-items: center;
+    text-align: center;
+  }
+
+  .footer-legal {
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .profile-title-line {
+    justify-items: center;
+  }
+
+  #creatorLogin {
+    text-align: center;
+  }
+
+  .creator-fundraising-content {
+    padding: 19px;
+  }
+
+  #creatorRaisedAmount {
+    font-size: 2.15rem;
+  }
+
+  .footer-navigation {
+    gap: 12px 18px;
+  }
+}
