@@ -1959,7 +1959,7 @@
         badges.length > 1
           ? "s"
           : ""
-      } présenté${
+      } attribué${
         badges.length > 1
           ? "s"
           : ""
