@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Consulte tes rôles, tes statistiques privées et tes badges du JEvent 26."
+  >
+
+  <meta
+    name="theme-color"
+    content="#030806"
+  >
+
+  <title>
+    Mon compte — JEvent 26
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/home.css?v=6"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/compte.css?v=1"
+  >
+
+  <script
+    src="/assets/js/compte.js?v=1"
+    defer
+  ></script>
+</head>
+
+<body>
+  <a
+    class="skip-link"
+    href="#mainContent"
+  >
+    Aller au contenu
+  </a>
+
+  <!-- Navigation -->
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a
+        class="brand"
+        href="/"
+        aria-label="Accueil du JEvent 26"
+      >
+        <img
+          class="brand-logo"
+          src="/assets/jevent_logo.png"
+          alt=""
+        >
+
+        <span class="brand-copy">
+          <strong>JEvent 26</strong>
+
+          <small>
+            Association Petits Princes
+          </small>
+        </span>
+      </a>
+
+      <button
+        id="navigationToggle"
+        class="navigation-toggle"
+        type="button"
+        aria-label="Ouvrir le menu"
+        aria-controls="mainNavigation"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav
+        id="mainNavigation"
+        class="main-navigation"
+        aria-label="Navigation principale"
+      >
+        <a href="/">
+          Accueil
+        </a>
+
+        <a href="/programme.html">
+          Programme
+        </a>
+
+        <a href="/createurs.html">
+          Créateurs
+        </a>
+
+        <a href="/#association">
+          L’association
+        </a>
+
+        <a
+          href="/#boutique"
+          data-shop-link
+        >
+          Boutique
+
+          <span
+            id="shopNavigationBadge"
+            class="navigation-badge"
+          >
+            12 oct.
+          </span>
+        </a>
+
+        <a
+          class="navigation-account is-active"
+          href="/compte.html"
+        >
+          Mon compte
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="mainContent">
+    <!-- Chargement -->
+
+    <section
+      id="accountLoading"
+      class="account-state"
+    >
+      <span
+        class="account-loader"
+        aria-hidden="true"
+      ></span>
+
+      <strong>
+        Chargement de ton compte…
+      </strong>
+
+      <p>
+        Récupération de tes rôles, statistiques et badges.
+      </p>
+    </section>
+
+    <!-- Erreur -->
+
+    <section
+      id="accountError"
+      class="account-state account-error"
+      hidden
+    >
+      <span class="account-state-icon">
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="M12 8v5M12 17h.01M10.3 3.6
+               2.2 17.8a2 2 0 0 0 1.7 3h16.2
+               a2 2 0 0 0 1.7-3L13.7 3.6
+               a2 2 0 0 0-3.4 0Z"
+          ></path>
+        </svg>
+      </span>
+
+      <h1>
+        Impossible de charger ton compte
+      </h1>
+
+      <p id="accountErrorMessage">
+        Une erreur est survenue.
+      </p>
+
+      <div class="account-state-actions">
+        <button
+          id="retryAccountButton"
+          class="button button-secondary"
+          type="button"
+        >
+          Réessayer
+        </button>
+
+        <a
+          id="accountLoginButton"
+          class="button button-primary"
+          href="https://api-beta.jevent.julot.fr/api/auth/twitch/start?returnTo=%2Fcompte.html"
+          hidden
+        >
+          Se connecter avec Twitch
+        </a>
+      </div>
+    </section>
+
+    <!-- Contenu -->
+
+    <div
+      id="accountContent"
+      class="account-page"
+      hidden
+    >
+      <!-- Profil -->
+
+      <section class="account-hero">
+        <div class="page-container">
+          <article class="account-profile-card">
+            <div class="account-identity">
+              <div class="account-avatar-wrapper">
+                <img
+                  id="accountAvatar"
+                  class="account-avatar"
+                  src="/assets/jevent_logo.png"
+                  alt=""
+                >
+
+                <span
+                  class="account-connected-indicator"
+                  title="Compte Twitch connecté"
+                ></span>
+              </div>
+
+              <div class="account-identity-copy">
+                <p class="eyebrow">
+                  Mon espace JEvent
+                </p>
+
+                <h1 id="accountDisplayName">
+                  Compte Twitch
+                </h1>
+
+                <p id="accountLogin">
+                  @twitch
+                </p>
+
+                <p
+                  id="accountMemberSince"
+                  class="account-member-since"
+                ></p>
+              </div>
+            </div>
+
+            <div class="account-profile-side">
+              <span class="private-data-badge">
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5V10Z"
+                  ></path>
+                </svg>
+
+                Données privées
+              </span>
+
+              <p>
+                Tes compteurs personnels ne sont visibles
+                que par toi.
+              </p>
+
+              <div
+                id="accountQuickLinks"
+                class="account-quick-links"
+              >
+                <a
+                  id="creatorPageLink"
+                  class="button button-secondary"
+                  href="#"
+                  hidden
+                >
+                  Ma page créateur
+                </a>
+
+                <a
+                  id="adminPanelLink"
+                  class="button button-secondary"
+                  href="/admin.html"
+                  hidden
+                >
+                  Panel Admin
+                </a>
+
+                <a
+                  id="moderationPanelLink"
+                  class="button button-secondary"
+                  href="/moderation.html"
+                  hidden
+                >
+                  Modération
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div class="page-container account-layout">
+        <div class="account-main-column">
+          <!-- Statistiques -->
+
+          <section class="account-card">
+            <header class="account-card-heading">
+              <div>
+                <p class="eyebrow">
+                  JEvent 26
+                </p>
+
+                <h2>
+                  Mes statistiques
+                </h2>
+
+                <p>
+                  Seuls les messages envoyés sur une chaîne
+                  JEvent en direct sont comptabilisés.
+                </p>
+              </div>
+            </header>
+
+            <div class="account-statistics-grid">
+              <article class="account-statistic">
+                <span class="account-statistic-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M4 5h16v12H8l-4 4V5Z"
+                    ></path>
+                  </svg>
+                </span>
+
+                <span>Messages envoyés</span>
+
+                <strong id="accountMessagesCount">
+                  0
+                </strong>
+              </article>
+
+              <article class="account-statistic">
+                <span class="account-statistic-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="9"
+                    ></circle>
+
+                    <path
+                      d="M8.5 10h.01M15.5 10h.01
+                         M8 14c1.1 1.3 2.4 2 4 2
+                         s2.9-.7 4-2"
+                    ></path>
+                  </svg>
+                </span>
+
+                <span>Emotes utilisées</span>
+
+                <strong id="accountEmotesCount">
+                  0
+                </strong>
+              </article>
+
+              <article class="account-statistic">
+                <span class="account-statistic-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M5 5h14v10H5V5Zm4 14h6
+                         M12 15v4"
+                    ></path>
+                  </svg>
+                </span>
+
+                <span>Chaînes visitées</span>
+
+                <strong id="accountChannelsCount">
+                  0
+                </strong>
+              </article>
+
+              <article class="account-statistic">
+                <span class="account-statistic-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M5 4v3M19 4v3M4 9h16
+                         M5 6h14a1 1 0 0 1 1 1
+                         v12a1 1 0 0 1-1 1H5
+                         a1 1 0 0 1-1-1V7
+                         a1 1 0 0 1 1-1Z"
+                    ></path>
+                  </svg>
+                </span>
+
+                <span>Jours de participation</span>
+
+                <strong id="accountDaysCount">
+                  0 / 3
+                </strong>
+              </article>
+            </div>
+
+            <div class="participation-days">
+              <div>
+                <strong>Présence pendant l’événement</strong>
+
+                <p>
+                  Un message suffit pour valider une journée.
+                </p>
+              </div>
+
+              <div
+                id="participationDayList"
+                class="participation-day-list"
+              >
+                <article
+                  class="participation-day"
+                  data-event-day="1"
+                >
+                  <span>Jour 1</span>
+                  <strong>26 octobre</strong>
+                </article>
+
+                <article
+                  class="participation-day"
+                  data-event-day="2"
+                >
+                  <span>Jour 2</span>
+                  <strong>27 octobre</strong>
+                </article>
+
+                <article
+                  class="participation-day"
+                  data-event-day="3"
+                >
+                  <span>Jour 3</span>
+                  <strong>28–29 octobre</strong>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <!-- Badges débloqués -->
+
+          <section class="account-card">
+            <header class="account-card-heading">
+              <div>
+                <p class="eyebrow">
+                  Collection
+                </p>
+
+                <h2>
+                  Mes badges
+                </h2>
+
+                <p>
+                  Les badges se débloquent automatiquement
+                  pendant le JEvent.
+                </p>
+              </div>
+
+              <span
+                id="unlockedBadgesCount"
+                class="account-heading-count"
+              >
+                0 débloqué
+              </span>
+            </header>
+
+            <div
+              id="unlockedBadgesList"
+              class="badges-grid"
+            ></div>
+
+            <div
+              id="unlockedBadgesEmpty"
+              class="account-empty"
+              hidden
+            >
+              <span class="account-empty-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="m12 3 2.5 5.2 5.7.8-4.1 4
+                       1 5.7-5.1-2.7-5.1 2.7
+                       1-5.7-4.1-4 5.7-.8L12 3Z"
+                  ></path>
+                </svg>
+              </span>
+
+              <h3>
+                Aucun badge débloqué
+              </h3>
+
+              <p>
+                Participe aux chats pendant le JEvent pour
+                commencer ta collection.
+              </p>
+            </div>
+          </section>
+
+          <!-- Progression -->
+
+          <section class="account-card">
+            <header class="account-card-heading">
+              <div>
+                <p class="eyebrow">
+                  Prochains objectifs
+                </p>
+
+                <h2>
+                  Badges à débloquer
+                </h2>
+
+                <p>
+                  Suis ta progression sans rendre tes
+                  statistiques publiques.
+                </p>
+              </div>
+            </header>
+
+            <div
+              id="lockedBadgesList"
+              class="badge-progress-list"
+            ></div>
+
+            <div
+              id="lockedBadgesEmpty"
+              class="account-empty is-compact"
+              hidden
+            >
+              <h3>
+                Tous les badges sont débloqués
+              </h3>
+
+              <p>
+                Ta collection du JEvent 26 est complète.
+              </p>
+            </div>
+          </section>
+        </div>
+
+        <aside class="account-side-column">
+          <!-- Grades -->
+
+          <section class="account-card">
+            <header class="account-card-heading">
+              <div>
+                <p class="eyebrow">
+                  Accès et responsabilités
+                </p>
+
+                <h2>
+                  Mes grades
+                </h2>
+              </div>
+            </header>
+
+            <div
+              id="accountRolesList"
+              class="account-roles-list"
+            ></div>
+          </section>
+
+          <!-- Statistiques par créateur -->
+
+          <section class="account-card">
+            <header class="account-card-heading">
+              <div>
+                <p class="eyebrow">
+                  Mes participations
+                </p>
+
+                <h2>
+                  Chaînes visitées
+                </h2>
+
+                <p>
+                  Ce détail reste privé.
+                </p>
+              </div>
+            </header>
+
+            <div
+              id="accountCreatorStats"
+              class="account-creator-stats"
+            ></div>
+
+            <p
+              id="accountCreatorStatsEmpty"
+              class="account-empty-message"
+              hidden
+            >
+              Aucune participation enregistrée.
+            </p>
+          </section>
+
+          <!-- Carte partageable -->
+
+          <section class="account-card share-card-section">
+            <header class="account-card-heading">
+              <div>
+                <p class="eyebrow">
+                  Souvenir du JEvent
+                </p>
+
+                <h2>
+                  Ma carte de badges
+                </h2>
+
+                <p>
+                  La carte affiche uniquement ton identité
+                  Twitch et tes badges, jamais tes compteurs.
+                </p>
+              </div>
+            </header>
+
+            <canvas
+              id="badgeCardCanvas"
+              class="badge-card-canvas"
+              width="1200"
+              height="630"
+              aria-label="Aperçu de la carte de badges"
+            ></canvas>
+
+            <button
+              id="downloadBadgeCardButton"
+              class="button button-primary"
+              type="button"
+            >
+              Télécharger ma carte
+            </button>
+          </section>
+
+          <!-- Déconnexion -->
+
+          <section class="account-card account-session-card">
+            <div>
+              <strong>
+                Session Twitch
+              </strong>
+
+              <p>
+                Tu peux te déconnecter de cet appareil.
+              </p>
+            </div>
+
+            <button
+              id="logoutButton"
+              class="button button-secondary"
+              type="button"
+            >
+              Se déconnecter
+            </button>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-container footer-layout">
+      <div class="footer-brand">
+        <img
+          src="/assets/jevent_logo.png"
+          alt=""
+        >
+
+        <div>
+          <strong>JEvent 26</strong>
+
+          <span>
+            Au profit de l’Association Petits Princes
+          </span>
+        </div>
+      </div>
+
+      <nav
+        class="footer-navigation"
+        aria-label="Navigation de pied de page"
+      >
+        <a href="/">
+          Accueil
+        </a>
+
+        <a href="/programme.html">
+          Programme
+        </a>
+
+        <a href="/createurs.html">
+          Créateurs
+        </a>
+
+        <a href="/#association">
+          Association
+        </a>
+
+        <a
+          href="/#boutique"
+          data-shop-link
+        >
+          Boutique
+        </a>
+      </nav>
+
+      <p class="footer-legal">
+        © 2026 JEvent
+      </p>
+    </div>
+  </footer>
+</body>
+
+</html>
