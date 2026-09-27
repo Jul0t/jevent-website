@@ -145,6 +145,36 @@
         "#lockedBadgesEmpty"
       ),
 
+    openBadgesButton:
+      document.querySelector(
+        "#openBadgesDialog"
+      ),
+
+    closeBadgesButton:
+      document.querySelector(
+        "#closeBadgesDialog"
+      ),
+
+    badgesDialog:
+      document.querySelector(
+        "#badgesDialog"
+      ),
+
+    badgesDialogGrid:
+      document.querySelector(
+        "#badgesDialogGrid"
+      ),
+
+    badgeHoverDetails:
+      document.querySelector(
+        "#badgeHoverDetails"
+      ),
+
+    badgesSummary:
+      document.querySelector(
+        "#accountBadgesSummary"
+      ),
+
     creatorPageLink:
       document.querySelector(
         "#creatorPageLink"
@@ -211,9 +241,9 @@
 
               ...(options.body
                 ? {
-                    "Content-Type":
-                      "application/json"
-                  }
+                  "Content-Type":
+                    "application/json"
+                }
                 : {}),
 
               ...(options.headers ?? {})
@@ -583,9 +613,9 @@
       elements.memberSince.textContent =
         createdAt
           ? (
-              "Membre du JEvent depuis " +
-              createdAt
-            )
+            "Membre du JEvent depuis " +
+            createdAt
+          )
           : "";
     }
   }
@@ -634,8 +664,8 @@
           stats.eventDays
         )
           ? stats.eventDays.map(
-              Number
-            )
+            Number
+          )
           : []
       );
 
@@ -661,13 +691,13 @@
         "aria-label",
         completed
           ? (
-              `Jour ${day} : ` +
-              "participation validée"
-            )
+            `Jour ${day} : ` +
+            "participation validée"
+          )
           : (
-              `Jour ${day} : ` +
-              "participation non validée"
-            )
+            `Jour ${day} : ` +
+            "participation non validée"
+          )
       );
 
       let status =
@@ -1041,136 +1071,103 @@
     `;
   }
 
-  function createUnlockedBadge(
-    badge
-  ) {
-    const card =
-      createElement(
-        "article",
-        "profile-badge is-unlocked"
-      );
-
-    const icon =
-      createElement(
-        "span",
-        "profile-badge-icon"
-      );
-
-    icon.innerHTML =
-      badgeIconSvg(
-        badge.iconKey
-      );
-
-    const content =
-      createElement(
-        "div",
-        "profile-badge-copy"
-      );
-
-    content.append(
-      createElement(
-        "strong",
-        "",
-        badge.label ||
-        "Badge JEvent"
-      ),
-
-      createElement(
-        "p",
-        "",
-        badge.description || ""
-      )
-    );
-
-    const unlockedLabel =
-      createElement(
-        "span",
-        "profile-badge-state",
-        "Débloqué"
-      );
-
-    card.append(
-      icon,
-      content,
-      unlockedLabel
-    );
-
-    return card;
-  }
-
-  function renderUnlockedBadges() {
-    if (
-      !elements
-        .unlockedBadgesList
-    ) {
-      return;
-    }
-
-    const badges =
+  function getAllAccountBadges() {
+    const unlocked =
       Array.isArray(
         profile?.badges?.unlocked
       )
-        ? profile.badges.unlocked
+        ? profile.badges.unlocked.map(
+          badge => ({
+            ...badge,
+            unlocked: true
+          })
+        )
         : [];
 
-    elements.unlockedBadgesList
-      .replaceChildren();
+    const locked =
+      Array.isArray(
+        profile?.badges?.locked
+      )
+        ? profile.badges.locked.map(
+          badge => ({
+            ...badge,
+            unlocked: false
+          })
+        )
+        : [];
 
-    for (const badge of badges) {
-      elements.unlockedBadgesList
-        .append(
-          createUnlockedBadge(
-            badge
-          )
-        );
-    }
-
-    if (
-      elements
-        .unlockedBadgesEmpty
-    ) {
-      elements.unlockedBadgesEmpty
-        .hidden =
-        badges.length !== 0;
-    }
-
-    if (
-      elements
-        .unlockedBadgesCount
-    ) {
-      elements.unlockedBadgesCount
-        .textContent =
-        (
-          `${formatNumber(
-            badges.length
-          )} débloqué${
-            badges.length > 1
-              ? "s"
-              : ""
-          }`
-        );
-    }
+    return [
+      ...unlocked,
+      ...locked
+    ];
   }
 
-  function createLockedBadge(
-    badge
-  ) {
-    const card =
-      createElement(
-        "article",
-        "badge-progress-card"
-      );
+  function badgeRequirementLabel(badge) {
+    if (
+      badge.requirementsHidden === true ||
+      badge.hideRequirements === true
+    ) {
+      return "Méthode d’obtention masquée.";
+    }
 
-    const heading =
-      createElement(
-        "div",
-        "badge-progress-heading"
+    const current =
+      Number(badge.current ?? 0);
+
+    const target =
+      Number(badge.target ?? 0);
+
+    const ruleKey =
+      String(badge.ruleKey ?? "");
+
+    const labels = {
+      message_count:
+        "Messages envoyés",
+
+      emote_count:
+        "Emotes utilisées",
+
+      channel_count:
+        "Chaînes visitées",
+
+      event_days:
+        "Jours de participation",
+
+      site_interaction:
+        "Interaction sur le site",
+
+      advanced:
+        "Condition spéciale"
+    };
+
+    const label =
+      labels[ruleKey] ??
+      "Condition d’obtention";
+
+    if (target > 0) {
+      return (
+        `${label} : ` +
+        `${formatNumber(current)} / ` +
+        `${formatNumber(target)}`
       );
+    }
+
+    return badge.unlocked
+      ? "Badge obtenu."
+      : "Condition non précisée.";
+  }
+
+  function renderBadgeDetails(badge) {
+    if (!elements.badgeHoverDetails) {
+      return;
+    }
+
+    elements.badgeHoverDetails
+      .replaceChildren();
 
     const icon =
       createElement(
         "span",
-        "badge-progress-icon"
+        "badge-hover-icon"
       );
 
     icon.innerHTML =
@@ -1178,13 +1175,13 @@
         badge.iconKey
       );
 
-    const title =
+    const copy =
       createElement(
         "div",
-        "badge-progress-title"
+        "badge-hover-copy"
       );
 
-    title.append(
+    copy.append(
       createElement(
         "strong",
         "",
@@ -1195,125 +1192,183 @@
       createElement(
         "p",
         "",
-        badge.description || ""
-      )
-    );
-
-    heading.append(
-      icon,
-      title
-    );
-
-    const progress =
-      createElement(
-        "div",
-        "badge-progress"
-      );
-
-    const current =
-      Number(
-        badge.current ?? 0
-      );
-
-    const target =
-      Number(
-        badge.target ?? 0
-      );
-
-    const percentage =
-      clampPercentage(
-        badge.percentage
-      );
-
-    const progressText =
-      createElement(
-        "div",
-        "badge-progress-text"
-      );
-
-    progressText.append(
-      createElement(
-        "span",
-        "",
-        "Progression"
+        badge.description ||
+        "Aucune description."
       ),
 
       createElement(
-        "strong",
-        "",
-        target > 0
-          ? (
-              `${formatNumber(
-                current
-              )} / ${formatNumber(
-                target
-              )}`
-            )
-          : `${percentage} %`
+        "span",
+        "badge-hover-requirement",
+        badgeRequirementLabel(badge)
       )
     );
 
-    const track =
-      createElement(
-        "div",
-        "badge-progress-track"
-      );
-
-    const value =
+    const state =
       createElement(
         "span",
-        "badge-progress-value"
+        (
+          "badge-hover-state " +
+          (
+            badge.unlocked
+              ? "is-unlocked"
+              : "is-locked"
+          )
+        ),
+        badge.unlocked
+          ? "Débloqué"
+          : "Non découvert"
       );
 
-    value.style.width =
-      `${percentage}%`;
-
-    track.append(value);
-
-    progress.append(
-      progressText,
-      track
+    elements.badgeHoverDetails.append(
+      icon,
+      copy,
+      state
     );
-
-    card.append(
-      heading,
-      progress
-    );
-
-    return card;
   }
 
-  function renderLockedBadges() {
-    if (!elements.lockedBadgesList) {
+  function createBadgeTile(badge) {
+    const tile =
+      createElement(
+        "article",
+        (
+          "badge-tile " +
+          (
+            badge.unlocked
+              ? "is-unlocked"
+              : "is-locked"
+          )
+        )
+      );
+
+    tile.tabIndex = 0;
+
+    tile.setAttribute(
+      "aria-label",
+      (
+        `${badge.label || "Badge JEvent"} — ` +
+        (
+          badge.unlocked
+            ? "Débloqué"
+            : "Non découvert"
+        )
+      )
+    );
+
+    const icon =
+      createElement(
+        "span",
+        "badge-tile-icon"
+      );
+
+    icon.innerHTML =
+      badgeIconSvg(
+        badge.iconKey
+      );
+
+    const label =
+      createElement(
+        "strong",
+        "badge-tile-label",
+        badge.label ||
+        "Badge JEvent"
+      );
+
+    const state =
+      createElement(
+        "span",
+        "badge-tile-state",
+        badge.unlocked
+          ? "Débloqué"
+          : "À découvrir"
+      );
+
+    tile.append(
+      icon,
+      label,
+      state
+    );
+
+    tile.addEventListener(
+      "mouseenter",
+      () => {
+        renderBadgeDetails(badge);
+      }
+    );
+
+    tile.addEventListener(
+      "focus",
+      () => {
+        renderBadgeDetails(badge);
+      }
+    );
+
+    return tile;
+  }
+
+  function renderBadgesDialog() {
+    if (!elements.badgesDialogGrid) {
       return;
     }
 
     const badges =
-      Array.isArray(
-        profile?.badges?.locked
-      )
-        ? profile.badges.locked
-        : [];
+      getAllAccountBadges();
 
-    elements.lockedBadgesList
+    const unlockedCount =
+      badges.filter(
+        badge => badge.unlocked
+      ).length;
+
+    elements.badgesDialogGrid
       .replaceChildren();
 
     for (const badge of badges) {
-      elements.lockedBadgesList
-        .append(
-          createLockedBadge(
-            badge
-          )
+      elements.badgesDialogGrid.append(
+        createBadgeTile(badge)
+      );
+    }
+
+    if (elements.badgesSummary) {
+      elements.badgesSummary.textContent =
+        (
+          `${formatNumber(
+            unlockedCount
+          )} badge${unlockedCount > 1
+            ? "s"
+            : ""
+          } débloqué${unlockedCount > 1
+            ? "s"
+            : ""
+          } sur ${formatNumber(
+            badges.length
+          )}`
         );
     }
 
-    if (
-      elements.lockedBadgesEmpty
+    if (badges.length > 0) {
+      renderBadgeDetails(
+        badges[0]
+      );
+    } else if (
+      elements.badgeHoverDetails
     ) {
-      elements.lockedBadgesEmpty
-        .hidden =
-        badges.length !== 0;
+      elements.badgeHoverDetails
+        .textContent =
+        "Aucun badge disponible.";
     }
+  }
+
+  function openBadgesDialog() {
+    if (!elements.badgesDialog) {
+      return;
+    }
+
+    renderBadgesDialog();
+
+    elements.badgesDialog.showModal();
+  }
+
+  function closeBadgesDialog() {
+    elements.badgesDialog?.close();
   }
 
   /*
@@ -1347,11 +1402,11 @@
       link.href =
         creator.slug
           ? (
-              "/createur.html?slug=" +
-              encodeURIComponent(
-                creator.slug
-              )
+            "/createur.html?slug=" +
+            encodeURIComponent(
+              creator.slug
             )
+          )
           : "/createurs.html";
 
       const identity =
@@ -1955,14 +2010,12 @@
       "800 20px system-ui";
 
     context.fillText(
-      `${badges.length} badge${
-        badges.length > 1
-          ? "s"
-          : ""
-      } attribué${
-        badges.length > 1
-          ? "s"
-          : ""
+      `${badges.length} badge${badges.length > 1
+        ? "s"
+        : ""
+      } attribué${badges.length > 1
+        ? "s"
+        : ""
       }`,
       250,
       303
@@ -2088,9 +2141,9 @@
       const shortLabel =
         label.length > 20
           ? (
-              label.slice(0, 18) +
-              "…"
-            )
+            label.slice(0, 18) +
+            "…"
+          )
           : label;
 
       context.fillText(
@@ -2212,8 +2265,7 @@
     renderIdentity();
     renderStatistics();
     renderRoles();
-    renderUnlockedBadges();
-    renderLockedBadges();
+    renderBadgesDialog();
     renderCreatorStats();
 
     await findLinkedCreator();
@@ -2322,6 +2374,40 @@
       "click",
       () => {
         void logout();
+      }
+    );
+
+  elements.openBadgesButton
+    ?.addEventListener(
+      "click",
+      openBadgesDialog
+    );
+
+  elements.closeBadgesButton
+    ?.addEventListener(
+      "click",
+      closeBadgesDialog
+    );
+
+  elements.badgesDialog
+    ?.addEventListener(
+      "cancel",
+      event => {
+        event.preventDefault();
+        closeBadgesDialog();
+      }
+    );
+
+  elements.badgesDialog
+    ?.addEventListener(
+      "click",
+      event => {
+        if (
+          event.target ===
+          elements.badgesDialog
+        ) {
+          closeBadgesDialog();
+        }
       }
     );
 
