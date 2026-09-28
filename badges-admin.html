@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
+
+  <meta
+    name="theme-color"
+    content="#050b07"
+  >
+
+  <title>
+    Gestion des badges — JEvent 26
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/admin.css?v=10"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/badges-admin.css?v=1"
+  >
+
+  <script
+    src="/assets/js/badges-admin.js?v=1"
+    defer
+  ></script>
+</head>
+
+<body>
+  <div class="page-shell">
+    <!-- Navigation -->
+
+    <header class="site-header">
+      <a
+        class="brand"
+        href="/admin.html"
+      >
+        <img
+          class="brand-logo"
+          src="/assets/jevent_logo.png"
+          alt="JEvent 26"
+        >
+
+        <span>
+          <strong>JEvent 26</strong>
+          <small>Gestion des badges</small>
+        </span>
+      </a>
+
+      <nav
+        class="navigation"
+        aria-label="Navigation Admin"
+      >
+        <a href="/admin.html">
+          Panel Admin
+        </a>
+
+        <a href="/compte.html">
+          Mon compte
+        </a>
+
+        <a href="/">
+          Site public
+        </a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Chargement -->
+
+      <section
+        id="loadingState"
+        class="page-state"
+      >
+        <div class="spinner"></div>
+
+        <p>
+          Chargement des badges…
+        </p>
+      </section>
+
+      <!-- Erreur -->
+
+      <section
+        id="errorState"
+        class="page-state"
+        hidden
+      >
+        <div class="state-icon">
+          !
+        </div>
+
+        <h1>Accès impossible</h1>
+
+        <p id="errorMessage">
+          Cette page est réservée aux Admins.
+        </p>
+
+        <a
+          class="button button-secondary"
+          href="/admin.html"
+        >
+          Retour au panel
+        </a>
+      </section>
+
+      <!-- Application -->
+
+      <div
+        id="badgesApplication"
+        hidden
+      >
+        <section class="admin-heading badges-heading">
+          <div>
+            <p class="eyebrow">
+              Administration
+            </p>
+
+            <h1>Gestion des badges</h1>
+
+            <p>
+              Crée et configure les badges disponibles
+              sur les comptes JEvent.
+            </p>
+          </div>
+
+          <div class="badges-heading-actions">
+            <button
+              id="refreshBadgesButton"
+              class="button button-secondary"
+              type="button"
+            >
+              Actualiser
+            </button>
+
+            <button
+              id="createBadgeButton"
+              class="button button-primary"
+              type="button"
+            >
+              Créer un badge
+            </button>
+          </div>
+        </section>
+
+        <p
+          id="pageMessage"
+          class="page-message"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></p>
+
+        <!-- Résumé -->
+
+        <section class="badges-statistics">
+          <article class="statistic-card">
+            <span>Badges</span>
+
+            <strong id="badgesCount">
+              0
+            </strong>
+          </article>
+
+          <article class="statistic-card">
+            <span>Badges actifs</span>
+
+            <strong id="activeBadgesCount">
+              0
+            </strong>
+          </article>
+
+          <article class="statistic-card">
+            <span>Automatiques</span>
+
+            <strong id="automaticBadgesCount">
+              0
+            </strong>
+          </article>
+
+          <article class="statistic-card">
+            <span>Attributions</span>
+
+            <strong id="awardedBadgesCount">
+              0
+            </strong>
+          </article>
+        </section>
+
+        <!-- Recherche et filtres -->
+
+        <section class="content-card badges-controls-card">
+          <div class="badges-controls">
+            <label class="badge-search">
+              <span class="sr-only">
+                Rechercher un badge
+              </span>
+
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="7"
+                ></circle>
+
+                <path d="m16.5 16.5 4 4"></path>
+              </svg>
+
+              <input
+                id="badgeSearchInput"
+                type="search"
+                autocomplete="off"
+                placeholder="Rechercher un badge…"
+              >
+            </label>
+
+            <div
+              class="badge-filter-list"
+              role="group"
+              aria-label="Filtrer les badges"
+            >
+              <button
+                class="badge-filter is-active"
+                type="button"
+                data-filter="all"
+                aria-pressed="true"
+              >
+                Tous
+              </button>
+
+              <button
+                class="badge-filter"
+                type="button"
+                data-filter="active"
+                aria-pressed="false"
+              >
+                Actifs
+              </button>
+
+              <button
+                class="badge-filter"
+                type="button"
+                data-filter="inactive"
+                aria-pressed="false"
+              >
+                Désactivés
+              </button>
+
+              <button
+                class="badge-filter"
+                type="button"
+                data-filter="automatic"
+                aria-pressed="false"
+              >
+                Automatiques
+              </button>
+
+              <button
+                class="badge-filter"
+                type="button"
+                data-filter="manual"
+                aria-pressed="false"
+              >
+                Manuels
+              </button>
+
+              <button
+                class="badge-filter"
+                type="button"
+                data-filter="advanced"
+                aria-pressed="false"
+              >
+                Avancés
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Liste -->
+
+        <section class="content-card badges-list-card">
+          <header class="card-heading">
+            <div>
+              <p class="eyebrow">
+                Catalogue
+              </p>
+
+              <h2>Badges existants</h2>
+
+              <p id="badgesResultDescription">
+                Chargement…
+              </p>
+            </div>
+          </header>
+
+          <div
+            id="badgesList"
+            class="badges-admin-list"
+          ></div>
+
+          <div
+            id="badgesEmpty"
+            class="badges-empty"
+            hidden
+          >
+            <span class="badges-empty-icon">
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="m12 3 2.5 5.2 5.7.8-4.1 4
+                     1 5.7-5.1-2.7-5.1 2.7
+                     1-5.7-4.1-4 5.7-.8L12 3Z"
+                ></path>
+              </svg>
+            </span>
+
+            <h3>Aucun badge trouvé</h3>
+
+            <p>
+              Modifie les filtres ou crée un nouveau
+              badge.
+            </p>
+
+            <button
+              id="emptyCreateBadgeButton"
+              class="button button-primary"
+              type="button"
+            >
+              Créer un badge
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Fenêtre de création et modification -->
+
+  <dialog
+    id="badgeDialog"
+    class="badge-editor-dialog"
+    aria-labelledby="badgeDialogTitle"
+  >
+    <form
+      id="badgeForm"
+      class="badge-editor-shell"
+    >
+      <header class="badge-editor-header">
+        <div>
+          <p
+            id="badgeDialogEyebrow"
+            class="eyebrow"
+          >
+            Nouveau badge
+          </p>
+
+          <h2 id="badgeDialogTitle">
+            Créer un badge
+          </h2>
+
+          <p>
+            Les modifications sont visibles sur les
+            comptes après leur prochain chargement.
+          </p>
+        </div>
+
+        <button
+          id="closeBadgeDialog"
+          class="badge-editor-close"
+          type="button"
+          aria-label="Fermer"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M6 6l12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+      </header>
+
+      <div class="badge-editor-content">
+        <input
+          id="badgeKey"
+          type="hidden"
+        >
+
+        <!-- Aperçu -->
+
+        <aside class="badge-editor-preview-column">
+          <div class="badge-editor-preview">
+            <span
+              id="badgePreviewIcon"
+              class="badge-preview-icon"
+            ></span>
+
+            <strong id="badgePreviewLabel">
+              Nouveau badge
+            </strong>
+
+            <p id="badgePreviewDescription">
+              Description du badge.
+            </p>
+
+            <span id="badgePreviewMode">
+              Automatique
+            </span>
+          </div>
+
+          <p class="badge-preview-help">
+            Cet aperçu représente le badge une fois
+            débloqué.
+          </p>
+        </aside>
+
+        <!-- Champs -->
+
+        <div class="badge-editor-fields">
+          <section class="badge-form-section">
+            <header>
+              <span>1</span>
+
+              <div>
+                <strong>Présentation</strong>
+
+                <p>
+                  Nom, description et apparence du badge.
+                </p>
+              </div>
+            </header>
+
+            <div class="badge-form-grid">
+              <label class="badge-field is-wide">
+                <span>
+                  Nom du badge
+                </span>
+
+                <input
+                  id="badgeLabel"
+                  type="text"
+                  maxlength="100"
+                  required
+                  placeholder="Exemple : Viewer actif"
+                >
+              </label>
+
+              <label class="badge-field is-wide">
+                <span>
+                  Description
+                </span>
+
+                <textarea
+                  id="badgeDescription"
+                  rows="4"
+                  maxlength="600"
+                  required
+                  placeholder="Explique ce que représente le badge."
+                ></textarea>
+
+                <small>
+                  Texte simple, sans Markdown.
+                </small>
+              </label>
+
+              <label class="badge-field">
+                <span>
+                  Icône
+                </span>
+
+                <select id="badgeIcon">
+                  <option value="award">
+                    Étoile
+                  </option>
+
+                  <option value="messages">
+                    Messages
+                  </option>
+
+                  <option value="chat">
+                    Discussion
+                  </option>
+
+                  <option value="emote">
+                    Emote
+                  </option>
+
+                  <option value="calendar">
+                    Calendrier
+                  </option>
+
+                  <option value="explorer">
+                    Exploration
+                  </option>
+
+                  <option value="heart">
+                    Soutien
+                  </option>
+
+                  <option value="creator">
+                    Créateur
+                  </option>
+
+                  <option value="moderator">
+                    Modération
+                  </option>
+                </select>
+              </label>
+
+              <label class="badge-field">
+                <span>
+                  Ordre d’affichage
+                </span>
+
+                <input
+                  id="badgeDisplayOrder"
+                  type="number"
+                  min="0"
+                  max="100000"
+                  value="100"
+                >
+              </label>
+            </div>
+          </section>
+
+          <section class="badge-form-section">
+            <header>
+              <span>2</span>
+
+              <div>
+                <strong>Mode d’obtention</strong>
+
+                <p>
+                  Choisis comment le badge peut être
+                  débloqué.
+                </p>
+              </div>
+            </header>
+
+            <div
+              id="acquisitionModeList"
+              class="acquisition-mode-list"
+            >
+              <label class="acquisition-mode-card">
+                <input
+                  type="radio"
+                  name="acquisitionMode"
+                  value="automatic"
+                  checked
+                >
+
+                <span class="acquisition-mode-content">
+                  <strong>Automatique</strong>
+
+                  <small>
+                    Messages, emotes, chaînes ou jours.
+                  </small>
+                </span>
+              </label>
+
+              <label class="acquisition-mode-card">
+                <input
+                  type="radio"
+                  name="acquisitionMode"
+                  value="manual"
+                >
+
+                <span class="acquisition-mode-content">
+                  <strong>Manuel</strong>
+
+                  <small>
+                    Attribué manuellement par un Admin.
+                  </small>
+                </span>
+              </label>
+
+              <label class="acquisition-mode-card">
+                <input
+                  type="radio"
+                  name="acquisitionMode"
+                  value="advanced"
+                >
+
+                <span class="acquisition-mode-content">
+                  <strong>Avancé</strong>
+
+                  <small>
+                    Une API spécifique sera développée.
+                  </small>
+                </span>
+              </label>
+            </div>
+
+            <!-- Règle automatique -->
+
+            <div
+              id="automaticRequirementFields"
+              class="badge-form-grid requirement-fields"
+            >
+              <label class="badge-field">
+                <span>
+                  Statistique requise
+                </span>
+
+                <select id="badgeMetric">
+                  <option value="messages">
+                    Nombre de messages
+                  </option>
+
+                  <option value="emotes">
+                    Nombre d’emotes
+                  </option>
+
+                  <option value="channels">
+                    Chaînes visitées
+                  </option>
+
+                  <option value="event_days">
+                    Jours de participation
+                  </option>
+
+                  <option value="site_interaction">
+                    Interaction sur le site
+                  </option>
+                </select>
+              </label>
+
+              <label class="badge-field">
+                <span>
+                  Période
+                </span>
+
+                <select id="badgeScope">
+                  <option value="event">
+                    Cette édition
+                  </option>
+
+                  <option value="event_day">
+                    Une journée précise
+                  </option>
+
+                  <option value="all_time">
+                    Toutes les éditions
+                  </option>
+                </select>
+              </label>
+
+              <label
+                id="badgeEventDayField"
+                class="badge-field"
+                hidden
+              >
+                <span>
+                  Journée
+                </span>
+
+                <select id="badgeEventDay">
+                  <option value="1">
+                    Jour 1
+                  </option>
+
+                  <option value="2">
+                    Jour 2
+                  </option>
+
+                  <option value="3">
+                    Jour 3
+                  </option>
+                </select>
+              </label>
+
+              <label class="badge-field">
+                <span>
+                  Nombre requis
+                </span>
+
+                <input
+                  id="badgeThreshold"
+                  type="number"
+                  min="1"
+                  max="100000000"
+                  value="100"
+                >
+              </label>
+            </div>
+
+            <!-- Règle avancée -->
+
+            <div
+              id="advancedRequirementFields"
+              class="badge-form-grid requirement-fields"
+              hidden
+            >
+              <label class="badge-field is-wide">
+                <span>
+                  Clé de la règle avancée
+                </span>
+
+                <input
+                  id="badgeAdvancedKey"
+                  type="text"
+                  maxlength="80"
+                  placeholder="Exemple : premier-don-jevent"
+                >
+
+                <small>
+                  Cette clé sera utilisée par la future
+                  API spécifique au badge.
+                </small>
+              </label>
+            </div>
+          </section>
+
+          <section class="badge-form-section">
+            <header>
+              <span>3</span>
+
+              <div>
+                <strong>Visibilité</strong>
+
+                <p>
+                  Contrôle l’affichage du badge et de ses
+                  conditions.
+                </p>
+              </div>
+            </header>
+
+            <div class="badge-switch-list">
+              <label class="badge-switch">
+                <input
+                  id="badgeRequirementsHidden"
+                  type="checkbox"
+                >
+
+                <span class="badge-switch-control"></span>
+
+                <span class="badge-switch-copy">
+                  <strong>
+                    Masquer la méthode d’obtention
+                  </strong>
+
+                  <small>
+                    La condition ne sera pas montrée aux
+                    utilisateurs.
+                  </small>
+                </span>
+              </label>
+
+              <label class="badge-switch">
+                <input
+                  id="badgeActive"
+                  type="checkbox"
+                  checked
+                >
+
+                <span class="badge-switch-control"></span>
+
+                <span class="badge-switch-copy">
+                  <strong>
+                    Badge actif
+                  </strong>
+
+                  <small>
+                    Un badge désactivé n’apparaît plus sur
+                    les comptes.
+                  </small>
+                </span>
+              </label>
+            </div>
+          </section>
+
+          <p
+            id="badgeFormMessage"
+            class="badge-form-message"
+            role="status"
+            aria-live="polite"
+            hidden
+          ></p>
+        </div>
+      </div>
+
+      <footer class="badge-editor-footer">
+        <button
+          id="deleteBadgeButton"
+          class="button button-danger"
+          type="button"
+          hidden
+        >
+          Supprimer
+        </button>
+
+        <div class="badge-editor-footer-actions">
+          <button
+            id="cancelBadgeButton"
+            class="button button-secondary"
+            type="button"
+          >
+            Annuler
+          </button>
+
+          <button
+            id="saveBadgeButton"
+            class="button button-primary"
+            type="submit"
+          >
+            Enregistrer
+          </button>
+        </div>
+      </footer>
+    </form>
+  </dialog>
+</body>
+
+</html>
