@@ -203,11 +203,28 @@
     logoutButton:
       document.querySelector(
         "#logoutButton"
-      )
+      ),
+    badgeShowcaseList:
+      document.querySelector(
+        "#badgeShowcaseList"
+      ),
+
+    badgeShowcaseCount:
+      document.querySelector(
+        "#badgeShowcaseCount"
+      ),
+
+    badgeShowcaseMessage:
+      document.querySelector(
+        "#badgeShowcaseMessage"
+      ),
   };
 
   let profile = null;
   let linkedCreator = null;
+  let showcaseKeys = [];
+  let draggedShowcaseKey = null;
+  let savingShowcase = false;
 
   /*
    * =======================================================
@@ -1101,6 +1118,486 @@
       ...locked
     ];
   }
+  function getUnlockedBadges() {
+    return Array.isArray(
+      profile?.badges?.unlocked
+    )
+      ? profile.badges.unlocked
+      : [];
+  }
+
+  function initializeBadgeShowcase() {
+    const unlockedBadges =
+      getUnlockedBadges();
+
+    const unlockedKeys =
+      new Set(
+        unlockedBadges.map(
+          badge => badge.key
+        )
+      );
+
+    const storedKeys =
+      Array.isArray(
+        profile?.badges?.showcase
+      )
+        ? profile.badges.showcase
+        : [];
+
+    showcaseKeys =
+      storedKeys
+        .filter(key =>
+          unlockedKeys.has(key)
+        )
+        .slice(0, 5);
+
+    /*
+     * Si aucune sélection n’existe encore,
+     * utilise les cinq premiers badges.
+     */
+    if (
+      showcaseKeys.length === 0 &&
+      unlockedBadges.length > 0
+    ) {
+      showcaseKeys =
+        unlockedBadges
+          .slice(0, 5)
+          .map(badge => badge.key);
+    }
+  }
+
+  function getUnlockedBadgeByKey(key) {
+    return (
+      getUnlockedBadges().find(
+        badge => badge.key === key
+      ) ?? null
+    );
+  }
+
+  function showBadgeShowcaseMessage(
+    message = "",
+    type = ""
+  ) {
+    if (!elements.badgeShowcaseMessage) {
+      return;
+    }
+
+    elements.badgeShowcaseMessage
+      .textContent =
+      message;
+
+    elements.badgeShowcaseMessage
+      .className =
+      "badge-showcase-message";
+
+    elements.badgeShowcaseMessage.hidden =
+      !message;
+
+    if (type) {
+      elements.badgeShowcaseMessage
+        .classList.add(
+          `is-${type}`
+        );
+    }
+  }
+
+  async function saveBadgeShowcase(
+    previousKeys
+  ) {
+    if (savingShowcase) {
+      return;
+    }
+
+    savingShowcase = true;
+
+    showBadgeShowcaseMessage(
+      "Enregistrement…"
+    );
+
+    try {
+      const result =
+        await apiFetch(
+          "/api/account/badge-showcase",
+          {
+            method: "PUT",
+
+            body: JSON.stringify({
+              badges: showcaseKeys
+            })
+          }
+        );
+
+      showcaseKeys =
+        Array.isArray(result.showcase)
+          ? result.showcase
+          : [...showcaseKeys];
+
+      if (profile?.badges) {
+        profile.badges.showcase =
+          [...showcaseKeys];
+      }
+
+      renderBadgeShowcase();
+      renderBadgesDialog();
+
+      await drawBadgeCard();
+
+      showBadgeShowcaseMessage(
+        "Carte mise à jour.",
+        "success"
+      );
+    } catch (error) {
+      showcaseKeys =
+        [...previousKeys];
+
+      renderBadgeShowcase();
+      renderBadgesDialog();
+
+      showBadgeShowcaseMessage(
+        error.message,
+        "error"
+      );
+    } finally {
+      savingShowcase = false;
+    }
+  }
+
+  async function toggleBadgeInShowcase(
+    badge
+  ) {
+    if (
+      savingShowcase ||
+      !badge?.unlocked
+    ) {
+      return;
+    }
+
+    const previousKeys =
+      [...showcaseKeys];
+
+    const alreadySelected =
+      showcaseKeys.includes(
+        badge.key
+      );
+
+    if (alreadySelected) {
+      /*
+       * Garde au moins un badge sur la carte
+       * lorsqu’un badge est disponible.
+       */
+      if (showcaseKeys.length === 1) {
+        showBadgeShowcaseMessage(
+          "La carte doit conserver au moins un badge.",
+          "error"
+        );
+
+        return;
+      }
+
+      showcaseKeys =
+        showcaseKeys.filter(
+          key => key !== badge.key
+        );
+    } else {
+      if (showcaseKeys.length >= 5) {
+        showBadgeShowcaseMessage(
+          "Tu peux sélectionner au maximum cinq badges.",
+          "error"
+        );
+
+        return;
+      }
+
+      showcaseKeys.push(
+        badge.key
+      );
+    }
+
+    renderBadgeShowcase();
+    renderBadgesDialog();
+
+    await saveBadgeShowcase(
+      previousKeys
+    );
+  }
+
+  async function moveShowcaseBadge(
+    sourceKey,
+    targetKey
+  ) {
+    if (
+      savingShowcase ||
+      !sourceKey ||
+      !targetKey ||
+      sourceKey === targetKey
+    ) {
+      return;
+    }
+
+    const previousKeys =
+      [...showcaseKeys];
+
+    const sourceIndex =
+      showcaseKeys.indexOf(
+        sourceKey
+      );
+
+    const targetIndex =
+      showcaseKeys.indexOf(
+        targetKey
+      );
+
+    if (
+      sourceIndex === -1 ||
+      targetIndex === -1
+    ) {
+      return;
+    }
+
+    const nextKeys =
+      [...showcaseKeys];
+
+    const [movedKey] =
+      nextKeys.splice(
+        sourceIndex,
+        1
+      );
+
+    nextKeys.splice(
+      targetIndex,
+      0,
+      movedKey
+    );
+
+    showcaseKeys = nextKeys;
+
+    renderBadgeShowcase();
+    renderBadgesDialog();
+
+    await saveBadgeShowcase(
+      previousKeys
+    );
+  }
+
+  function createShowcaseBadge(badge) {
+    const item =
+      createElement(
+        "article",
+        "badge-showcase-item"
+      );
+
+    item.draggable = true;
+
+    item.dataset.badgeKey =
+      badge.key;
+
+    const icon =
+      createElement(
+        "span",
+        "badge-showcase-icon"
+      );
+
+    icon.innerHTML =
+      badgeIconSvg(
+        badge.iconKey
+      );
+
+    const label =
+      createElement(
+        "strong",
+        "badge-showcase-label",
+        badge.label ||
+        "Badge JEvent"
+      );
+
+    const removeButton =
+      createElement(
+        "button",
+        "badge-showcase-remove"
+      );
+
+    removeButton.type = "button";
+
+    removeButton.title =
+      "Retirer de la carte";
+
+    removeButton.setAttribute(
+      "aria-label",
+      `Retirer ${badge.label} de la carte`
+    );
+
+    removeButton.innerHTML = `
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M6 6l12 12M18 6 6 18"></path>
+    </svg>
+  `;
+
+    removeButton.addEventListener(
+      "click",
+      event => {
+        event.stopPropagation();
+
+        void toggleBadgeInShowcase(
+          {
+            ...badge,
+            unlocked: true
+          }
+        );
+      }
+    );
+
+    item.addEventListener(
+      "dragstart",
+      event => {
+        draggedShowcaseKey =
+          badge.key;
+
+        item.classList.add(
+          "is-dragging"
+        );
+
+        event.dataTransfer.effectAllowed =
+          "move";
+
+        event.dataTransfer.setData(
+          "text/plain",
+          badge.key
+        );
+      }
+    );
+
+    item.addEventListener(
+      "dragover",
+      event => {
+        if (
+          !draggedShowcaseKey ||
+          draggedShowcaseKey ===
+          badge.key
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+
+        item.classList.add(
+          "is-drag-target"
+        );
+      }
+    );
+
+    item.addEventListener(
+      "dragleave",
+      () => {
+        item.classList.remove(
+          "is-drag-target"
+        );
+      }
+    );
+
+    item.addEventListener(
+      "drop",
+      event => {
+        event.preventDefault();
+
+        item.classList.remove(
+          "is-drag-target"
+        );
+
+        const sourceKey =
+          draggedShowcaseKey ||
+          event.dataTransfer.getData(
+            "text/plain"
+          );
+
+        void moveShowcaseBadge(
+          sourceKey,
+          badge.key
+        );
+      }
+    );
+
+    item.addEventListener(
+      "dragend",
+      () => {
+        draggedShowcaseKey = null;
+
+        document
+          .querySelectorAll(
+            ".badge-showcase-item"
+          )
+          .forEach(element => {
+            element.classList.remove(
+              "is-dragging",
+              "is-drag-target"
+            );
+          });
+      }
+    );
+
+    item.append(
+      icon,
+      label,
+      removeButton
+    );
+
+    return item;
+  }
+
+  function renderBadgeShowcase() {
+    if (!elements.badgeShowcaseList) {
+      return;
+    }
+
+    elements.badgeShowcaseList
+      .replaceChildren();
+
+    for (
+      const badgeKey of
+      showcaseKeys
+    ) {
+      const badge =
+        getUnlockedBadgeByKey(
+          badgeKey
+        );
+
+      if (!badge) {
+        continue;
+      }
+
+      elements.badgeShowcaseList.append(
+        createShowcaseBadge(badge)
+      );
+    }
+
+    /*
+     * Affiche les emplacements encore libres.
+     */
+    for (
+      let index = showcaseKeys.length;
+      index < 5;
+      index += 1
+    ) {
+      const slot =
+        createElement(
+          "span",
+          "badge-showcase-empty-slot",
+          "Emplacement libre"
+        );
+
+      elements.badgeShowcaseList.append(
+        slot
+      );
+    }
+
+    if (elements.badgeShowcaseCount) {
+      elements.badgeShowcaseCount
+        .textContent =
+        `${showcaseKeys.length} / 5`;
+    }
+  }
 
   function badgeRequirementLabel(badge) {
     if (
@@ -1309,6 +1806,79 @@
       state
     );
 
+    if (badge.unlocked) {
+      const selected =
+        showcaseKeys.includes(
+          badge.key
+        );
+
+      tile.classList.toggle(
+        "is-showcased",
+        selected
+      );
+
+      const showcaseButton =
+        createElement(
+          "button",
+          "badge-tile-showcase-toggle"
+        );
+
+      showcaseButton.type =
+        "button";
+
+      showcaseButton.title =
+        selected
+          ? "Retirer de la carte"
+          : "Ajouter à la carte";
+
+      showcaseButton.setAttribute(
+        "aria-label",
+        selected
+          ? (
+            `Retirer ${badge.label} ` +
+            "de la carte"
+          )
+          : (
+            `Ajouter ${badge.label} ` +
+            "à la carte"
+          )
+      );
+
+      showcaseButton.innerHTML =
+        selected
+          ? `
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="m5 12 4 4L19 6"></path>
+          </svg>
+        `
+          : `
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M12 5v14M5 12h14"></path>
+          </svg>
+        `;
+
+      showcaseButton.addEventListener(
+        "click",
+        event => {
+          event.stopPropagation();
+
+          void toggleBadgeInShowcase(
+            badge
+          );
+        }
+      );
+
+      tile.append(
+        showcaseButton
+      );
+    }
+
     tile.addEventListener(
       "mouseenter",
       () => {
@@ -1330,6 +1900,8 @@
     if (!elements.badgesDialogGrid) {
       return;
     }
+
+    renderBadgeShowcase();
 
     const badges =
       getAllAccountBadges();
@@ -1762,45 +2334,23 @@
 
   function cardBadges() {
     const unlocked =
-      Array.isArray(
-        profile?.badges?.unlocked
-      )
-        ? profile.badges.unlocked
-        : [];
+      getUnlockedBadges();
 
-    const showcase =
-      Array.isArray(
-        profile?.badges?.showcase
-      )
-        ? profile.badges.showcase
-        : [];
-
-    if (showcase.length === 0) {
-      return unlocked.slice(0, 5);
-    }
-
-    const positions =
+    const badgesByKey =
       new Map(
-        showcase.map(
-          (key, index) => [
-            key,
-            index
+        unlocked.map(
+          badge => [
+            badge.key,
+            badge
           ]
         )
       );
 
-    return unlocked
-      .filter(
-        badge =>
-          positions.has(
-            badge.key
-          )
+    return showcaseKeys
+      .map(key =>
+        badgesByKey.get(key)
       )
-      .sort(
-        (first, second) =>
-          positions.get(first.key) -
-          positions.get(second.key)
-      )
+      .filter(Boolean)
       .slice(0, 5);
   }
 
@@ -2286,6 +2836,7 @@
     renderIdentity();
     renderStatistics();
     renderRoles();
+    initializeBadgeShowcase();
     renderBadgesDialog();
     renderCreatorStats();
 

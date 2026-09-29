@@ -2083,3 +2083,311 @@
     padding-inline: 7px;
   }
 }
+
+/* =========================================================
+   Personnalisation de la carte de badges
+   ========================================================= */
+
+.badge-showcase-editor {
+  display: grid;
+  padding: 17px;
+
+  gap: 14px;
+
+  border: 1px solid rgba(0, 178, 55, 0.25);
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(0, 178, 55, 0.09),
+      rgba(0, 178, 55, 0.025));
+}
+
+.badge-showcase-heading {
+  display: flex;
+
+  gap: 18px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.badge-showcase-heading strong {
+  font-size: 0.88rem;
+}
+
+.badge-showcase-heading p {
+  margin: 4px 0 0;
+
+  color: var(--muted);
+
+  font-size: 0.7rem;
+}
+
+#badgeShowcaseCount {
+  display: inline-flex;
+  flex: 0 0 auto;
+
+  min-height: 30px;
+  padding: 6px 9px;
+
+  align-items: center;
+
+  border-radius: 999px;
+
+  background:
+    rgba(0, 178, 55, 0.15);
+
+  color: var(--green-light);
+
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.badge-showcase-list {
+  display: grid;
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  gap: 8px;
+}
+
+.badge-showcase-item,
+.badge-showcase-empty-slot {
+  min-width: 0;
+  min-height: 104px;
+
+  border-radius: 13px;
+}
+
+.badge-showcase-item {
+  position: relative;
+
+  display: grid;
+  padding: 11px 7px;
+
+  align-content: center;
+  justify-items: center;
+
+  border: 1px solid rgba(0, 178, 55, 0.3);
+
+  background:
+    rgba(0, 178, 55, 0.09);
+
+  cursor: grab;
+  text-align: center;
+
+  transition:
+    border-color 150ms ease,
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.badge-showcase-item:active {
+  cursor: grabbing;
+}
+
+.badge-showcase-item.is-dragging {
+  opacity: 0.4;
+  transform: scale(0.96);
+}
+
+.badge-showcase-item.is-drag-target {
+  border-color: var(--green-light);
+
+  transform: translateY(-3px);
+}
+
+.badge-showcase-icon {
+  display: grid;
+  width: 39px;
+  height: 39px;
+
+  place-items: center;
+
+  border-radius: 11px;
+
+  background:
+    rgba(0, 178, 55, 0.14);
+
+  color: var(--green-light);
+}
+
+.badge-showcase-icon svg {
+  width: 21px;
+  height: 21px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.badge-showcase-label {
+  display: -webkit-box;
+  margin-top: 8px;
+
+  overflow: hidden;
+
+  font-size: 0.67rem;
+  line-height: 1.3;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.badge-showcase-remove {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  display: grid;
+  width: 23px;
+  height: 23px;
+  padding: 0;
+
+  place-items: center;
+
+  border: 1px solid var(--border);
+  border-radius: 50%;
+
+  background: #071009;
+  color: var(--muted);
+
+  cursor: pointer;
+}
+
+.badge-showcase-remove:hover {
+  border-color:
+    rgba(255, 100, 121, 0.5);
+
+  color: #ff9dac;
+}
+
+.badge-showcase-remove svg {
+  width: 11px;
+  height: 11px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.badge-showcase-empty-slot {
+  display: grid;
+  padding: 9px;
+
+  place-content: center;
+
+  border: 1px dashed var(--border);
+  background: rgba(0, 0, 0, 0.12);
+
+  color: var(--muted);
+
+  font-size: 0.61rem;
+  text-align: center;
+}
+
+.badge-showcase-message {
+  margin: 0;
+  padding: 9px 11px;
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: var(--muted);
+
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.badge-showcase-message.is-success {
+  background:
+    rgba(0, 178, 55, 0.1);
+
+  color: var(--green-light);
+}
+
+.badge-showcase-message.is-error {
+  background:
+    rgba(255, 100, 121, 0.09);
+
+  color: #ff9dac;
+}
+
+/* Bouton sur les badges débloqués */
+
+.badge-tile {
+  position: relative;
+}
+
+.badge-tile.is-showcased {
+  border-color: var(--green);
+
+  box-shadow:
+    0 0 0 3px rgba(0, 178, 55, 0.09);
+}
+
+.badge-tile-showcase-toggle {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+
+  display: grid;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+
+  place-items: center;
+
+  border: 1px solid var(--border);
+  border-radius: 50%;
+
+  background: #071009;
+  color: var(--green-light);
+
+  cursor: pointer;
+}
+
+.badge-tile-showcase-toggle:hover {
+  border-color: var(--green);
+
+  background:
+    rgba(0, 178, 55, 0.13);
+}
+
+.badge-tile-showcase-toggle svg {
+  width: 14px;
+  height: 14px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 720px) {
+  .badge-showcase-list {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 440px) {
+  .badge-showcase-heading {
+    flex-direction: column;
+  }
+
+  .badge-showcase-list {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
