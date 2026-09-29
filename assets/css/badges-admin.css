@@ -1,0 +1,1820 @@
+/* =========================================================
+   Structure générale
+   ========================================================= */
+
+.badges-heading {
+  display: flex;
+  gap: 28px;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.badges-heading h1 {
+  margin: 0;
+
+  font-size: clamp(
+    2.1rem,
+    5vw,
+    3.8rem
+  );
+
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.badges-heading p:not(.eyebrow) {
+  max-width: 680px;
+  margin: 12px 0 0;
+
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.badges-heading-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+/* =========================================================
+   Messages de la page
+   ========================================================= */
+
+.page-message {
+  min-height: 22px;
+  margin: 0;
+  padding: 13px 16px;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: var(--muted);
+
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.page-message.is-success {
+  border-color:
+    rgba(0, 178, 55, 0.3);
+
+  background:
+    rgba(0, 178, 55, 0.08);
+
+  color: var(--green-light);
+}
+
+.page-message.is-error {
+  border-color:
+    rgba(255, 100, 121, 0.3);
+
+  background:
+    rgba(255, 100, 121, 0.07);
+
+  color: #ff9dac;
+}
+
+/* =========================================================
+   Résumé
+   ========================================================= */
+
+.badges-statistics {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 14px;
+}
+
+.badges-statistics .statistic-card {
+  position: relative;
+
+  display: grid;
+  min-height: 125px;
+  padding: 20px;
+
+  align-content: center;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.012)
+    ),
+    var(--surface);
+
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.18);
+}
+
+.badges-statistics
+.statistic-card::after {
+  position: absolute;
+  right: -36px;
+  bottom: -55px;
+
+  width: 135px;
+  height: 135px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(0, 178, 55, 0.055);
+
+  content: "";
+  pointer-events: none;
+}
+
+.badges-statistics
+.statistic-card > span {
+  position: relative;
+  z-index: 1;
+
+  color: var(--muted);
+
+  font-size: 0.69rem;
+  font-weight: 850;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badges-statistics
+.statistic-card > strong {
+  position: relative;
+  z-index: 1;
+
+  margin-top: 5px;
+
+  color: var(--green-light);
+
+  font-size: clamp(
+    1.8rem,
+    4vw,
+    2.6rem
+  );
+
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+/* =========================================================
+   Carte des contrôles
+   ========================================================= */
+
+.badges-controls-card {
+  overflow: visible;
+}
+
+.badges-controls {
+  display: grid;
+
+  grid-template-columns:
+    minmax(230px, 0.8fr)
+    minmax(0, 1.5fr);
+
+  padding: 18px 20px;
+
+  gap: 16px;
+  align-items: center;
+}
+
+/* =========================================================
+   Recherche
+   ========================================================= */
+
+.badge-search {
+  position: relative;
+
+  display: flex;
+  min-width: 0;
+
+  align-items: center;
+}
+
+.badge-search > svg {
+  position: absolute;
+  left: 14px;
+  z-index: 2;
+
+  width: 19px;
+  height: 19px;
+
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.8;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  pointer-events: none;
+}
+
+.badge-search input {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px 10px 44px;
+
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  outline: 0;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: var(--text);
+
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.badge-search input::placeholder {
+  color: var(--muted);
+}
+
+.badge-search input:hover {
+  border-color:
+    rgba(255, 255, 255, 0.18);
+}
+
+.badge-search input:focus {
+  border-color: var(--green);
+
+  background:
+    rgba(0, 178, 55, 0.045);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(0, 178, 55, 0.1);
+}
+
+/* =========================================================
+   Filtres
+   ========================================================= */
+
+.badge-filter-list {
+  display: flex;
+  min-width: 0;
+
+  gap: 7px;
+  align-items: center;
+
+  overflow-x: auto;
+
+  scrollbar-color:
+    rgba(0, 178, 55, 0.3)
+    transparent;
+
+  scrollbar-width: thin;
+}
+
+.badge-filter-list::-webkit-scrollbar {
+  height: 6px;
+}
+
+.badge-filter-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+
+  background:
+    rgba(0, 178, 55, 0.3);
+}
+
+.badge-filter {
+  display: inline-flex;
+  flex: 0 0 auto;
+
+  min-height: 40px;
+  padding: 8px 12px;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: var(--muted-light);
+
+  cursor: pointer;
+
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.badge-filter:hover {
+  border-color:
+    rgba(0, 178, 55, 0.4);
+
+  background:
+    rgba(0, 178, 55, 0.06);
+
+  color: var(--text);
+
+  transform: translateY(-1px);
+}
+
+.badge-filter.is-active {
+  border-color: var(--green);
+
+  background:
+    rgba(0, 178, 55, 0.15);
+
+  color: var(--green-light);
+
+  box-shadow:
+    0 7px 20px
+    rgba(0, 178, 55, 0.1);
+}
+
+/* =========================================================
+   Catalogue
+   ========================================================= */
+
+.badges-list-card {
+  overflow: hidden;
+}
+
+.badges-admin-list {
+  display: grid;
+  padding: 8px 24px 24px;
+
+  gap: 12px;
+}
+
+/* =========================================================
+   Carte d’un badge
+   ========================================================= */
+
+.badge-admin-card {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    64px minmax(0, 1fr) auto;
+
+  min-width: 0;
+  padding: 17px;
+
+  gap: 16px;
+  align-items: center;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.035),
+      rgba(255, 255, 255, 0.012)
+    );
+
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.badge-admin-card::after {
+  position: absolute;
+  right: -45px;
+  bottom: -70px;
+
+  width: 160px;
+  height: 160px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(0, 178, 55, 0.04);
+
+  content: "";
+  pointer-events: none;
+}
+
+.badge-admin-card:hover {
+  border-color:
+    rgba(0, 178, 55, 0.32);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0, 178, 55, 0.06),
+      rgba(255, 255, 255, 0.015)
+    );
+
+  transform: translateY(-2px);
+}
+
+.badge-admin-card.is-inactive {
+  opacity: 0.62;
+}
+
+.badge-admin-card.is-inactive:hover {
+  opacity: 0.82;
+}
+
+/* =========================================================
+   Icône du badge
+   ========================================================= */
+
+.badge-admin-icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  width: 64px;
+  height: 64px;
+
+  place-items: center;
+
+  border: 1px solid
+    rgba(0, 178, 55, 0.28);
+
+  border-radius: 17px;
+
+  background:
+    rgba(0, 178, 55, 0.1);
+
+  color: var(--green-light);
+}
+
+.badge-admin-card.is-inactive
+.badge-admin-icon {
+  border-color: var(--border);
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: var(--muted);
+}
+
+.badge-admin-icon svg {
+  width: 31px;
+  height: 31px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* =========================================================
+   Contenu de la carte
+   ========================================================= */
+
+.badge-admin-content {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  min-width: 0;
+}
+
+.badge-admin-heading {
+  display: flex;
+  min-width: 0;
+
+  gap: 10px;
+  align-items: center;
+}
+
+.badge-admin-heading h3 {
+  min-width: 0;
+  margin: 0;
+
+  overflow: hidden;
+
+  font-size: 0.97rem;
+  line-height: 1.3;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badge-status {
+  display: inline-flex;
+  flex: 0 0 auto;
+
+  min-height: 25px;
+  padding: 4px 8px;
+
+  align-items: center;
+
+  border-radius: 999px;
+
+  font-size: 0.62rem;
+  font-weight: 850;
+}
+
+.badge-status.is-active {
+  background:
+    rgba(0, 178, 55, 0.14);
+
+  color: var(--green-light);
+}
+
+.badge-status.is-inactive {
+  background:
+    rgba(255, 255, 255, 0.055);
+
+  color: var(--muted);
+}
+
+.badge-admin-description {
+  display: -webkit-box;
+  max-width: 780px;
+  margin: 6px 0 0;
+
+  overflow: hidden;
+
+  color: var(--muted);
+
+  font-size: 0.76rem;
+  line-height: 1.5;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.badge-admin-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  margin-top: 10px;
+}
+
+.badge-admin-metadata > span {
+  display: inline-flex;
+  min-height: 27px;
+  padding: 5px 8px;
+
+  align-items: center;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: var(--muted-light);
+
+  font-size: 0.64rem;
+  font-weight: 750;
+}
+
+.badge-admin-metadata
+.is-hidden-requirement {
+  border-color:
+    rgba(255, 201, 92, 0.24);
+
+  background:
+    rgba(255, 201, 92, 0.06);
+
+  color: #ffd77f;
+}
+
+.badge-admin-key {
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 9px;
+  padding: 4px 7px;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: 6px;
+
+  background:
+    rgba(0, 0, 0, 0.18);
+
+  color: var(--muted);
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-size: 0.61rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   Actions d’une carte
+   ========================================================= */
+
+.badge-admin-actions {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex: 0 0 auto;
+  gap: 7px;
+
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.badge-admin-actions .button {
+  min-height: 39px;
+  padding: 8px 11px;
+
+  font-size: 0.7rem;
+}
+
+/* =========================================================
+   Liste vide
+   ========================================================= */
+
+.badges-empty {
+  display: grid;
+  min-height: 330px;
+  padding: 42px 24px;
+
+  place-content: center;
+  justify-items: center;
+
+  text-align: center;
+}
+
+.badges-empty-icon {
+  display: grid;
+  width: 62px;
+  height: 62px;
+
+  place-items: center;
+
+  border: 1px solid
+    rgba(0, 178, 55, 0.25);
+
+  border-radius: 18px;
+
+  background:
+    rgba(0, 178, 55, 0.08);
+
+  color: var(--green-light);
+}
+
+.badges-empty-icon svg {
+  width: 30px;
+  height: 30px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.badges-empty h3 {
+  margin: 18px 0 0;
+
+  font-size: 1.15rem;
+}
+
+.badges-empty p {
+  max-width: 420px;
+  margin: 7px 0 20px;
+
+  color: var(--muted);
+}
+
+/* =========================================================
+   Fenêtre de création et modification
+   ========================================================= */
+
+.badge-editor-dialog {
+  width: min(
+    calc(100% - 28px),
+    1040px
+  );
+
+  max-height: 92vh;
+  padding: 0;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border-strong);
+  border-radius: 24px;
+
+  background: #071009;
+  color: var(--text);
+
+  box-shadow:
+    0 38px 120px rgba(0, 0, 0, 0.76);
+}
+
+.badge-editor-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.8);
+
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+}
+
+.badge-editor-shell {
+  display: flex;
+  max-height: 92vh;
+
+  flex-direction: column;
+}
+
+/* =========================================================
+   En-tête de la fenêtre
+   ========================================================= */
+
+.badge-editor-header {
+  display: flex;
+  flex: 0 0 auto;
+  padding: 25px 28px;
+
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  border-bottom: 1px solid var(--border);
+
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgba(0, 178, 55, 0.16),
+      transparent 24rem
+    ),
+    rgba(255, 255, 255, 0.014);
+}
+
+.badge-editor-header h2 {
+  margin: 0;
+
+  font-size: clamp(
+    1.6rem,
+    4vw,
+    2.25rem
+  );
+
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+}
+
+.badge-editor-header p:not(.eyebrow) {
+  max-width: 620px;
+  margin: 7px 0 0;
+
+  color: var(--muted);
+
+  font-size: 0.77rem;
+  line-height: 1.5;
+}
+
+.badge-editor-close {
+  display: grid;
+  flex: 0 0 auto;
+
+  width: 42px;
+  height: 42px;
+  padding: 0;
+
+  place-items: center;
+
+  border: 1px solid var(--border);
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  color: var(--text);
+  cursor: pointer;
+
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.badge-editor-close:hover {
+  border-color:
+    rgba(255, 100, 121, 0.45);
+
+  background:
+    rgba(255, 100, 121, 0.08);
+
+  color: #ff9dac;
+}
+
+.badge-editor-close svg {
+  width: 18px;
+  height: 18px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+
+  stroke-linecap: round;
+}
+
+/* =========================================================
+   Contenu principal de la fenêtre
+   ========================================================= */
+
+.badge-editor-content {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 0.58fr)
+    minmax(0, 1.42fr);
+
+  min-height: 0;
+
+  overflow-y: auto;
+
+  scrollbar-color:
+    rgba(0, 178, 55, 0.3)
+    transparent;
+
+  scrollbar-width: thin;
+}
+
+.badge-editor-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.badge-editor-content::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+
+  background:
+    rgba(0, 178, 55, 0.3);
+}
+
+/* =========================================================
+   Colonne de l’aperçu
+   ========================================================= */
+
+.badge-editor-preview-column {
+  position: sticky;
+  top: 0;
+
+  display: grid;
+  height: fit-content;
+  padding: 28px 22px;
+
+  gap: 13px;
+  align-content: start;
+
+  border-right: 1px solid var(--border);
+
+  background:
+    radial-gradient(
+      circle at 50% 15%,
+      rgba(0, 178, 55, 0.1),
+      transparent 15rem
+    ),
+    rgba(0, 0, 0, 0.12);
+}
+
+.badge-editor-preview {
+  position: relative;
+
+  display: grid;
+  min-height: 265px;
+  padding: 24px 18px;
+
+  align-content: center;
+  justify-items: center;
+
+  overflow: hidden;
+
+  border: 1px solid
+    rgba(0, 178, 55, 0.28);
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0, 178, 55, 0.13),
+      rgba(0, 178, 55, 0.025)
+    );
+
+  text-align: center;
+}
+
+.badge-editor-preview::after {
+  position: absolute;
+  right: -60px;
+  bottom: -85px;
+
+  width: 220px;
+  height: 220px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(0, 178, 55, 0.07);
+
+  content: "";
+  pointer-events: none;
+}
+
+.badge-preview-icon {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  width: 76px;
+  height: 76px;
+
+  place-items: center;
+
+  border: 1px solid
+    rgba(0, 178, 55, 0.4);
+
+  border-radius: 21px;
+
+  background:
+    rgba(0, 178, 55, 0.15);
+
+  color: var(--green-light);
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.badge-preview-icon svg {
+  width: 37px;
+  height: 37px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#badgePreviewLabel {
+  position: relative;
+  z-index: 1;
+
+  max-width: 100%;
+  margin-top: 17px;
+
+  overflow-wrap: anywhere;
+
+  font-size: 1.03rem;
+  line-height: 1.3;
+}
+
+#badgePreviewDescription {
+  position: relative;
+  z-index: 1;
+
+  display: -webkit-box;
+  max-width: 270px;
+  margin: 8px 0 0;
+
+  overflow: hidden;
+
+  color: var(--muted-light);
+
+  font-size: 0.72rem;
+  line-height: 1.5;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+
+#badgePreviewMode {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  min-height: 28px;
+  margin-top: 17px;
+  padding: 5px 9px;
+
+  align-items: center;
+
+  border-radius: 999px;
+
+  background:
+    rgba(0, 178, 55, 0.16);
+
+  color: var(--green-light);
+
+  font-size: 0.64rem;
+  font-weight: 850;
+}
+
+.badge-preview-help {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 0.68rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* =========================================================
+   Colonne des champs
+   ========================================================= */
+
+.badge-editor-fields {
+  display: grid;
+  min-width: 0;
+  padding: 27px;
+
+  gap: 20px;
+  align-content: start;
+}
+
+.badge-form-section {
+  display: grid;
+  padding: 20px;
+
+  gap: 19px;
+
+  border: 1px solid var(--border);
+  border-radius: 17px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+.badge-form-section > header {
+  display: grid;
+  grid-template-columns:
+    35px minmax(0, 1fr);
+
+  gap: 11px;
+  align-items: start;
+}
+
+.badge-form-section > header > span {
+  display: grid;
+  width: 35px;
+  height: 35px;
+
+  place-items: center;
+
+  border: 1px solid
+    rgba(0, 178, 55, 0.3);
+
+  border-radius: 10px;
+
+  background:
+    rgba(0, 178, 55, 0.1);
+
+  color: var(--green-light);
+
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.badge-form-section > header strong {
+  font-size: 0.91rem;
+}
+
+.badge-form-section > header p {
+  margin: 3px 0 0;
+
+  color: var(--muted);
+
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   Grille du formulaire
+   ========================================================= */
+
+.badge-form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 14px;
+}
+
+.badge-field {
+  display: grid;
+  min-width: 0;
+
+  gap: 7px;
+  align-content: start;
+}
+
+.badge-field.is-wide {
+  grid-column: 1 / -1;
+}
+
+.badge-field > span {
+  color: var(--muted-light);
+
+  font-size: 0.71rem;
+  font-weight: 800;
+}
+
+.badge-field > small {
+  color: var(--muted);
+
+  font-size: 0.64rem;
+  line-height: 1.45;
+}
+
+.badge-field input,
+.badge-field select,
+.badge-field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  outline: 0;
+
+  background: #050b07;
+  color: var(--text);
+
+  font: inherit;
+  font-size: 0.78rem;
+
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.badge-field textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.badge-field input:hover,
+.badge-field select:hover,
+.badge-field textarea:hover {
+  border-color:
+    rgba(255, 255, 255, 0.18);
+}
+
+.badge-field input:focus,
+.badge-field select:focus,
+.badge-field textarea:focus {
+  border-color: var(--green);
+
+  background:
+    rgba(0, 178, 55, 0.025);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(0, 178, 55, 0.1);
+}
+
+.badge-field input::placeholder,
+.badge-field textarea::placeholder {
+  color: #68756b;
+}
+
+/* =========================================================
+   Modes d’obtention
+   ========================================================= */
+
+.acquisition-mode-list {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+.acquisition-mode-card {
+  position: relative;
+
+  display: block;
+  min-width: 0;
+
+  cursor: pointer;
+}
+
+.acquisition-mode-card input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  overflow: hidden;
+
+  opacity: 0;
+  pointer-events: none;
+}
+
+.acquisition-mode-content {
+  display: grid;
+  min-height: 102px;
+  padding: 14px;
+
+  align-content: center;
+
+  border: 1px solid var(--border);
+  border-radius: 13px;
+
+  background:
+    rgba(255, 255, 255, 0.02);
+
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.acquisition-mode-card:hover
+.acquisition-mode-content {
+  border-color:
+    rgba(0, 178, 55, 0.33);
+
+  background:
+    rgba(0, 178, 55, 0.04);
+
+  transform: translateY(-2px);
+}
+
+.acquisition-mode-card
+input:focus-visible
++ .acquisition-mode-content {
+  outline: 3px solid var(--green-light);
+  outline-offset: 3px;
+}
+
+.acquisition-mode-card
+input:checked
++ .acquisition-mode-content {
+  border-color: var(--green);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0, 178, 55, 0.15),
+      rgba(0, 178, 55, 0.035)
+    );
+
+  box-shadow:
+    0 8px 22px
+    rgba(0, 178, 55, 0.1);
+}
+
+.acquisition-mode-content strong {
+  font-size: 0.78rem;
+}
+
+.acquisition-mode-card
+input:checked
++ .acquisition-mode-content
+strong {
+  color: var(--green-light);
+}
+
+.acquisition-mode-content small {
+  margin-top: 5px;
+
+  color: var(--muted);
+
+  font-size: 0.65rem;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   Champs de prérequis
+   ========================================================= */
+
+.requirement-fields {
+  padding-top: 17px;
+
+  border-top: 1px solid var(--border);
+}
+
+.requirement-fields[hidden] {
+  display: none;
+}
+
+/* =========================================================
+   Interrupteurs
+   ========================================================= */
+
+.badge-switch-list {
+  display: grid;
+  gap: 10px;
+}
+
+.badge-switch {
+  position: relative;
+
+  display: grid;
+  grid-template-columns:
+    44px minmax(0, 1fr);
+
+  min-width: 0;
+  padding: 14px;
+
+  gap: 13px;
+  align-items: center;
+
+  border: 1px solid var(--border);
+  border-radius: 13px;
+
+  background:
+    rgba(255, 255, 255, 0.02);
+
+  cursor: pointer;
+
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+.badge-switch:hover {
+  border-color:
+    rgba(0, 178, 55, 0.3);
+
+  background:
+    rgba(0, 178, 55, 0.035);
+}
+
+.badge-switch > input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  overflow: hidden;
+
+  opacity: 0;
+  pointer-events: none;
+}
+
+.badge-switch-control {
+  position: relative;
+
+  display: block;
+  width: 44px;
+  height: 25px;
+
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+.badge-switch-control::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+
+  width: 17px;
+  height: 17px;
+
+  border-radius: 50%;
+
+  background: var(--muted-light);
+
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.35);
+
+  content: "";
+
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.badge-switch
+input:checked
++ .badge-switch-control {
+  border-color: var(--green);
+
+  background:
+    rgba(0, 178, 55, 0.26);
+}
+
+.badge-switch
+input:checked
++ .badge-switch-control::after {
+  background: var(--green-light);
+
+  transform: translateX(19px);
+}
+
+.badge-switch
+input:focus-visible
++ .badge-switch-control {
+  outline: 3px solid var(--green-light);
+  outline-offset: 3px;
+}
+
+.badge-switch-copy {
+  display: grid;
+  min-width: 0;
+}
+
+.badge-switch-copy strong {
+  font-size: 0.77rem;
+}
+
+.badge-switch-copy small {
+  margin-top: 3px;
+
+  color: var(--muted);
+
+  font-size: 0.65rem;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   Message du formulaire
+   ========================================================= */
+
+.badge-form-message {
+  min-height: 22px;
+  margin: 0;
+  padding: 12px 14px;
+
+  border: 1px solid var(--border);
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: var(--muted);
+
+  font-size: 0.74rem;
+  font-weight: 750;
+}
+
+.badge-form-message.is-success {
+  border-color:
+    rgba(0, 178, 55, 0.3);
+
+  background:
+    rgba(0, 178, 55, 0.08);
+
+  color: var(--green-light);
+}
+
+.badge-form-message.is-error {
+  border-color:
+    rgba(255, 100, 121, 0.3);
+
+  background:
+    rgba(255, 100, 121, 0.07);
+
+  color: #ff9dac;
+}
+
+/* =========================================================
+   Pied de la fenêtre
+   ========================================================= */
+
+.badge-editor-footer {
+  display: flex;
+  flex: 0 0 auto;
+  min-height: 76px;
+  padding: 16px 27px;
+
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+
+  border-top: 1px solid var(--border);
+
+  background:
+    rgba(0, 0, 0, 0.2);
+}
+
+.badge-editor-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.button-danger {
+  border-color:
+    rgba(255, 100, 121, 0.38);
+
+  background:
+    rgba(255, 100, 121, 0.09);
+
+  color: #ff9dac;
+}
+
+.button-danger:hover:not(:disabled) {
+  border-color: #ff6479;
+
+  background:
+    rgba(255, 100, 121, 0.17);
+}
+
+/* =========================================================
+   Responsive — écrans moyens
+   ========================================================= */
+
+@media (max-width: 980px) {
+  .badges-statistics {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .badge-editor-content {
+    grid-template-columns:
+      minmax(190px, 0.5fr)
+      minmax(0, 1.5fr);
+  }
+
+  .acquisition-mode-list {
+    grid-template-columns: 1fr;
+  }
+
+  .acquisition-mode-content {
+    min-height: 76px;
+  }
+}
+
+/* =========================================================
+   Responsive — tablettes
+   ========================================================= */
+
+@media (max-width: 760px) {
+  .badges-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .badges-heading-actions {
+    justify-content: flex-start;
+  }
+
+  .badges-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .badge-filter-list {
+    padding-bottom: 5px;
+  }
+
+  .badge-admin-card {
+    grid-template-columns:
+      55px minmax(0, 1fr);
+  }
+
+  .badge-admin-icon {
+    width: 55px;
+    height: 55px;
+
+    border-radius: 15px;
+  }
+
+  .badge-admin-icon svg {
+    width: 27px;
+    height: 27px;
+  }
+
+  .badge-admin-actions {
+    grid-column: 1 / -1;
+
+    justify-content: flex-end;
+  }
+
+  .badge-editor-content {
+    display: block;
+  }
+
+  .badge-editor-preview-column {
+    position: static;
+
+    grid-template-columns:
+      minmax(180px, 0.6fr)
+      minmax(0, 1fr);
+
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .badge-editor-preview {
+    min-height: 220px;
+  }
+
+  .badge-preview-help {
+    align-self: center;
+    text-align: left;
+  }
+}
+
+/* =========================================================
+   Responsive — mobiles
+   ========================================================= */
+
+@media (max-width: 560px) {
+  .badges-statistics {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 9px;
+  }
+
+  .badges-statistics
+  .statistic-card {
+    min-height: 105px;
+    padding: 15px;
+  }
+
+  .badges-controls {
+    padding: 15px;
+  }
+
+  .badges-admin-list {
+    padding: 8px 15px 17px;
+  }
+
+  .badge-admin-card {
+    grid-template-columns: 1fr;
+
+    padding: 15px;
+  }
+
+  .badge-admin-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .badge-admin-actions {
+    grid-column: auto;
+
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    width: 100%;
+  }
+
+  .badge-admin-actions .button {
+    width: 100%;
+  }
+
+  .badge-editor-dialog {
+    width: calc(100% - 12px);
+    max-height: 96vh;
+
+    border-radius: 18px;
+  }
+
+  .badge-editor-shell {
+    max-height: 96vh;
+  }
+
+  .badge-editor-header {
+    padding: 20px 17px;
+  }
+
+  .badge-editor-header h2 {
+    font-size: 1.55rem;
+  }
+
+  .badge-editor-preview-column {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 18px 16px;
+  }
+
+  .badge-editor-preview {
+    min-height: 215px;
+  }
+
+  .badge-preview-help {
+    text-align: center;
+  }
+
+  .badge-editor-fields {
+    padding: 17px 14px;
+
+    gap: 14px;
+  }
+
+  .badge-form-section {
+    padding: 16px 14px;
+
+    border-radius: 14px;
+  }
+
+  .badge-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .badge-field.is-wide {
+    grid-column: auto;
+  }
+
+  .badge-editor-footer {
+    align-items: stretch;
+    flex-direction: column-reverse;
+
+    padding: 14px 16px;
+  }
+
+  .badge-editor-footer-actions {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .badge-editor-footer .button {
+    width: 100%;
+  }
+
+  #deleteBadgeButton {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Très petits écrans
+   ========================================================= */
+
+@media (max-width: 380px) {
+  .badges-statistics {
+    grid-template-columns: 1fr;
+  }
+
+  .badge-admin-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .badge-editor-footer-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .badge-form-section > header {
+    grid-template-columns:
+      31px minmax(0, 1fr);
+  }
+
+  .badge-form-section
+  > header
+  > span {
+    width: 31px;
+    height: 31px;
+  }
+}
+
+/* =========================================================
+   Accessibilité
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .badge-admin-card,
+  .badge-filter,
+  .acquisition-mode-content,
+  .badge-switch-control,
+  .badge-switch-control::after {
+    transition: none;
+  }
+}
