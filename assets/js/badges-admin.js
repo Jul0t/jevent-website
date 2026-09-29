@@ -462,8 +462,6 @@
             emotes: "emotes",
             channels: "chaînes visitées",
             event_days: "jours de participation",
-            site_interaction:
-                "interactions sur le site"
         };
 
         return labels[metric] ??
