@@ -425,10 +425,13 @@
                 <input type="radio" name="acquisitionMode" value="advanced">
 
                 <span class="acquisition-mode-content">
-                  <strong>Avancé</strong>
+                  <strong>
+                    Action du site / API
+                  </strong>
 
                   <small>
-                    Une API spécifique sera développée.
+                    Débloqué après une action précise validée
+                    par l’API.
                   </small>
                 </span>
               </label>
@@ -458,10 +461,7 @@
                   <option value="event_days">
                     Jours de participation
                   </option>
-
-                  <option value="site_interaction">
-                    Interaction sur le site
-                  </option>
+                  
                 </select>
               </label>
 
@@ -519,10 +519,11 @@
             <div id="advancedRequirementFields" class="badge-form-grid requirement-fields" hidden>
               <label class="badge-field is-wide">
                 <span>
-                  Clé de la règle avancée
+                  Clé de déclenchement API
                 </span>
 
-                <input id="badgeAdvancedKey" type="text" maxlength="80" placeholder="Exemple : premier-don-jevent">
+                <input id="badgeAdvancedKey" type="text" maxlength="80"
+                  placeholder="Exemple : creator-onboarding-completed">
 
                 <small>
                   Cette clé sera utilisée par la future
