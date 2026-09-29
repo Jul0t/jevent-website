@@ -1187,21 +1187,42 @@
         "",
         badge.label ||
         "Badge JEvent"
-      ),
-
-      createElement(
-        "p",
-        "",
-        badge.description ||
-        "Aucune description."
-      ),
-
-      createElement(
-        "span",
-        "badge-hover-requirement",
-        badgeRequirementLabel(badge)
       )
     );
+
+    if (
+      badge.detailsHidden === true &&
+      !badge.unlocked
+    ) {
+      copy.append(
+        createElement(
+          "p",
+          "",
+          "La description de ce badge est secrète."
+        ),
+
+        createElement(
+          "span",
+          "badge-hover-requirement",
+          "Méthode d’obtention secrète."
+        )
+      );
+    } else {
+      copy.append(
+        createElement(
+          "p",
+          "",
+          badge.description ||
+          "Aucune description."
+        ),
+
+        createElement(
+          "span",
+          "badge-hover-requirement",
+          badgeRequirementLabel(badge)
+        )
+      );
+    }
 
     const state =
       createElement(
