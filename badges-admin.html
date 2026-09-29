@@ -4,39 +4,21 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta
-    name="robots"
-    content="noindex, nofollow"
-  >
+  <meta name="robots" content="noindex, nofollow">
 
-  <meta
-    name="theme-color"
-    content="#050b07"
-  >
+  <meta name="theme-color" content="#050b07">
 
   <title>
     Gestion des badges — JEvent 26
   </title>
 
-  <link
-    rel="stylesheet"
-    href="/assets/css/admin.css?v=10"
-  >
+  <link rel="stylesheet" href="/assets/css/admin.css?v=10">
 
-  <link
-    rel="stylesheet"
-    href="/assets/css/badges-admin.css?v=1"
-  >
+  <link rel="stylesheet" href="/assets/css/badges-admin.css?v=3">
 
-  <script
-    src="/assets/js/badges-admin.js?v=1"
-    defer
-  ></script>
+  <script src="/assets/js/badges-admin.js?v=2" defer></script>
 </head>
 
 <body>
@@ -44,15 +26,8 @@
     <!-- Navigation -->
 
     <header class="site-header">
-      <a
-        class="brand"
-        href="/admin.html"
-      >
-        <img
-          class="brand-logo"
-          src="/assets/jevent_logo.png"
-          alt="JEvent 26"
-        >
+      <a class="brand" href="/admin.html">
+        <img class="brand-logo" src="/assets/jevent_logo.png" alt="JEvent 26">
 
         <span>
           <strong>JEvent 26</strong>
@@ -60,10 +35,7 @@
         </span>
       </a>
 
-      <nav
-        class="navigation"
-        aria-label="Navigation Admin"
-      >
+      <nav class="navigation" aria-label="Navigation Admin">
         <a href="/admin.html">
           Panel Admin
         </a>
@@ -81,10 +53,7 @@
     <main>
       <!-- Chargement -->
 
-      <section
-        id="loadingState"
-        class="page-state"
-      >
+      <section id="loadingState" class="page-state">
         <div class="spinner"></div>
 
         <p>
@@ -94,11 +63,7 @@
 
       <!-- Erreur -->
 
-      <section
-        id="errorState"
-        class="page-state"
-        hidden
-      >
+      <section id="errorState" class="page-state" hidden>
         <div class="state-icon">
           !
         </div>
@@ -109,20 +74,14 @@
           Cette page est réservée aux Admins.
         </p>
 
-        <a
-          class="button button-secondary"
-          href="/admin.html"
-        >
+        <a class="button button-secondary" href="/admin.html">
           Retour au panel
         </a>
       </section>
 
       <!-- Application -->
 
-      <div
-        id="badgesApplication"
-        hidden
-      >
+      <div id="badgesApplication" hidden>
         <section class="admin-heading badges-heading">
           <div>
             <p class="eyebrow">
@@ -138,31 +97,17 @@
           </div>
 
           <div class="badges-heading-actions">
-            <button
-              id="refreshBadgesButton"
-              class="button button-secondary"
-              type="button"
-            >
+            <button id="refreshBadgesButton" class="button button-secondary" type="button">
               Actualiser
             </button>
 
-            <button
-              id="createBadgeButton"
-              class="button button-primary"
-              type="button"
-            >
+            <button id="createBadgeButton" class="button button-primary" type="button">
               Créer un badge
             </button>
           </div>
         </section>
 
-        <p
-          id="pageMessage"
-          class="page-message"
-          role="status"
-          aria-live="polite"
-          hidden
-        ></p>
+        <p id="pageMessage" class="page-message" role="status" aria-live="polite" hidden></p>
 
         <!-- Résumé -->
 
@@ -209,83 +154,37 @@
                 Rechercher un badge
               </span>
 
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <circle
-                  cx="11"
-                  cy="11"
-                  r="7"
-                ></circle>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
 
                 <path d="m16.5 16.5 4 4"></path>
               </svg>
 
-              <input
-                id="badgeSearchInput"
-                type="search"
-                autocomplete="off"
-                placeholder="Rechercher un badge…"
-              >
+              <input id="badgeSearchInput" type="search" autocomplete="off" placeholder="Rechercher un badge…">
             </label>
 
-            <div
-              class="badge-filter-list"
-              role="group"
-              aria-label="Filtrer les badges"
-            >
-              <button
-                class="badge-filter is-active"
-                type="button"
-                data-filter="all"
-                aria-pressed="true"
-              >
+            <div class="badge-filter-list" role="group" aria-label="Filtrer les badges">
+              <button class="badge-filter is-active" type="button" data-filter="all" aria-pressed="true">
                 Tous
               </button>
 
-              <button
-                class="badge-filter"
-                type="button"
-                data-filter="active"
-                aria-pressed="false"
-              >
+              <button class="badge-filter" type="button" data-filter="active" aria-pressed="false">
                 Actifs
               </button>
 
-              <button
-                class="badge-filter"
-                type="button"
-                data-filter="inactive"
-                aria-pressed="false"
-              >
+              <button class="badge-filter" type="button" data-filter="inactive" aria-pressed="false">
                 Désactivés
               </button>
 
-              <button
-                class="badge-filter"
-                type="button"
-                data-filter="automatic"
-                aria-pressed="false"
-              >
+              <button class="badge-filter" type="button" data-filter="automatic" aria-pressed="false">
                 Automatiques
               </button>
 
-              <button
-                class="badge-filter"
-                type="button"
-                data-filter="manual"
-                aria-pressed="false"
-              >
+              <button class="badge-filter" type="button" data-filter="manual" aria-pressed="false">
                 Manuels
               </button>
 
-              <button
-                class="badge-filter"
-                type="button"
-                data-filter="advanced"
-                aria-pressed="false"
-              >
+              <button class="badge-filter" type="button" data-filter="advanced" aria-pressed="false">
                 Avancés
               </button>
             </div>
@@ -309,26 +208,14 @@
             </div>
           </header>
 
-          <div
-            id="badgesList"
-            class="badges-admin-list"
-          ></div>
+          <div id="badgesList" class="badges-admin-list"></div>
 
-          <div
-            id="badgesEmpty"
-            class="badges-empty"
-            hidden
-          >
+          <div id="badgesEmpty" class="badges-empty" hidden>
             <span class="badges-empty-icon">
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  d="m12 3 2.5 5.2 5.7.8-4.1 4
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m12 3 2.5 5.2 5.7.8-4.1 4
                      1 5.7-5.1-2.7-5.1 2.7
-                     1-5.7-4.1-4 5.7-.8L12 3Z"
-                ></path>
+                     1-5.7-4.1-4 5.7-.8L12 3Z"></path>
               </svg>
             </span>
 
@@ -339,11 +226,7 @@
               badge.
             </p>
 
-            <button
-              id="emptyCreateBadgeButton"
-              class="button button-primary"
-              type="button"
-            >
+            <button id="emptyCreateBadgeButton" class="button button-primary" type="button">
               Créer un badge
             </button>
           </div>
@@ -354,21 +237,11 @@
 
   <!-- Fenêtre de création et modification -->
 
-  <dialog
-    id="badgeDialog"
-    class="badge-editor-dialog"
-    aria-labelledby="badgeDialogTitle"
-  >
-    <form
-      id="badgeForm"
-      class="badge-editor-shell"
-    >
+  <dialog id="badgeDialog" class="badge-editor-dialog" aria-labelledby="badgeDialogTitle">
+    <form id="badgeForm" class="badge-editor-shell">
       <header class="badge-editor-header">
         <div>
-          <p
-            id="badgeDialogEyebrow"
-            class="eyebrow"
-          >
+          <p id="badgeDialogEyebrow" class="eyebrow">
             Nouveau badge
           </p>
 
@@ -382,35 +255,21 @@
           </p>
         </div>
 
-        <button
-          id="closeBadgeDialog"
-          class="badge-editor-close"
-          type="button"
-          aria-label="Fermer"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
+        <button id="closeBadgeDialog" class="badge-editor-close" type="button" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 6l12 12M18 6 6 18"></path>
           </svg>
         </button>
       </header>
 
       <div class="badge-editor-content">
-        <input
-          id="badgeKey"
-          type="hidden"
-        >
+        <input id="badgeKey" type="hidden">
 
         <!-- Aperçu -->
 
         <aside class="badge-editor-preview-column">
           <div class="badge-editor-preview">
-            <span
-              id="badgePreviewIcon"
-              class="badge-preview-icon"
-            ></span>
+            <span id="badgePreviewIcon" class="badge-preview-icon"></span>
 
             <strong id="badgePreviewLabel">
               Nouveau badge
@@ -453,13 +312,7 @@
                   Nom du badge
                 </span>
 
-                <input
-                  id="badgeLabel"
-                  type="text"
-                  maxlength="100"
-                  required
-                  placeholder="Exemple : Viewer actif"
-                >
+                <input id="badgeLabel" type="text" maxlength="100" required placeholder="Exemple : Viewer actif">
               </label>
 
               <label class="badge-field is-wide">
@@ -467,13 +320,8 @@
                   Description
                 </span>
 
-                <textarea
-                  id="badgeDescription"
-                  rows="4"
-                  maxlength="600"
-                  required
-                  placeholder="Explique ce que représente le badge."
-                ></textarea>
+                <textarea id="badgeDescription" rows="4" maxlength="600" required
+                  placeholder="Explique ce que représente le badge."></textarea>
 
                 <small>
                   Texte simple, sans Markdown.
@@ -529,13 +377,7 @@
                   Ordre d’affichage
                 </span>
 
-                <input
-                  id="badgeDisplayOrder"
-                  type="number"
-                  min="0"
-                  max="100000"
-                  value="100"
-                >
+                <input id="badgeDisplayOrder" type="number" min="0" max="100000" value="100">
               </label>
             </div>
           </section>
@@ -554,17 +396,9 @@
               </div>
             </header>
 
-            <div
-              id="acquisitionModeList"
-              class="acquisition-mode-list"
-            >
+            <div id="acquisitionModeList" class="acquisition-mode-list">
               <label class="acquisition-mode-card">
-                <input
-                  type="radio"
-                  name="acquisitionMode"
-                  value="automatic"
-                  checked
-                >
+                <input type="radio" name="acquisitionMode" value="automatic" checked>
 
                 <span class="acquisition-mode-content">
                   <strong>Automatique</strong>
@@ -576,11 +410,7 @@
               </label>
 
               <label class="acquisition-mode-card">
-                <input
-                  type="radio"
-                  name="acquisitionMode"
-                  value="manual"
-                >
+                <input type="radio" name="acquisitionMode" value="manual">
 
                 <span class="acquisition-mode-content">
                   <strong>Manuel</strong>
@@ -592,11 +422,7 @@
               </label>
 
               <label class="acquisition-mode-card">
-                <input
-                  type="radio"
-                  name="acquisitionMode"
-                  value="advanced"
-                >
+                <input type="radio" name="acquisitionMode" value="advanced">
 
                 <span class="acquisition-mode-content">
                   <strong>Avancé</strong>
@@ -610,10 +436,7 @@
 
             <!-- Règle automatique -->
 
-            <div
-              id="automaticRequirementFields"
-              class="badge-form-grid requirement-fields"
-            >
+            <div id="automaticRequirementFields" class="badge-form-grid requirement-fields">
               <label class="badge-field">
                 <span>
                   Statistique requise
@@ -662,11 +485,7 @@
                 </select>
               </label>
 
-              <label
-                id="badgeEventDayField"
-                class="badge-field"
-                hidden
-              >
+              <label id="badgeEventDayField" class="badge-field" hidden>
                 <span>
                   Journée
                 </span>
@@ -691,34 +510,19 @@
                   Nombre requis
                 </span>
 
-                <input
-                  id="badgeThreshold"
-                  type="number"
-                  min="1"
-                  max="100000000"
-                  value="100"
-                >
+                <input id="badgeThreshold" type="number" min="1" max="100000000" value="100">
               </label>
             </div>
 
             <!-- Règle avancée -->
 
-            <div
-              id="advancedRequirementFields"
-              class="badge-form-grid requirement-fields"
-              hidden
-            >
+            <div id="advancedRequirementFields" class="badge-form-grid requirement-fields" hidden>
               <label class="badge-field is-wide">
                 <span>
                   Clé de la règle avancée
                 </span>
 
-                <input
-                  id="badgeAdvancedKey"
-                  type="text"
-                  maxlength="80"
-                  placeholder="Exemple : premier-don-jevent"
-                >
+                <input id="badgeAdvancedKey" type="text" maxlength="80" placeholder="Exemple : premier-don-jevent">
 
                 <small>
                   Cette clé sera utilisée par la future
@@ -744,10 +548,7 @@
 
             <div class="badge-switch-list">
               <label class="badge-switch">
-                <input
-                  id="badgeRequirementsHidden"
-                  type="checkbox"
-                >
+                <input id="badgeRequirementsHidden" type="checkbox">
 
                 <span class="badge-switch-control"></span>
 
@@ -764,11 +565,7 @@
               </label>
 
               <label class="badge-switch">
-                <input
-                  id="badgeActive"
-                  type="checkbox"
-                  checked
-                >
+                <input id="badgeActive" type="checkbox" checked>
 
                 <span class="badge-switch-control"></span>
 
@@ -786,45 +583,101 @@
             </div>
           </section>
 
-          <p
-            id="badgeFormMessage"
-            class="badge-form-message"
-            role="status"
-            aria-live="polite"
-            hidden
-          ></p>
+          <p id="badgeFormMessage" class="badge-form-message" role="status" aria-live="polite" hidden></p>
         </div>
       </div>
 
       <footer class="badge-editor-footer">
-        <button
-          id="deleteBadgeButton"
-          class="button button-danger"
-          type="button"
-          hidden
-        >
+        <button id="deleteBadgeButton" class="button button-danger" type="button" hidden>
           Supprimer
         </button>
 
         <div class="badge-editor-footer-actions">
-          <button
-            id="cancelBadgeButton"
-            class="button button-secondary"
-            type="button"
-          >
+          <button id="cancelBadgeButton" class="button button-secondary" type="button">
             Annuler
           </button>
 
-          <button
-            id="saveBadgeButton"
-            class="button button-primary"
-            type="submit"
-          >
+          <button id="saveBadgeButton" class="button button-primary" type="submit">
             Enregistrer
           </button>
         </div>
       </footer>
     </form>
+  </dialog>
+
+  <!-- Gestion des attributions manuelles -->
+
+  <dialog id="badgeAssignmentsDialog" class="badge-assignments-dialog" aria-labelledby="badgeAssignmentsTitle">
+    <div class="badge-assignments-shell">
+      <header class="badge-assignments-header">
+        <div class="badge-assignments-identity">
+          <span id="badgeAssignmentsIcon" class="badge-assignments-icon"></span>
+
+          <div>
+            <p class="eyebrow">
+              Attribution manuelle
+            </p>
+
+            <h2 id="badgeAssignmentsTitle">
+              Gérer les attributions
+            </h2>
+
+            <p id="badgeAssignmentsDescription">
+              Sélectionne les comptes qui doivent posséder
+              ce badge.
+            </p>
+          </div>
+        </div>
+
+        <button id="closeBadgeAssignmentsDialog" class="badge-editor-close" type="button" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+      </header>
+
+      <div class="badge-assignments-toolbar">
+        <label class="badge-assignment-search">
+          <span class="sr-only">
+            Rechercher un compte Twitch
+          </span>
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+
+            <path d="m16.5 16.5 4 4"></path>
+          </svg>
+
+          <input id="badgeAssignmentSearch" type="search" autocomplete="off" placeholder="Rechercher un compte Twitch…">
+        </label>
+
+        <span id="badgeAssignmentsCount" class="badge-assignments-count">
+          0 attribution
+        </span>
+      </div>
+
+      <p id="badgeAssignmentsMessage" class="badge-assignments-message" role="status" aria-live="polite" hidden></p>
+
+      <div id="badgeAssignmentsList" class="badge-assignments-list"></div>
+
+      <div id="badgeAssignmentsEmpty" class="badge-assignments-empty" hidden>
+        <strong>Aucun compte trouvé</strong>
+
+        <p>
+          Essaie une autre recherche.
+        </p>
+      </div>
+
+      <footer class="badge-assignments-footer">
+        <p>
+          Les modifications sont appliquées immédiatement.
+        </p>
+
+        <button id="finishBadgeAssignmentsButton" class="button button-primary" type="button">
+          Terminer
+        </button>
+      </footer>
+    </div>
   </dialog>
 </body>
 
