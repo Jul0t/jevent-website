@@ -225,6 +225,7 @@
   const TAB_HASHES = {
     overview: "accueil",
     creators: "createurs",
+    interactions: "interactions",
     administrators: "administrateurs",
     stats: "statistiques",
     tools: "outils"
@@ -239,6 +240,7 @@
     const validTabs = [
       "overview",
       "creators",
+      "interactions",
       "administrators",
       "stats",
       "tools"

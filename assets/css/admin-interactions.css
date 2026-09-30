@@ -1,0 +1,1763 @@
+/* =========================================================
+   En-tête et messages
+   ========================================================= */
+
+.interactions-heading {
+    display: flex;
+    gap: 24px;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.interactions-heading>div {
+    min-width: 0;
+}
+
+.interactions-heading h2 {
+    margin: 0;
+}
+
+.interactions-heading p:not(.eyebrow) {
+    max-width: 680px;
+    margin: 8px 0 0;
+
+    color: var(--muted);
+    line-height: 1.55;
+}
+
+.interactions-heading>.button {
+    flex: 0 0 auto;
+}
+
+.interactions-message {
+    min-height: 22px;
+    margin: 16px 24px 0;
+    padding: 12px 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color: var(--muted);
+
+    font-size: 0.78rem;
+    font-weight: 750;
+}
+
+.interactions-message.is-success {
+    border-color:
+        rgba(0, 178, 55, 0.3);
+
+    background:
+        rgba(0, 178, 55, 0.08);
+
+    color: var(--green-light);
+}
+
+.interactions-message.is-error {
+    border-color:
+        rgba(255, 100, 121, 0.3);
+
+    background:
+        rgba(255, 100, 121, 0.07);
+
+    color: #ff9dac;
+}
+
+/* =========================================================
+   Résumé
+   ========================================================= */
+
+.interactions-summary {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    padding: 20px 24px 24px;
+    gap: 13px;
+}
+
+.interactions-summary .statistic-card {
+    position: relative;
+
+    display: grid;
+    min-height: 112px;
+    padding: 18px;
+
+    align-content: center;
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 15px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, 0.04),
+            rgba(255, 255, 255, 0.012));
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.16);
+}
+
+.interactions-summary .statistic-card::after {
+    position: absolute;
+    right: -35px;
+    bottom: -55px;
+
+    width: 130px;
+    height: 130px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(0, 178, 55, 0.055);
+
+    content: "";
+    pointer-events: none;
+}
+
+.interactions-summary .statistic-card>span {
+    position: relative;
+    z-index: 1;
+
+    color: var(--muted);
+
+    font-size: 0.68rem;
+    font-weight: 850;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.interactions-summary .statistic-card>strong {
+    position: relative;
+    z-index: 1;
+
+    margin-top: 4px;
+
+    color: var(--green-light);
+
+    font-size: clamp(1.7rem,
+            4vw,
+            2.4rem);
+
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    line-height: 1;
+}
+
+/* =========================================================
+   Contrôles et recherche
+   ========================================================= */
+
+.interactions-controls {
+    display: grid;
+    grid-template-columns:
+        minmax(210px, 0.75fr) minmax(0, 1.5fr) auto;
+
+    padding: 18px 20px;
+
+    gap: 15px;
+    align-items: center;
+}
+
+.interactions-controls .search-field {
+    display: block;
+    min-width: 0;
+}
+
+.interactions-controls .search-field input {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 13px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    outline: 0;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    color: var(--text);
+
+    font: inherit;
+    font-size: 0.78rem;
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        box-shadow 150ms ease;
+}
+
+.interactions-controls .search-field input::placeholder {
+    color: var(--muted);
+}
+
+.interactions-controls .search-field input:focus {
+    border-color: var(--green);
+
+    background:
+        rgba(0, 178, 55, 0.035);
+
+    box-shadow:
+        0 0 0 4px rgba(0, 178, 55, 0.1);
+}
+
+/* =========================================================
+   Filtres par créateur
+   ========================================================= */
+
+.interaction-creator-filters {
+    display: flex;
+    min-width: 0;
+    padding: 2px 1px 7px;
+
+    gap: 8px;
+    align-items: center;
+
+    overflow-x: auto;
+
+    scrollbar-color:
+        rgba(0, 178, 55, 0.3) transparent;
+
+    scrollbar-width: thin;
+}
+
+.interaction-creator-filters::-webkit-scrollbar {
+    height: 6px;
+}
+
+.interaction-creator-filters::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+
+    background:
+        rgba(0, 178, 55, 0.3);
+}
+
+.interaction-creator-filter {
+    display: inline-flex;
+    flex: 0 0 auto;
+
+    min-height: 43px;
+    padding: 5px 12px 5px 6px;
+
+    gap: 8px;
+    align-items: center;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color: var(--muted-light);
+
+    cursor: pointer;
+
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 800;
+    white-space: nowrap;
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        color 150ms ease,
+        transform 150ms ease;
+}
+
+.interaction-creator-filter:hover {
+    border-color:
+        rgba(0, 178, 55, 0.4);
+
+    background:
+        rgba(0, 178, 55, 0.06);
+
+    color: var(--text);
+
+    transform: translateY(-1px);
+}
+
+.interaction-creator-filter.is-active {
+    border-color: var(--green);
+
+    background:
+        rgba(0, 178, 55, 0.14);
+
+    color: var(--green-light);
+
+    box-shadow:
+        0 6px 18px rgba(0, 178, 55, 0.09);
+}
+
+.interaction-creator-filter-avatar {
+    display: block;
+
+    width: 31px;
+    height: 31px;
+
+    border: 2px solid var(--border-strong);
+    border-radius: 50%;
+
+    background: var(--surface-light);
+    object-fit: cover;
+}
+
+.interaction-creator-filter.is-active .interaction-creator-filter-avatar {
+    border-color: var(--green);
+}
+
+.interaction-creator-filter-all {
+    display: grid;
+
+    width: 31px;
+    height: 31px;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    color: currentColor;
+}
+
+.interaction-creator-filter-all svg {
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* =========================================================
+   Filtres par état
+   ========================================================= */
+
+.interaction-state-filters {
+    display: flex;
+    flex: 0 0 auto;
+
+    gap: 6px;
+    align-items: center;
+}
+
+.interaction-filter {
+    min-height: 39px;
+    padding: 8px 11px;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color: var(--muted-light);
+
+    cursor: pointer;
+
+    font: inherit;
+    font-size: 0.7rem;
+    font-weight: 800;
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        color 150ms ease;
+}
+
+.interaction-filter:hover {
+    border-color:
+        rgba(0, 178, 55, 0.38);
+
+    color: var(--text);
+}
+
+.interaction-filter.is-active {
+    border-color: var(--green);
+
+    background:
+        rgba(0, 178, 55, 0.14);
+
+    color: var(--green-light);
+}
+
+/* =========================================================
+   Catalogue
+   ========================================================= */
+
+.interactions-admin-list {
+    display: grid;
+    padding: 8px 24px 24px;
+
+    gap: 18px;
+}
+
+/* =========================================================
+   Groupe d’un créateur
+   ========================================================= */
+
+.interaction-creator-group {
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 17px;
+
+    background:
+        rgba(255, 255, 255, 0.012);
+}
+
+.interaction-creator-group-heading {
+    display: flex;
+    min-height: 76px;
+    padding: 13px 16px;
+
+    gap: 18px;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--border);
+
+    background:
+        linear-gradient(90deg,
+            rgba(0, 178, 55, 0.06),
+            transparent);
+}
+
+.interaction-creator-group-identity {
+    display: flex;
+    min-width: 0;
+
+    gap: 12px;
+    align-items: center;
+}
+
+.interaction-creator-group-avatar {
+    display: block;
+    flex: 0 0 auto;
+
+    width: 48px;
+    height: 48px;
+
+    border: 2px solid rgba(0, 178, 55, 0.32);
+
+    border-radius: 50%;
+
+    background: var(--surface-light);
+    object-fit: cover;
+}
+
+.interaction-creator-group-copy {
+    display: grid;
+    min-width: 0;
+}
+
+.interaction-creator-group-copy strong {
+    overflow: hidden;
+
+    font-size: 0.91rem;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.interaction-creator-group-copy span {
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 0.68rem;
+}
+
+.interaction-creator-group-heading .button {
+    min-height: 38px;
+    padding: 8px 11px;
+
+    font-size: 0.7rem;
+}
+
+.interaction-creator-group-list {
+    display: grid;
+    padding: 12px;
+
+    gap: 10px;
+}
+
+/* =========================================================
+   Carte d’une interaction
+   ========================================================= */
+
+.interaction-admin-card {
+    position: relative;
+
+    display: grid;
+    grid-template-columns:
+        58px minmax(0, 1fr) auto;
+
+    min-width: 0;
+    padding: 15px;
+
+    gap: 15px;
+    align-items: center;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, 0.032),
+            rgba(255, 255, 255, 0.009));
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        opacity 150ms ease,
+        transform 150ms ease;
+}
+
+.interaction-admin-card:hover {
+    border-color:
+        rgba(0, 178, 55, 0.3);
+
+    background:
+        linear-gradient(145deg,
+            rgba(0, 178, 55, 0.05),
+            rgba(255, 255, 255, 0.012));
+
+    transform: translateY(-2px);
+}
+
+.interaction-admin-card.is-disabled {
+    opacity: 0.62;
+}
+
+.interaction-admin-card.is-disabled:hover {
+    opacity: 0.82;
+}
+
+.interaction-admin-card.is-hidden {
+    border-style: dashed;
+}
+
+/* =========================================================
+   Icône du type
+   ========================================================= */
+
+.interaction-type-icon {
+    display: grid;
+    width: 58px;
+    height: 58px;
+
+    place-items: center;
+
+    border: 1px solid rgba(0, 178, 55, 0.27);
+
+    border-radius: 16px;
+
+    background:
+        rgba(0, 178, 55, 0.09);
+
+    color: var(--green-light);
+}
+
+.interaction-type-icon svg {
+    width: 28px;
+    height: 28px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.interaction-type-icon.is-text {
+    border-color:
+        rgba(119, 153, 255, 0.3);
+
+    background:
+        rgba(119, 153, 255, 0.08);
+
+    color: #aabaff;
+}
+
+.interaction-type-icon.is-code {
+    border-color:
+        rgba(255, 201, 92, 0.3);
+
+    background:
+        rgba(255, 201, 92, 0.08);
+
+    color: #ffd77f;
+}
+
+.interaction-type-icon.is-sound {
+    border-color:
+        rgba(202, 134, 255, 0.3);
+
+    background:
+        rgba(202, 134, 255, 0.08);
+
+    color: #d7a8ff;
+}
+
+.interaction-type-icon.is-advanced {
+    border-color:
+        rgba(255, 129, 169, 0.3);
+
+    background:
+        rgba(255, 129, 169, 0.08);
+
+    color: #ffa8c4;
+}
+
+/* =========================================================
+   Contenu de l’interaction
+   ========================================================= */
+
+.interaction-admin-content {
+    display: grid;
+    min-width: 0;
+}
+
+.interaction-admin-heading {
+    display: flex;
+    min-width: 0;
+
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.interaction-admin-heading h3 {
+    min-width: 0;
+    margin: 0;
+
+    overflow: hidden;
+
+    font-size: 0.93rem;
+    line-height: 1.3;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.interaction-status-list {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+
+    gap: 5px;
+    justify-content: flex-end;
+}
+
+.interaction-status-badge {
+    display: inline-flex;
+    min-height: 24px;
+    padding: 4px 7px;
+
+    align-items: center;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    color: var(--muted);
+
+    font-size: 0.59rem;
+    font-weight: 850;
+    white-space: nowrap;
+}
+
+.interaction-status-badge.is-enabled,
+.interaction-status-badge.is-visible {
+    background:
+        rgba(0, 178, 55, 0.13);
+
+    color: var(--green-light);
+}
+
+.interaction-status-badge.is-disabled,
+.interaction-status-badge.is-hidden {
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    color: var(--muted);
+}
+
+.interaction-status-badge.is-closed {
+    background:
+        rgba(255, 201, 92, 0.1);
+
+    color: #ffd77f;
+}
+
+.interaction-admin-description {
+    display: -webkit-box;
+    max-width: 780px;
+    margin: 6px 0 0;
+
+    overflow: hidden;
+
+    color: var(--muted);
+
+    font-size: 0.73rem;
+    line-height: 1.5;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+.interaction-admin-metadata {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 6px;
+    margin-top: 9px;
+}
+
+.interaction-admin-metadata span {
+    display: inline-flex;
+    min-height: 26px;
+    padding: 5px 8px;
+
+    align-items: center;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background:
+        rgba(255, 255, 255, 0.023);
+
+    color: var(--muted-light);
+
+    font-size: 0.62rem;
+    font-weight: 750;
+}
+
+.interaction-admin-metadata .is-cost {
+    border-color:
+        rgba(0, 178, 55, 0.25);
+
+    background:
+        rgba(0, 178, 55, 0.07);
+
+    color: var(--green-light);
+}
+
+.interaction-admin-dates {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 6px 14px;
+    margin-top: 8px;
+
+    color: var(--muted);
+
+    font-size: 0.64rem;
+}
+
+/* =========================================================
+   Actions
+   ========================================================= */
+
+.interaction-admin-actions {
+    display: flex;
+    flex: 0 0 auto;
+
+    gap: 7px;
+    align-items: center;
+}
+
+.interaction-admin-actions .button {
+    min-height: 38px;
+    padding: 8px 10px;
+
+    font-size: 0.68rem;
+}
+
+/* =========================================================
+   Responsive du catalogue
+   ========================================================= */
+
+@media (max-width: 1050px) {
+    .interactions-controls {
+        grid-template-columns:
+            minmax(220px, 0.8fr) minmax(0, 1.2fr);
+    }
+
+    .interaction-state-filters {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 760px) {
+    .interactions-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .interactions-heading>.button {
+        align-self: flex-start;
+    }
+
+    .interactions-summary {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .interactions-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .interaction-state-filters {
+        grid-column: auto;
+    }
+
+    .interaction-admin-card {
+        grid-template-columns:
+            52px minmax(0, 1fr);
+    }
+
+    .interaction-type-icon {
+        width: 52px;
+        height: 52px;
+
+        border-radius: 14px;
+    }
+
+    .interaction-admin-actions {
+        grid-column: 1 / -1;
+
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 540px) {
+    .interactions-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .interactions-summary,
+    .interactions-admin-list {
+        padding-inline: 15px;
+    }
+
+    .interactions-controls {
+        padding: 15px;
+    }
+
+    .interaction-creator-group-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .interaction-creator-group-heading .button {
+        width: 100%;
+    }
+
+    .interaction-admin-card {
+        grid-template-columns: 1fr;
+    }
+
+    .interaction-admin-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .interaction-status-list {
+        justify-content: flex-start;
+    }
+
+    .interaction-admin-actions {
+        grid-column: auto;
+
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        width: 100%;
+    }
+
+    .interaction-admin-actions .button {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   Fenêtre principale
+   ========================================================= */
+
+.interaction-dialog {
+    width: min(calc(100% - 28px),
+            900px);
+
+    max-height: 92vh;
+    padding: 0;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border-strong);
+    border-radius: 24px;
+
+    background: #071009;
+    color: var(--text);
+
+    box-shadow:
+        0 38px 120px rgba(0, 0, 0, 0.76);
+}
+
+.interaction-dialog::backdrop {
+    background:
+        rgba(0, 0, 0, 0.8);
+
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+}
+
+.interaction-dialog-shell {
+    display: flex;
+    max-height: 92vh;
+
+    flex-direction: column;
+}
+
+/* =========================================================
+   En-tête de la fenêtre
+   ========================================================= */
+
+.interaction-dialog-header {
+    display: flex;
+    flex: 0 0 auto;
+    padding: 25px 28px;
+
+    gap: 24px;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid var(--border);
+
+    background:
+        radial-gradient(circle at 100% 0,
+            rgba(0, 178, 55, 0.16),
+            transparent 24rem),
+        rgba(255, 255, 255, 0.014);
+}
+
+.interaction-dialog-header>div {
+    min-width: 0;
+}
+
+.interaction-dialog-header h2 {
+    margin: 0;
+
+    font-size: clamp(1.6rem,
+            4vw,
+            2.25rem);
+
+    letter-spacing: -0.045em;
+    line-height: 1.1;
+}
+
+.interaction-dialog-header p:not(.eyebrow) {
+    max-width: 630px;
+    margin: 7px 0 0;
+
+    color: var(--muted);
+
+    font-size: 0.77rem;
+    line-height: 1.5;
+}
+
+.interaction-dialog-close {
+    display: grid;
+    flex: 0 0 auto;
+
+    width: 42px;
+    height: 42px;
+    padding: 0;
+
+    place-items: center;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.04);
+
+    color: var(--text);
+    cursor: pointer;
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        color 150ms ease;
+}
+
+.interaction-dialog-close:hover {
+    border-color:
+        rgba(255, 100, 121, 0.45);
+
+    background:
+        rgba(255, 100, 121, 0.08);
+
+    color: #ff9dac;
+}
+
+.interaction-dialog-close svg {
+    width: 18px;
+    height: 18px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+
+    stroke-linecap: round;
+}
+
+/* =========================================================
+   Contenu défilant
+   ========================================================= */
+
+.interaction-dialog-content {
+    display: grid;
+    min-height: 0;
+    padding: 25px 27px;
+
+    gap: 19px;
+    align-content: start;
+
+    overflow-y: auto;
+
+    scrollbar-color:
+        rgba(0, 178, 55, 0.3) transparent;
+
+    scrollbar-width: thin;
+}
+
+.interaction-dialog-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.interaction-dialog-content::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+
+    background:
+        rgba(0, 178, 55, 0.3);
+}
+
+/* =========================================================
+   Sections du formulaire
+   ========================================================= */
+
+.interaction-form-section {
+    display: grid;
+    padding: 20px;
+
+    gap: 19px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 17px;
+
+    background:
+        rgba(255, 255, 255, 0.018);
+}
+
+.interaction-form-section>header {
+    display: grid;
+
+    grid-template-columns:
+        35px minmax(0, 1fr);
+
+    gap: 11px;
+    align-items: start;
+}
+
+.interaction-form-section>header>span {
+    display: grid;
+    width: 35px;
+    height: 35px;
+
+    place-items: center;
+
+    border:
+        1px solid rgba(0, 178, 55, 0.3);
+
+    border-radius: 10px;
+
+    background:
+        rgba(0, 178, 55, 0.1);
+
+    color: var(--green-light);
+
+    font-size: 0.76rem;
+    font-weight: 900;
+}
+
+.interaction-form-section>header strong {
+    font-size: 0.91rem;
+}
+
+.interaction-form-section>header p {
+    margin: 3px 0 0;
+
+    color: var(--muted);
+
+    font-size: 0.7rem;
+    line-height: 1.45;
+}
+
+/* =========================================================
+   Grille des champs
+   ========================================================= */
+
+.interaction-form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+.interaction-field {
+    display: grid;
+    min-width: 0;
+
+    gap: 7px;
+    align-content: start;
+}
+
+.interaction-field.is-wide {
+    grid-column: 1 / -1;
+}
+
+.interaction-field>span,
+.interaction-field>legend {
+    color: var(--muted-light);
+
+    font-size: 0.71rem;
+    font-weight: 800;
+}
+
+.interaction-field>small {
+    color: var(--muted);
+
+    font-size: 0.64rem;
+    line-height: 1.45;
+}
+
+.interaction-field input,
+.interaction-field select,
+.interaction-field textarea {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 12px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 11px;
+    outline: 0;
+
+    background: #050b07;
+    color: var(--text);
+
+    font: inherit;
+    font-size: 0.78rem;
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        box-shadow 150ms ease;
+}
+
+.interaction-field textarea {
+    min-height: 112px;
+
+    resize: vertical;
+    line-height: 1.55;
+}
+
+.interaction-field input:hover,
+.interaction-field select:hover,
+.interaction-field textarea:hover {
+    border-color:
+        rgba(255, 255, 255, 0.18);
+}
+
+.interaction-field input:focus,
+.interaction-field select:focus,
+.interaction-field textarea:focus {
+    border-color: var(--green);
+
+    background:
+        rgba(0, 178, 55, 0.025);
+
+    box-shadow:
+        0 0 0 4px rgba(0, 178, 55, 0.1);
+}
+
+.interaction-field input::placeholder,
+.interaction-field textarea::placeholder {
+    color: #68756b;
+}
+
+.interaction-field select {
+    cursor: pointer;
+}
+
+.interaction-field input:disabled,
+.interaction-field select:disabled,
+.interaction-field textarea:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Fieldset utilisé pour les formats */
+
+fieldset.interaction-field {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+}
+
+fieldset.interaction-field legend {
+    margin-bottom: 7px;
+    padding: 0;
+}
+
+/* =========================================================
+   Configuration liée au type
+   ========================================================= */
+
+.interaction-type-settings {
+    display: grid;
+    margin-top: 2px;
+    padding: 17px;
+
+    gap: 15px;
+
+    border:
+        1px solid rgba(0, 178, 55, 0.22);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(0, 178, 55, 0.07),
+            rgba(0, 178, 55, 0.018));
+}
+
+.interaction-type-settings[hidden] {
+    display: none;
+}
+
+.interaction-type-settings>strong {
+    color: var(--green-light);
+
+    font-size: 0.79rem;
+}
+
+/* =========================================================
+   Choix des formats d’image
+   ========================================================= */
+
+.interaction-format-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 9px;
+}
+
+.interaction-format-list label {
+    position: relative;
+
+    display: block;
+    min-width: 0;
+
+    cursor: pointer;
+}
+
+.interaction-format-list input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    overflow: hidden;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+.interaction-format-list label>span {
+    display: flex;
+    min-height: 45px;
+    padding: 9px 12px;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color: var(--muted-light);
+
+    font-size: 0.72rem;
+    font-weight: 850;
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        color 150ms ease,
+        transform 150ms ease;
+}
+
+.interaction-format-list label:hover>span {
+    border-color:
+        rgba(0, 178, 55, 0.35);
+
+    background:
+        rgba(0, 178, 55, 0.04);
+
+    transform: translateY(-1px);
+}
+
+.interaction-format-list input:checked+span {
+    border-color: var(--green);
+
+    background:
+        rgba(0, 178, 55, 0.14);
+
+    color: var(--green-light);
+
+    box-shadow:
+        0 7px 20px rgba(0, 178, 55, 0.09);
+}
+
+.interaction-format-list input:focus-visible+span {
+    outline:
+        3px solid var(--green-light);
+
+    outline-offset: 3px;
+}
+
+/* =========================================================
+   Interrupteurs
+   ========================================================= */
+
+.interaction-switch-list {
+    display: grid;
+    margin-top: 2px;
+
+    gap: 10px;
+}
+
+.interaction-switch {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        44px minmax(0, 1fr);
+
+    min-width: 0;
+    padding: 14px;
+
+    gap: 13px;
+    align-items: center;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 13px;
+
+    background:
+        rgba(255, 255, 255, 0.02);
+
+    cursor: pointer;
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease;
+}
+
+.interaction-switch:hover {
+    border-color:
+        rgba(0, 178, 55, 0.3);
+
+    background:
+        rgba(0, 178, 55, 0.035);
+}
+
+.interaction-switch>input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    overflow: hidden;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+.interaction-switch-control {
+    position: relative;
+
+    display: block;
+    width: 44px;
+    height: 25px;
+
+    border:
+        1px solid var(--border-strong);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.07);
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease;
+}
+
+.interaction-switch-control::after {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+
+    width: 17px;
+    height: 17px;
+
+    border-radius: 50%;
+
+    background: var(--muted-light);
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.35);
+
+    content: "";
+
+    transition:
+        background-color 150ms ease,
+        transform 150ms ease;
+}
+
+.interaction-switch input:checked+.interaction-switch-control {
+    border-color: var(--green);
+
+    background:
+        rgba(0, 178, 55, 0.26);
+}
+
+.interaction-switch input:checked+.interaction-switch-control::after {
+    background: var(--green-light);
+
+    transform: translateX(19px);
+}
+
+.interaction-switch input:focus-visible+.interaction-switch-control {
+    outline:
+        3px solid var(--green-light);
+
+    outline-offset: 3px;
+}
+
+.interaction-switch-copy {
+    display: grid;
+    min-width: 0;
+}
+
+.interaction-switch-copy strong {
+    font-size: 0.77rem;
+}
+
+.interaction-switch-copy small {
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 0.65rem;
+    line-height: 1.45;
+}
+
+/* =========================================================
+   Message du formulaire
+   ========================================================= */
+
+.interaction-form-message {
+    min-height: 22px;
+    margin: 0;
+    padding: 12px 14px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color: var(--muted);
+
+    font-size: 0.74rem;
+    font-weight: 750;
+}
+
+.interaction-form-message.is-success {
+    border-color:
+        rgba(0, 178, 55, 0.3);
+
+    background:
+        rgba(0, 178, 55, 0.08);
+
+    color: var(--green-light);
+}
+
+.interaction-form-message.is-error {
+    border-color:
+        rgba(255, 100, 121, 0.3);
+
+    background:
+        rgba(255, 100, 121, 0.07);
+
+    color: #ff9dac;
+}
+
+/* =========================================================
+   Pied de la fenêtre
+   ========================================================= */
+
+.interaction-dialog-footer {
+    display: flex;
+    flex: 0 0 auto;
+    min-height: 76px;
+    padding: 16px 27px;
+
+    gap: 18px;
+    align-items: center;
+    justify-content: space-between;
+
+    border-top:
+        1px solid var(--border);
+
+    background:
+        rgba(0, 0, 0, 0.2);
+}
+
+.interaction-dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.interaction-dialog-footer .button-danger {
+    border-color:
+        rgba(255, 100, 121, 0.38);
+
+    background:
+        rgba(255, 100, 121, 0.09);
+
+    color: #ff9dac;
+}
+
+.interaction-dialog-footer .button-danger:hover:not(:disabled) {
+    border-color: #ff6479;
+
+    background:
+        rgba(255, 100, 121, 0.17);
+}
+
+/* =========================================================
+   Espacement de l’onglet
+   ========================================================= */
+
+.admin-tab-panel[ data-panel="interactions"
+
+] {
+    gap: 18px;
+}
+
+.admin-tab-panel[ data-panel="interactions"
+
+]>.content-card {
+    margin: 0;
+}
+
+/* =========================================================
+   Responsive — tablettes
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .interaction-dialog {
+        width:
+            calc(100% - 16px);
+
+        max-height: 95vh;
+
+        border-radius: 19px;
+    }
+
+    .interaction-dialog-shell {
+        max-height: 95vh;
+    }
+
+    .interaction-dialog-header {
+        padding: 21px 19px;
+    }
+
+    .interaction-dialog-content {
+        padding: 20px 18px;
+    }
+
+    .interaction-form-section {
+        padding: 17px;
+    }
+}
+
+/* =========================================================
+   Responsive — mobiles
+   ========================================================= */
+
+@media (max-width: 560px) {
+    .interaction-dialog {
+        width:
+            calc(100% - 10px);
+
+        max-height: 97vh;
+
+        border-radius: 16px;
+    }
+
+    .interaction-dialog-shell {
+        max-height: 97vh;
+    }
+
+    .interaction-dialog-header {
+        padding: 18px 15px;
+    }
+
+    .interaction-dialog-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .interaction-dialog-close {
+        width: 38px;
+        height: 38px;
+    }
+
+    .interaction-dialog-content {
+        padding: 16px 12px;
+
+        gap: 13px;
+    }
+
+    .interaction-form-section {
+        padding: 15px 13px;
+
+        gap: 16px;
+        border-radius: 14px;
+    }
+
+    .interaction-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .interaction-field.is-wide {
+        grid-column: auto;
+    }
+
+    .interaction-format-list {
+        grid-template-columns: 1fr;
+    }
+
+    .interaction-dialog-footer {
+        align-items: stretch;
+        flex-direction: column-reverse;
+
+        padding: 14px 15px;
+    }
+
+    .interaction-dialog-actions {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        width: 100%;
+    }
+
+    .interaction-dialog-footer .button {
+        width: 100%;
+    }
+
+    #deleteInteractionButton {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   Très petits écrans
+   ========================================================= */
+
+@media (max-width: 380px) {
+    .interaction-dialog-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .interaction-form-section>header {
+        grid-template-columns:
+            31px minmax(0, 1fr);
+    }
+
+    .interaction-form-section>header>span {
+        width: 31px;
+        height: 31px;
+    }
+}
+
+/* =========================================================
+   Accessibilité
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .interaction-dialog-close,
+    .interaction-format-list label>span,
+    .interaction-switch,
+    .interaction-switch-control,
+    .interaction-switch-control::after {
+        transition: none;
+    }
+}

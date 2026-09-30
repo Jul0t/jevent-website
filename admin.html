@@ -8,6 +8,7 @@
   <title>Admin — JEvent 26</title>
 
   <link rel="stylesheet" href="/assets/css/admin.css?v=10">
+  <link rel="stylesheet" href="/assets/css/admin-interactions.css?v=1">
 </head>
 
 <body>
@@ -261,6 +262,105 @@
           </section>
         </section>
 
+        <!-- Interactions -->
+        <section class="admin-tab-panel" data-panel="interactions" hidden>
+          <section class="content-card">
+            <header class="card-heading interactions-heading">
+              <div>
+                <p class="eyebrow">
+                  Streamers
+                </p>
+
+                <h2>Interactions</h2>
+
+                <p>
+                  Gère les interactions disponibles pour chaque
+                  créateur.
+                </p>
+              </div>
+
+              <button id="createInteractionButton" class="button button-primary" type="button">
+                Ajouter une interaction
+              </button>
+            </header>
+
+            <p id="interactionsMessage" class="interactions-message" role="status" aria-live="polite" hidden></p>
+
+            <div class="interactions-summary">
+              <article class="statistic-card">
+                <span>Interactions</span>
+                <strong id="interactionsCount">0</strong>
+              </article>
+
+              <article class="statistic-card">
+                <span>Actives</span>
+                <strong id="activeInteractionsCount">0</strong>
+              </article>
+
+              <article class="statistic-card">
+                <span>Utilisations</span>
+                <strong id="interactionUsagesCount">0</strong>
+              </article>
+            </div>
+          </section>
+
+          <section class="content-card">
+            <div class="interactions-controls">
+              <label class="search-field">
+                <span class="sr-only">
+                  Rechercher une interaction
+                </span>
+
+                <input id="interactionSearchInput" type="search" placeholder="Rechercher une interaction…">
+              </label>
+
+              <div id="interactionCreatorFilters" class="interaction-creator-filters"></div>
+
+              <div class="interaction-state-filters" role="group" aria-label="Filtrer les interactions">
+                <button class="interaction-filter is-active" type="button" data-interaction-filter="all">
+                  Toutes
+                </button>
+
+                <button class="interaction-filter" type="button" data-interaction-filter="enabled">
+                  Actives
+                </button>
+
+                <button class="interaction-filter" type="button" data-interaction-filter="disabled">
+                  Désactivées
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="content-card">
+            <header class="card-heading">
+              <div>
+                <p class="eyebrow">
+                  Catalogue
+                </p>
+
+                <h2>Interactions existantes</h2>
+
+                <p id="interactionsResultDescription">
+                  Chargement…
+                </p>
+              </div>
+            </header>
+
+            <div id="interactionsList" class="interactions-admin-list"></div>
+
+            <div id="interactionsEmpty" class="empty-state" hidden>
+              <strong>
+                Aucune interaction trouvée
+              </strong>
+
+              <p>
+                Ajoute une interaction ou modifie les filtres.
+              </p>
+            </div>
+          </section>
+        </section>
+
         <!-- Administrateurs -->
         <section class="admin-tab-panel" data-panel="administrators" hidden>
           <section class="content-card">
@@ -424,7 +524,7 @@
                   Consulter les profils publics.
                 </span>
               </a>
-              
+
               <a class="tool-card" href="/badges-admin.html">
                 <strong>Gestion des badges</strong>
 
@@ -436,10 +536,338 @@
           </section>
         </section>
       </div>
+      
+      <!-- Création et modification d’une interaction -->
+
+      <dialog id="interactionDialog" class="interaction-dialog" aria-labelledby="interactionDialogTitle">
+        <form id="interactionForm" class="interaction-dialog-shell">
+          <header class="interaction-dialog-header">
+            <div>
+              <p id="interactionDialogEyebrow" class="eyebrow">
+                Nouvelle interaction
+              </p>
+
+              <h2 id="interactionDialogTitle">
+                Ajouter une interaction
+              </h2>
+
+              <p>
+                Cette interaction apparaîtra sur la page
+                publique des interactions.
+              </p>
+            </div>
+
+            <button id="closeInteractionDialog" class="interaction-dialog-close" type="button" aria-label="Fermer">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 6l12 12M18 6 6 18"></path>
+              </svg>
+            </button>
+          </header>
+
+          <div class="interaction-dialog-content">
+            <input id="interactionPublicId" type="hidden">
+
+            <!-- Créateur -->
+
+            <section class="interaction-form-section">
+              <header>
+                <span>1</span>
+
+                <div>
+                  <strong>Créateur</strong>
+
+                  <p>
+                    Choisis le streamer auquel appartient
+                    l’interaction.
+                  </p>
+                </div>
+              </header>
+
+              <label class="interaction-field">
+                <span>Créateur</span>
+
+                <select id="interactionCreator" required>
+                  <option value="">
+                    Sélectionner un créateur
+                  </option>
+                </select>
+              </label>
+            </section>
+
+            <!-- Présentation -->
+
+            <section class="interaction-form-section">
+              <header>
+                <span>2</span>
+
+                <div>
+                  <strong>Présentation</strong>
+
+                  <p>
+                    Informations visibles par les viewers.
+                  </p>
+                </div>
+              </header>
+
+              <div class="interaction-form-grid">
+                <label class="interaction-field">
+                  <span>Titre</span>
+
+                  <input id="interactionTitle" type="text" maxlength="120" required placeholder="Afficher une image">
+                </label>
+
+                <label class="interaction-field">
+                  <span>Slug</span>
+
+                  <input id="interactionSlug" type="text" maxlength="80" placeholder="afficher-une-image">
+
+                  <small>
+                    Généré automatiquement si le champ est vide.
+                  </small>
+                </label>
+
+                <label class="interaction-field is-wide">
+                  <span>Description</span>
+
+                  <textarea id="interactionDescription" rows="4" maxlength="1200"
+                    placeholder="Explique ce que fera cette interaction."></textarea>
+
+                  <small>
+                    Texte simple, sans Markdown.
+                  </small>
+                </label>
+              </div>
+            </section>
+
+            <!-- Type et coût -->
+
+            <section class="interaction-form-section">
+              <header>
+                <span>3</span>
+
+                <div>
+                  <strong>Fonctionnement</strong>
+
+                  <p>
+                    Choisis le type et le coût de l’interaction.
+                  </p>
+                </div>
+              </header>
+
+              <div class="interaction-form-grid">
+                <label class="interaction-field">
+                  <span>Type d’interaction</span>
+
+                  <select id="interactionType">
+                    <option value="image">
+                      Envoi d’une image
+                    </option>
+
+                    <option value="text">
+                      Message texte
+                    </option>
+
+                    <option value="code">
+                      Code ou commande
+                    </option>
+
+                    <option value="sound">
+                      Son
+                    </option>
+
+                    <option value="advanced">
+                      Interaction avancée
+                    </option>
+                  </select>
+                </label>
+
+                <label class="interaction-field">
+                  <span>Coût en crédits</span>
+
+                  <input id="interactionCost" type="number" min="0" max="1000000" step="0.01" value="5" required>
+
+                  <small>
+                    Un euro donné correspond à un crédit.
+                  </small>
+                </label>
+
+                <label class="interaction-field">
+                  <span>Ordre d’affichage</span>
+
+                  <input id="interactionDisplayOrder" type="number" min="0" max="100000" value="100">
+                </label>
+              </div>
+
+              <!-- Configuration pour les images -->
+
+              <div id="interactionImageSettings" class="interaction-type-settings">
+                <strong>Configuration des images</strong>
+
+                <div class="interaction-form-grid">
+                  <label class="interaction-field">
+                    <span>Taille maximale</span>
+
+                    <select id="interactionMaximumFileSize">
+                      <option value="524288">
+                        500 Ko
+                      </option>
+
+                      <option value="1048576">
+                        1 Mo
+                      </option>
+
+                      <option value="2097152" selected>
+                        2 Mo
+                      </option>
+                    </select>
+                  </label>
+
+                  <fieldset class="interaction-field is-wide">
+                    <legend>
+                      Formats acceptés
+                    </legend>
+
+                    <div class="interaction-format-list">
+                      <label>
+                        <input id="interactionAllowJpeg" type="checkbox" checked>
+
+                        <span>JPEG</span>
+                      </label>
+
+                      <label>
+                        <input id="interactionAllowPng" type="checkbox" checked>
+
+                        <span>PNG</span>
+                      </label>
+
+                      <label>
+                        <input id="interactionAllowWebp" type="checkbox" checked>
+
+                        <span>WebP</span>
+                      </label>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </section>
+
+            <!-- Disponibilité -->
+
+            <section class="interaction-form-section">
+              <header>
+                <span>4</span>
+
+                <div>
+                  <strong>Disponibilité</strong>
+
+                  <p>
+                    Définis quand et comment l’interaction est
+                    proposée.
+                  </p>
+                </div>
+              </header>
+
+              <div class="interaction-form-grid">
+                <label class="interaction-field">
+                  <span>Ouverture</span>
+
+                  <input id="interactionOpensAt" type="datetime-local">
+
+                  <small>
+                    Laisse vide pour une ouverture immédiate.
+                  </small>
+                </label>
+
+                <label class="interaction-field">
+                  <span>Fermeture</span>
+
+                  <input id="interactionClosesAt" type="datetime-local">
+
+                  <small>
+                    Laisse vide pour aucune fermeture.
+                  </small>
+                </label>
+              </div>
+
+              <div class="interaction-switch-list">
+                <label class="interaction-switch">
+                  <input id="interactionModerationRequired" type="checkbox" checked>
+
+                  <span class="interaction-switch-control"></span>
+
+                  <span class="interaction-switch-copy">
+                    <strong>
+                      Modération obligatoire
+                    </strong>
+
+                    <small>
+                      Le contenu devra être accepté avant son
+                      utilisation.
+                    </small>
+                  </span>
+                </label>
+
+                <label class="interaction-switch">
+                  <input id="interactionVisible" type="checkbox" checked>
+
+                  <span class="interaction-switch-control"></span>
+
+                  <span class="interaction-switch-copy">
+                    <strong>
+                      Visible publiquement
+                    </strong>
+
+                    <small>
+                      Affiche l’interaction dans le catalogue
+                      public.
+                    </small>
+                  </span>
+                </label>
+
+                <label class="interaction-switch">
+                  <input id="interactionEnabled" type="checkbox" checked>
+
+                  <span class="interaction-switch-control"></span>
+
+                  <span class="interaction-switch-copy">
+                    <strong>
+                      Interaction active
+                    </strong>
+
+                    <small>
+                      Autorise les viewers à utiliser cette
+                      interaction.
+                    </small>
+                  </span>
+                </label>
+              </div>
+            </section>
+
+            <p id="interactionFormMessage" class="interaction-form-message" role="status" aria-live="polite" hidden></p>
+          </div>
+
+          <footer class="interaction-dialog-footer">
+            <button id="deleteInteractionButton" class="button button-danger" type="button" hidden>
+              Supprimer
+            </button>
+
+            <div class="interaction-dialog-actions">
+              <button id="cancelInteractionButton" class="button button-secondary" type="button">
+                Annuler
+              </button>
+
+              <button id="saveInteractionButton" class="button button-primary" type="submit">
+                Enregistrer
+              </button>
+            </div>
+          </footer>
+        </form>
+      </dialog>
 
       <script src="/assets/js/admin.js?v=14"></script>
       <script src="/assets/js/admin-dashboard.js?v=1"></script>
       <script src="/assets/js/admin-users.js?v=1"></script>
+      <script src="/assets/js/admin-interactions.js?v=1"></script>
 </body>
 
 </html>
