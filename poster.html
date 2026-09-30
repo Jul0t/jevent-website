@@ -4,1043 +4,521 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
-  <meta name="description" content="Envoyez une image pour les créatures communautaires du JEvent.">
+  <meta
+    name="description"
+    content="Utilise tes crédits JEvent pour participer aux interactions des créateurs."
+  >
 
-  <title>Envoyer une image — JEvent</title>
+  <title>Interactions — JEvent 26</title>
 
-  <link rel="stylesheet" href="/assets/styles.css">
+  <link
+    rel="icon"
+    href="/assets/jevent_logo.png"
+  >
 
-  <style>
-    /*
-     * Ces règles sont placées directement dans la page pour
-     * garantir que l’aperçu ne déborde jamais de sa carte.
-     */
+  <link
+    rel="stylesheet"
+    href="/assets/styles.css"
+  >
 
-    .upload-card-main {
-      width: 100%;
-      min-width: 0;
-      max-width: 100%;
-      overflow: hidden;
-    }
-
-    .upload-form {
-      width: 100%;
-      min-width: 0;
-      max-width: 100%;
-    }
-
-    .preview-section {
-      width: 100%;
-      min-width: 0;
-      max-width: 100%;
-      margin-top: 20px;
-    }
-
-    .preview-section[hidden] {
-      display: none;
-    }
-
-    .preview-title {
-      margin: 0 0 10px;
-      color: var(--muted);
-      font-size: 0.86rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    /*
-     * Le cadre prend la largeur disponible, mais sa hauteur
-     * s’adapte à l’image au lieu de lui imposer une taille.
-     */
-    .preview-frame {
-      display: flex;
-      width: 100%;
-      min-width: 0;
-      max-width: 100%;
-      padding: 14px;
-      overflow: hidden;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background:
-        linear-gradient(45deg,
-          rgba(255, 255, 255, 0.025) 25%,
-          transparent 25%,
-          transparent 75%,
-          rgba(255, 255, 255, 0.025) 75%),
-        linear-gradient(45deg,
-          rgba(255, 255, 255, 0.025) 25%,
-          transparent 25%,
-          transparent 75%,
-          rgba(255, 255, 255, 0.025) 75%),
-        rgba(0, 0, 0, 0.32);
-      background-position: 0 0, 10px 10px;
-      background-size: 20px 20px;
-    }
-
-    /*
-     * L’image conserve ses proportions.
-     * Elle ne peut dépasser ni la largeur de la carte,
-     * ni 70 % de la hauteur de l’écran.
-     */
-    .preview-frame .preview-image {
-      display: block !important;
-      width: auto !important;
-      min-width: 0 !important;
-      max-width: 100% !important;
-      height: auto !important;
-      max-height: 70vh !important;
-      margin: 0 auto !important;
-      padding: 0 !important;
-      border-radius: 10px;
-      object-fit: contain !important;
-      object-position: center !important;
-    }
-
-    .selected-file {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 12px;
-      align-items: center;
-      margin-top: 14px;
-      padding: 13px 15px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.025);
-    }
-
-    .selected-file-information {
-      min-width: 0;
-    }
-
-    .selected-file-name {
-      display: block;
-      overflow: hidden;
-      font-weight: 800;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .selected-file-size {
-      display: block;
-      margin-top: 3px;
-      color: var(--muted);
-      font-size: 0.82rem;
-    }
-
-    .remove-file-button {
-      width: auto;
-      min-height: 38px;
-      margin: 0;
-      padding: 8px 12px;
-      color: #fecdd3;
-      background: rgba(225, 29, 72, 0.13);
-      box-shadow: none;
-    }
-
-    .remove-file-button:hover:not(:disabled) {
-      background: rgba(225, 29, 72, 0.23);
-      box-shadow: none;
-    }
-
-    @media (max-width: 600px) {
-      .preview-frame {
-        padding: 8px;
-      }
-
-      .preview-frame .preview-image {
-        max-height: 60vh !important;
-      }
-
-      .selected-file {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .remove-file-button {
-        width: 100%;
-      }
-    }
-  </style>
+  <link
+    rel="stylesheet"
+    href="/assets/css/poster.css?v=2"
+  >
 </head>
 
 <body>
-  <div class="container">
+  <header class="site-header poster-header">
+    <a
+      class="poster-brand"
+      href="/"
+      aria-label="Retour à l’accueil"
+    >
+      <img
+        src="/assets/jevent_logo.png"
+        alt=""
+      >
 
-    <!-- En-tête -->
-    <header class="site-header">
-      <a class="brand" href="/">
-        <span class="brand-logo">
-          <img src="\assets\jevent_logo.png" alt="Logo du JEvent">
-        </span>
+      <span>
+        <strong>JEvent 26</strong>
+        <small>Interactions</small>
+      </span>
+    </a>
 
-        <span class="brand-text">
-          <span class="brand-name">
-            JEvent
-          </span>
-
-          <span class="brand-subtitle">
-            Live caritatif • Créatures communautaires
-          </span>
-        </span>
+    <nav class="poster-navigation">
+      <a href="/programme.html">
+        Programme
       </a>
 
-      <nav class="navigation">
-        <a class="nav-link" href="/compte.html">
-          Mon compte
-        </a>
-      </nav>
-    </header>
+      <a href="/createurs.html">
+        Créateurs
+      </a>
 
-    <main>
-      <!-- Introduction -->
-      <section class="hero">
-        <span class="hero-badge">
-          Envoi d’image
-        </span>
+      <a href="/compte.html">
+        Mon compte
+      </a>
+    </nav>
+  </header>
 
-        <h1>
-          Donne vie à une
-          <em>créature</em>
-        </h1>
+  <main class="poster-page">
 
-        <p>
-          Choisis une image qui pourra apparaître sur une
-          créature dans Minecraft. Elle sera vérifiée par
-          l’équipe de modération avant son apparition en jeu.
-        </p>
+    <!-- Chargement -->
+
+    <section
+      id="loadingState"
+      class="poster-state"
+    >
+      <span class="poster-loader"></span>
+
+      <p>
+        Chargement des interactions…
+      </p>
+    </section>
+
+    <!-- Erreur -->
+
+    <section
+      id="errorState"
+      class="poster-state poster-state-error"
+      hidden
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <circle
+          cx="12"
+          cy="12"
+          r="9"
+        />
+
+        <path d="M12 7v6"></path>
+        <path d="M12 17h.01"></path>
+      </svg>
+
+      <h1>
+        Impossible de charger les interactions
+      </h1>
+
+      <p id="errorMessage">
+        Une erreur est survenue.
+      </p>
+
+      <button
+        id="retryButton"
+        type="button"
+        class="poster-button poster-button-primary"
+      >
+        Réessayer
+      </button>
+    </section>
+
+    <!-- Contenu -->
+
+    <div
+      id="pageContent"
+      hidden
+    >
+      <section class="poster-hero">
+        <div class="poster-hero-content">
+          <span class="poster-eyebrow">
+            Interactions communautaires
+          </span>
+
+          <h1>
+            Participe directement aux lives
+          </h1>
+
+          <p>
+            Utilise les crédits obtenus grâce à tes dons
+            pour envoyer du contenu aux créateurs du JEvent.
+          </p>
+        </div>
+
+        <aside class="poster-wallet">
+          <div class="poster-wallet-heading">
+            <span>Ton solde</span>
+
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <rect
+                x="3"
+                y="6"
+                width="18"
+                height="14"
+                rx="3"
+              />
+
+              <path d="M16 11h5v5h-5a2.5 2.5 0 0 1 0-5Z"></path>
+              <path d="M3 9V7a3 3 0 0 1 3-3h11"></path>
+            </svg>
+          </div>
+
+          <strong id="creditBalance">
+            0 crédit
+          </strong>
+
+          <small id="creditInformation">
+            1 € donné = 1 crédit
+          </small>
+        </aside>
       </section>
 
-      <!-- Formulaire -->
-      <section class="card upload-card-main">
-        <div class="card-header">
-          <div>
-            <h2>Proposer une image</h2>
+      <!-- Code personnel -->
 
-            <p class="card-description">
-              Formats acceptés : JPEG, PNG et WebP.
-              Taille maximale : 10 Mo.
+      <section class="poster-code-card">
+        <div class="poster-code-icon">
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M8 9 5 12l3 3"></path>
+            <path d="m16 9 3 3-3 3"></path>
+            <path d="m14 6-4 12"></path>
+          </svg>
+        </div>
+
+        <div class="poster-code-content">
+          <span>
+            Ton code personnel
+          </span>
+
+          <strong id="personalCode">
+            …
+          </strong>
+
+          <p>
+            Ajoute ce code au message de ton don.
+            Le même code peut être utilisé plusieurs fois.
+          </p>
+        </div>
+
+        <button
+          id="copyCodeButton"
+          type="button"
+          class="poster-button poster-button-secondary"
+        >
+          Copier le code
+        </button>
+      </section>
+
+      <!-- Catalogue -->
+
+      <section class="poster-section">
+        <div class="poster-section-heading">
+          <div>
+            <span class="poster-section-kicker">
+              Catalogue
+            </span>
+
+            <h2>
+              Choisis une interaction
+            </h2>
+
+            <p>
+              Chaque créateur peut proposer plusieurs
+              interactions différentes.
             </p>
           </div>
         </div>
 
-        <div class="balance">
-          <span>Crédits disponibles</span>
-          <strong id="credits">…</strong>
+        <div
+          id="interactionsList"
+          class="poster-interactions"
+        ></div>
+
+        <div
+          id="interactionsEmpty"
+          class="poster-empty"
+          hidden
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M4 7h16v12H4z"></path>
+            <path d="M8 7V5h8v2"></path>
+            <path d="M9 12h6"></path>
+          </svg>
+
+          <strong>
+            Aucune interaction disponible
+          </strong>
+
+          <p>
+            Les interactions apparaîtront ici
+            lorsqu’elles seront ouvertes.
+          </p>
+        </div>
+      </section>
+
+      <!-- Formulaire d’envoi -->
+
+      <section
+        id="uploadSection"
+        class="poster-section poster-upload-section"
+        hidden
+      >
+        <div class="poster-section-heading">
+          <div>
+            <span class="poster-section-kicker">
+              Participation
+            </span>
+
+            <h2 id="selectedInteractionTitle">
+              Envoyer une image
+            </h2>
+
+            <p id="selectedInteractionDescription">
+              Sélectionne une image à envoyer.
+            </p>
+          </div>
+
+          <button
+            id="changeInteractionButton"
+            type="button"
+            class="poster-button poster-button-secondary"
+          >
+            Changer
+          </button>
         </div>
 
-        <form id="uploadForm" class="upload-form">
-          <label id="dropZone" class="drop-zone" for="image">
-            <span class="drop-icon" aria-hidden="true">
-              🖼️
-            </span>
+        <div class="poster-selected-summary">
+          <div>
+            <span>Créateur</span>
+
+            <strong id="selectedCreatorName">
+              —
+            </strong>
+          </div>
+
+          <div>
+            <span>Coût</span>
+
+            <strong id="selectedInteractionCost">
+              —
+            </strong>
+          </div>
+
+          <div>
+            <span>Formats</span>
+
+            <strong id="selectedInteractionFormats">
+              JPEG, PNG, WebP
+            </strong>
+          </div>
+        </div>
+
+        <form
+          id="uploadForm"
+          class="poster-upload-form"
+        >
+          <input
+            id="interactionPublicId"
+            name="interactionPublicId"
+            type="hidden"
+          >
+
+          <input
+            id="imageInput"
+            name="image"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            hidden
+          >
+
+          <label
+            id="dropZone"
+            class="poster-drop-zone"
+            for="imageInput"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <rect
+                x="3"
+                y="4"
+                width="18"
+                height="16"
+                rx="3"
+              />
+
+              <circle
+                cx="9"
+                cy="10"
+                r="2"
+              />
+
+              <path d="m5 18 5-5 3 3 2-2 4 4"></path>
+            </svg>
 
             <strong>
-              Sélectionner une image
+              Choisir une image
             </strong>
 
-            <span class="file-name">
-              Clique ici pour parcourir tes fichiers
+            <span>
+              ou dépose-la directement ici
             </span>
 
-            <input id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp" required>
+            <small>
+              JPEG, PNG ou WebP — 2 Mo maximum
+            </small>
           </label>
 
-          <!-- Informations sur le fichier -->
-          <div id="selectedFile" class="selected-file" hidden>
-            <div class="selected-file-information">
-              <span id="selectedFileName" class="selected-file-name"></span>
-
-              <span id="selectedFileSize" class="selected-file-size"></span>
+          <div
+            id="selectedFile"
+            class="poster-selected-file"
+            hidden
+          >
+            <div class="poster-file-preview">
+              <img
+                id="imagePreview"
+                alt="Aperçu de l’image sélectionnée"
+              >
             </div>
 
-            <button id="removeFileButton" class="remove-file-button" type="button">
-              Retirer
+            <div class="poster-file-information">
+              <strong id="selectedFileName">
+                —
+              </strong>
+
+              <span id="selectedFileSize">
+                —
+              </span>
+            </div>
+
+            <button
+              id="removeFileButton"
+              type="button"
+              class="poster-remove-file"
+              aria-label="Retirer cette image"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M5 5l14 14"></path>
+                <path d="M19 5 5 19"></path>
+              </svg>
             </button>
           </div>
 
-          <!-- Aperçu complet -->
-          <div id="previewSection" class="preview-section" hidden>
-            <p class="preview-title">
-              Aperçu complet avant envoi
+          <div class="poster-upload-footer">
+            <p>
+              L’image sera envoyée à la modération
+              avant son utilisation.
             </p>
 
-            <div class="preview-frame">
-              <img id="preview" class="preview-image" alt="Aperçu complet de l’image sélectionnée">
-            </div>
+            <button
+              id="submitButton"
+              type="submit"
+              class="poster-button poster-button-primary"
+              disabled
+            >
+              Envoyer l’image
+            </button>
           </div>
 
-          <button id="submitButton" class="full-width" type="submit">
-            Envoyer pour modération
-          </button>
+          <p
+            id="uploadMessage"
+            class="poster-message"
+            role="status"
+            aria-live="polite"
+          ></p>
         </form>
-
-        <p id="message" class="message" role="status" aria-live="polite"></p>
       </section>
 
       <!-- Historique -->
-      <section class="card">
-        <div class="card-header">
-          <div>
-            <h2>Mes images</h2>
 
-            <p class="card-description">
-              Retrouve ici toutes les images que tu as
-              proposées et leur statut.
+      <section class="poster-section">
+        <div class="poster-section-heading">
+          <div>
+            <span class="poster-section-kicker">
+              Historique
+            </span>
+
+            <h2>
+              Mes participations
+            </h2>
+
+            <p>
+              Retrouve les contenus que tu as envoyés
+              et leur état de modération.
             </p>
           </div>
 
-          <button id="refreshButton" class="secondary" type="button">
+          <button
+            id="refreshUploadsButton"
+            type="button"
+            class="poster-button poster-button-secondary"
+          >
             Actualiser
           </button>
         </div>
 
-        <div id="uploads" class="uploads-grid">
-          <p class="empty">
-            Chargement de tes images…
+        <div
+          id="uploadsList"
+          class="poster-uploads"
+        ></div>
+
+        <div
+          id="uploadsEmpty"
+          class="poster-empty poster-empty-small"
+          hidden
+        >
+          <strong>
+            Aucune participation
+          </strong>
+
+          <p>
+            Tes prochains envois apparaîtront ici.
           </p>
         </div>
       </section>
-    </main>
-
-    <footer class="site-footer">
-      JEvent — Merci pour ton soutien
-    </footer>
-  </div>
-
-<script>
-  const API = "https://api.jevent.julot.fr";
-
-  const form =
-    document.querySelector("#uploadForm");
-
-  const input =
-    document.querySelector("#image");
-
-  const dropZone =
-    document.querySelector("#dropZone");
-
-  const credits =
-    document.querySelector("#credits");
-
-  const submitButton =
-    document.querySelector("#submitButton");
-
-  const refreshButton =
-    document.querySelector("#refreshButton");
-
-  const message =
-    document.querySelector("#message");
-
-  const uploads =
-    document.querySelector("#uploads");
-
-  const selectedFile =
-    document.querySelector("#selectedFile");
-
-  const selectedFileName =
-    document.querySelector("#selectedFileName");
-
-  const selectedFileSize =
-    document.querySelector("#selectedFileSize");
-
-  const removeFileButton =
-    document.querySelector("#removeFileButton");
-
-  const previewSection =
-    document.querySelector("#previewSection");
-
-  const preview =
-    document.querySelector("#preview");
-
-  const allowedTypes = new Set([
-    "image/jpeg",
-    "image/png",
-    "image/webp"
-  ]);
-
-  const maximumFileSize =
-    10 * 1024 * 1024;
-
-  let canUpload = false;
-  let uploadInProgress = false;
-  let previewUrl = null;
-  let pageStarted = false;
-
-  /* ==========================================================
-   * MESSAGES
-   * ==========================================================
-   */
-
-  function showMessage(text, type = "info") {
-    message.textContent = text;
-    message.className =
-      `message visible ${type}`;
-  }
-
-  function hideMessage() {
-    message.textContent = "";
-    message.className = "message";
-  }
-
-  /* ==========================================================
-   * APPELS API
-   * ==========================================================
-   */
-
-  async function api(path, options = {}) {
-    const response = await fetch(
-      `${API}${path}`,
-      {
-        ...options,
-        credentials: "include"
-      }
-    );
-
-    const contentType =
-      response.headers.get("Content-Type") ?? "";
-
-    let data = {};
-
-    if (contentType.includes("application/json")) {
-      data = await response.json();
-    }
-
-    if (!response.ok) {
-      if (response.status === 401) {
-        location.replace("/");
-        throw new Error(
-          "Connexion Twitch requise."
-        );
-      }
-
-      throw new Error(
-        data.error ??
-        `Erreur HTTP ${response.status}`
-      );
-    }
-
-    return data;
-  }
-
-  /* ==========================================================
-   * PROTECTION DE L’INTERACTION
-   * ==========================================================
-   */
-
-  async function verifyFeatureAccess() {
-    try {
-      const [
-        featuresResponse,
-        accountResponse
-      ] = await Promise.all([
-        fetch(`${API}/api/features`, {
-          credentials: "include"
-        }),
-
-        fetch(`${API}/api/account`, {
-          credentials: "include"
-        })
-      ]);
-
-      const featuresData =
-        await featuresResponse.json();
-
-      const accountData =
-        await accountResponse.json();
-
-      if (accountResponse.status === 401) {
-        location.replace("/");
-        return null;
-      }
-
-      if (!accountResponse.ok) {
-        throw new Error(
-          accountData.error ??
-          "Impossible de vérifier ton compte."
-        );
-      }
-
-      if (!featuresResponse.ok) {
-        throw new Error(
-          featuresData.error ??
-          "Impossible de vérifier l’interaction."
-        );
-      }
-
-      const imagesFeature =
-        featuresData.features?.find(
-          feature => feature.key === "images"
-        );
-
-      /*
-       * En cas d'absence de la fonctionnalité en base,
-       * on refuse l'accès par sécurité.
-       */
-      if (
-        !imagesFeature ||
-        (
-          !imagesFeature.enabled &&
-          !accountData.isModerator
-        )
-      ) {
-        location.replace("/");
-        return null;
-      }
-
-      return accountData;
-    } catch (error) {
-      credits.textContent = "—";
-
-      showMessage(
-        error.message,
-        "error"
-      );
-
-      return null;
-    }
-  }
-
-  /* ==========================================================
-   * FICHIERS
-   * ==========================================================
-   */
-
-  function formatFileSize(size) {
-    const numericSize = Number(size);
-
-    if (!Number.isFinite(numericSize)) {
-      return "Taille inconnue";
-    }
-
-    if (numericSize < 1024) {
-      return `${numericSize} octets`;
-    }
-
-    if (numericSize < 1024 * 1024) {
-      return `${(
-        numericSize / 1024
-      ).toFixed(1)} Ko`;
-    }
-
-    return `${(
-      numericSize /
-      1024 /
-      1024
-    ).toFixed(2)} Mo`;
-  }
-
-  function getStatusLabel(status) {
-    return {
-      pending: "En attente de modération",
-      approved: "Acceptée",
-      rejected: "Refusée"
-    }[status] ?? status;
-  }
-
-  function validateFile(file) {
-    if (!allowedTypes.has(file.type)) {
-      throw new Error(
-        "Format interdit. Utilise une image JPEG, PNG ou WebP."
-      );
-    }
-
-    if (
-      file.size <= 0 ||
-      file.size > maximumFileSize
-    ) {
-      throw new Error(
-        "L’image doit faire au maximum 10 Mo."
-      );
-    }
-  }
-
-  /* ==========================================================
-   * CONTRÔLES DU FORMULAIRE
-   * ==========================================================
-   */
-
-  function updateControls() {
-    const disabled =
-      !canUpload ||
-      uploadInProgress;
-
-    input.disabled = disabled;
-    submitButton.disabled = disabled;
-
-    if (removeFileButton) {
-      removeFileButton.disabled =
-        uploadInProgress;
-    }
-
-    dropZone.classList.toggle(
-      "disabled",
-      disabled
-    );
-
-    submitButton.textContent =
-      uploadInProgress
-        ? "Envoi en cours…"
-        : "Envoyer pour modération";
-  }
-
-  function setAccountInformation(account) {
-    credits.textContent =
-      account.creditsAvailable;
-
-    canUpload =
-      Boolean(account.canUpload);
-
-    updateControls();
-
-    if (!canUpload && !uploadInProgress) {
-      showMessage(
-        "Tu dois avoir au moins un crédit disponible pour envoyer une image.",
-        "error"
-      );
-    }
-  }
-
-  /* ==========================================================
-   * APERÇU
-   * ==========================================================
-   */
-
-  function clearSelectedFile() {
-    input.value = "";
-
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-      previewUrl = null;
-    }
-
-    preview.removeAttribute("src");
-    previewSection.hidden = true;
-
-    if (selectedFile) {
-      selectedFile.hidden = true;
-    }
-
-    if (selectedFileName) {
-      selectedFileName.textContent = "";
-    }
-
-    if (selectedFileSize) {
-      selectedFileSize.textContent = "";
-    }
-  }
-
-  function displaySelectedFile(file) {
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-    }
-
-    previewUrl =
-      URL.createObjectURL(file);
-
-    if (selectedFileName) {
-      selectedFileName.textContent =
-        file.name;
-    }
-
-    if (selectedFileSize) {
-      selectedFileSize.textContent =
-        formatFileSize(file.size);
-    }
-
-    if (selectedFile) {
-      selectedFile.hidden = false;
-    }
-
-    preview.onload = () => {
-      previewSection.hidden = false;
-    };
-
-    preview.onerror = () => {
-      clearSelectedFile();
-
-      showMessage(
-        "Impossible d’afficher cette image.",
-        "error"
-      );
-    };
-
-    preview.src = previewUrl;
-  }
-
-  /* ==========================================================
-   * LISTE DES IMAGES
-   * ==========================================================
-   */
-
-  function createUploadCard(upload) {
-    const article =
-      document.createElement("article");
-
-    article.className = "upload-card";
-
-    /*
-     * Une image refusée peut encore être disponible,
-     * selon la configuration actuelle du Worker.
-     */
-    if (upload.imageUrl) {
-      const image =
-        document.createElement("img");
-
-      image.src = upload.imageUrl;
-      image.alt =
-        upload.displayName ||
-        upload.originalName;
-
-      image.loading = "lazy";
-
-      image.addEventListener(
-        "error",
-        () => {
-          image.remove();
-        }
-      );
-
-      article.append(image);
-    }
-
-    const details =
-      document.createElement("div");
-
-    details.className =
-      "upload-details";
-
-    const name =
-      document.createElement("p");
-
-    name.className = "upload-name";
-
-    name.textContent =
-      upload.displayName ||
-      upload.originalName;
-
-    const status =
-      document.createElement("span");
-
-    status.className =
-      `status ${upload.status}`;
-
-    status.textContent =
-      getStatusLabel(upload.status);
-
-    const size =
-      document.createElement("p");
-
-    size.className =
-      "upload-metadata";
-
-    size.textContent =
-      formatFileSize(upload.fileSize);
-
-    details.append(
-      name,
-      status,
-      size
-    );
-
-    if (
-      upload.displayName &&
-      upload.displayName !==
-        upload.originalName
-    ) {
-      const originalName =
-        document.createElement("p");
-
-      originalName.className =
-        "upload-metadata";
-
-      originalName.textContent =
-        `Fichier original : ${upload.originalName}`;
-
-      details.append(originalName);
-    }
-
-    if (upload.moderationNote) {
-      const note =
-        document.createElement("p");
-
-      note.className =
-        "upload-note";
-
-      note.textContent =
-        `Note de modération : ${upload.moderationNote}`;
-
-      details.append(note);
-    }
-
-    article.append(details);
-
-    return article;
-  }
-
-  async function loadUploads() {
-    const result =
-      await api("/api/my-uploads");
-
-    uploads.replaceChildren();
-
-    if (!result.uploads?.length) {
-      const empty =
-        document.createElement("p");
-
-      empty.className = "empty";
-
-      empty.textContent =
-        "Tu n’as encore envoyé aucune image.";
-
-      uploads.append(empty);
-      return;
-    }
-
-    for (
-      const upload
-      of result.uploads
-    ) {
-      uploads.append(
-        createUploadCard(upload)
-      );
-    }
-  }
-
-  /* ==========================================================
-   * CHARGEMENT DU COMPTE
-   * ==========================================================
-   */
-
-  async function loadAccount() {
-    const account =
-      await api("/api/account");
-
-    setAccountInformation(account);
-
-    return account;
-  }
-
-  async function loadPage() {
-    refreshButton.disabled = true;
-
-    try {
-      await Promise.all([
-        loadAccount(),
-        loadUploads()
-      ]);
-    } catch (error) {
-      credits.textContent = "—";
-
-      showMessage(
-        error.message,
-        "error"
-      );
-    } finally {
-      refreshButton.disabled = false;
-    }
-  }
-
-  /* ==========================================================
-   * ÉVÉNEMENTS
-   * ==========================================================
-   */
-
-  input.addEventListener(
-    "change",
-    () => {
-      hideMessage();
-
-      const file = input.files[0];
-
-      if (!file) {
-        clearSelectedFile();
-        return;
-      }
-
-      try {
-        validateFile(file);
-        displaySelectedFile(file);
-      } catch (error) {
-        clearSelectedFile();
-
-        showMessage(
-          error.message,
-          "error"
-        );
-      }
-    }
-  );
-
-  if (removeFileButton) {
-    removeFileButton.addEventListener(
-      "click",
-      () => {
-        clearSelectedFile();
-        hideMessage();
-      }
-    );
-  }
-
-  form.addEventListener(
-    "submit",
-    async event => {
-      event.preventDefault();
-      hideMessage();
-
-      if (!canUpload) {
-        showMessage(
-          "Tu n’as aucun crédit disponible.",
-          "error"
-        );
-
-        return;
-      }
-
-      const file = input.files[0];
-
-      if (!file) {
-        showMessage(
-          "Sélectionne d’abord une image.",
-          "error"
-        );
-
-        return;
-      }
-
-      try {
-        validateFile(file);
-      } catch (error) {
-        showMessage(
-          error.message,
-          "error"
-        );
-
-        return;
-      }
-
-      const body = new FormData();
-      body.append("image", file);
-
-      uploadInProgress = true;
-      updateControls();
-
-      showMessage(
-        "Envoi de l’image en cours…",
-        "info"
-      );
-
-      try {
-        await api("/api/uploads", {
-          method: "POST",
-          body
-        });
-
-        clearSelectedFile();
-
-        showMessage(
-          "Image envoyée ! Elle est maintenant en attente de modération.",
-          "success"
-        );
-
-        await Promise.all([
-          loadAccount(),
-          loadUploads()
-        ]);
-      } catch (error) {
-        showMessage(
-          error.message,
-          "error"
-        );
-      } finally {
-        uploadInProgress = false;
-        updateControls();
-      }
-    }
-  );
-
-  refreshButton.addEventListener(
-    "click",
-    async () => {
-      hideMessage();
-      await loadPage();
-    }
-  );
-
-  /* ==========================================================
-   * DÉMARRAGE
-   * ==========================================================
-   */
-
-  async function startPage() {
-    /*
-     * Vérifie d'abord la connexion, le rôle modérateur
-     * et l'ouverture de l'interaction.
-     */
-    const account =
-      await verifyFeatureAccess();
-
-    if (!account) {
-      return;
-    }
-
-    setAccountInformation(account);
-
-    try {
-      await loadUploads();
-    } catch (error) {
-      showMessage(
-        error.message,
-        "error"
-      );
-    }
-
-    pageStarted = true;
-  }
-
-  startPage();
-
-  /*
-   * Actualisation automatique. L'accès à l'interaction est
-   * revérifié : si elle est fermée pendant que la page est
-   * ouverte, un non-modérateur est renvoyé vers l'accueil.
-   */
-  setInterval(
-    async () => {
-      if (!pageStarted) {
-        return;
-      }
-
-      const account =
-        await verifyFeatureAccess();
-
-      if (!account) {
-        return;
-      }
-
-      setAccountInformation(account);
-
-      try {
-        await loadUploads();
-      } catch {
-        // Conserve les informations déjà affichées.
-      }
-    },
-    15000
-  );
-
-  window.addEventListener(
-    "beforeunload",
-    () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    }
-  );
-</script>
+    </div>
+  </main>
+
+  <footer class="poster-footer">
+    <img
+      src="/assets/jevent_logo.png"
+      alt=""
+    >
+
+    <div>
+      <strong>JEvent 26</strong>
+
+      <span>
+        Ensemble, réalisons des rêves.
+      </span>
+    </div>
+
+    <nav>
+      <a href="/">
+        Accueil
+      </a>
+
+      <a href="/programme.html">
+        Programme
+      </a>
+
+      <a href="/createurs.html">
+        Créateurs
+      </a>
+    </nav>
+  </footer>
+
+  <script
+    src="/assets/js/poster.js?v=3"
+    defer
+  ></script>
 </body>
 
 </html>
