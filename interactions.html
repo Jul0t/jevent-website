@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="Utilise tes crédits JEvent pour participer aux interactions des créateurs.">
+
+  <title>Interactions — JEvent 26</title>
+
+  <link rel="icon" href="/assets/jevent_logo.png">
+  <link rel="stylesheet" href="/assets/css/interactions.css?v=3">
+</head>
+
+<body>
+  <header class="site-header poster-header">
+    <a class="poster-brand" href="/" aria-label="Retour à l’accueil">
+      <img src="/assets/jevent_logo.png" alt="">
+
+      <span>
+        <strong>JEvent 26</strong>
+        <small>Interactions</small>
+      </span>
+    </a>
+
+    <nav class="poster-navigation">
+      <a href="/programme.html">
+        Programme
+      </a>
+
+      <a href="/createurs.html">
+        Créateurs
+      </a>
+
+      <a href="/compte.html">
+        Mon compte
+      </a>
+    </nav>
+  </header>
+
+  <main class="poster-page">
+
+    <!-- Chargement -->
+
+    <section id="loadingState" class="poster-state">
+      <span class="poster-loader"></span>
+
+      <p>
+        Chargement des interactions…
+      </p>
+    </section>
+
+    <!-- Erreur -->
+
+    <section id="errorState" class="poster-state poster-state-error" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+
+        <path d="M12 7v6"></path>
+        <path d="M12 17h.01"></path>
+      </svg>
+
+      <h1>
+        Impossible de charger les interactions
+      </h1>
+
+      <p id="errorMessage">
+        Une erreur est survenue.
+      </p>
+
+      <button id="retryButton" type="button" class="poster-button poster-button-primary">
+        Réessayer
+      </button>
+    </section>
+
+    <!-- Contenu -->
+
+    <div id="pageContent" hidden>
+      <section class="poster-hero">
+        <div class="poster-hero-content">
+          <span class="poster-eyebrow">
+            Interactions communautaires
+          </span>
+
+          <h1>
+            Participe directement aux lives
+          </h1>
+
+          <p>
+            Utilise les crédits obtenus grâce à tes dons
+            pour envoyer du contenu aux créateurs du JEvent.
+          </p>
+        </div>
+
+        <aside class="poster-wallet">
+          <div class="poster-wallet-heading">
+            <span>Ton solde</span>
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="6" width="18" height="14" rx="3" />
+
+              <path d="M16 11h5v5h-5a2.5 2.5 0 0 1 0-5Z"></path>
+              <path d="M3 9V7a3 3 0 0 1 3-3h11"></path>
+            </svg>
+          </div>
+
+          <strong id="creditBalance">
+            0 crédit
+          </strong>
+
+          <small id="creditInformation">
+            1 € donné = 1 crédit
+          </small>
+        </aside>
+      </section>
+
+      <!-- Code personnel -->
+
+      <section class="poster-code-card">
+        <div class="poster-code-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 9 5 12l3 3"></path>
+            <path d="m16 9 3 3-3 3"></path>
+            <path d="m14 6-4 12"></path>
+          </svg>
+        </div>
+
+        <div class="poster-code-content">
+          <span>
+            Ton code personnel
+          </span>
+
+          <strong id="personalCode">
+            …
+          </strong>
+
+          <p>
+            Ajoute ce code au message de ton don.
+            Le même code peut être utilisé plusieurs fois.
+          </p>
+        </div>
+
+        <button id="copyCodeButton" type="button" class="poster-button poster-button-secondary">
+          Copier le code
+        </button>
+      </section>
+
+      <!-- Catalogue -->
+
+      <section class="poster-section">
+        <div class="poster-section-heading">
+          <div>
+            <span class="poster-section-kicker">
+              Catalogue
+            </span>
+
+            <h2>
+              Choisis une interaction
+            </h2>
+
+            <p>
+              Chaque créateur peut proposer plusieurs
+              interactions différentes.
+            </p>
+          </div>
+        </div>
+
+        <div id="interactionsList" class="poster-interactions"></div>
+
+        <div id="interactionsEmpty" class="poster-empty" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16v12H4z"></path>
+            <path d="M8 7V5h8v2"></path>
+            <path d="M9 12h6"></path>
+          </svg>
+
+          <strong>
+            Aucune interaction disponible
+          </strong>
+
+          <p>
+            Les interactions apparaîtront ici
+            lorsqu’elles seront ouvertes.
+          </p>
+        </div>
+      </section>
+
+      <!-- Formulaire d’envoi -->
+
+      <section id="uploadSection" class="poster-section poster-upload-section" hidden>
+        <div class="poster-section-heading">
+          <div>
+            <span class="poster-section-kicker">
+              Participation
+            </span>
+
+            <h2 id="selectedInteractionTitle">
+              Envoyer une image
+            </h2>
+
+            <p id="selectedInteractionDescription">
+              Sélectionne une image à envoyer.
+            </p>
+          </div>
+
+          <button id="changeInteractionButton" type="button" class="poster-button poster-button-secondary">
+            Changer
+          </button>
+        </div>
+
+        <div class="poster-selected-summary">
+          <div>
+            <span>Créateur</span>
+
+            <strong id="selectedCreatorName">
+              —
+            </strong>
+          </div>
+
+          <div>
+            <span>Coût</span>
+
+            <strong id="selectedInteractionCost">
+              —
+            </strong>
+          </div>
+
+          <div>
+            <span>Formats</span>
+
+            <strong id="selectedInteractionFormats">
+              JPEG, PNG, WebP
+            </strong>
+          </div>
+        </div>
+
+        <form id="uploadForm" class="poster-upload-form">
+          <input id="interactionPublicId" name="interactionPublicId" type="hidden">
+
+          <input id="imageInput" name="image" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+
+          <label id="dropZone" class="poster-drop-zone" for="imageInput">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="3" />
+
+              <circle cx="9" cy="10" r="2" />
+
+              <path d="m5 18 5-5 3 3 2-2 4 4"></path>
+            </svg>
+
+            <strong>
+              Choisir une image
+            </strong>
+
+            <span>
+              ou dépose-la directement ici
+            </span>
+
+            <small>
+              JPEG, PNG ou WebP — 2 Mo maximum
+            </small>
+          </label>
+
+          <div id="selectedFile" class="poster-selected-file" hidden>
+            <div class="poster-file-preview">
+              <img id="imagePreview" alt="Aperçu de l’image sélectionnée">
+            </div>
+
+            <div class="poster-file-information">
+              <strong id="selectedFileName">
+                —
+              </strong>
+
+              <span id="selectedFileSize">
+                —
+              </span>
+            </div>
+
+            <button id="removeFileButton" type="button" class="poster-remove-file" aria-label="Retirer cette image">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 5l14 14"></path>
+                <path d="M19 5 5 19"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="poster-upload-footer">
+            <p>
+              L’image sera envoyée à la modération
+              avant son utilisation.
+            </p>
+
+            <button id="submitButton" type="submit" class="poster-button poster-button-primary" disabled>
+              Envoyer l’image
+            </button>
+          </div>
+
+          <p id="uploadMessage" class="poster-message" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <!-- Historique -->
+
+      <section class="poster-section">
+        <div class="poster-section-heading">
+          <div>
+            <span class="poster-section-kicker">
+              Historique
+            </span>
+
+            <h2>
+              Mes participations
+            </h2>
+
+            <p>
+              Retrouve les contenus que tu as envoyés
+              et leur état de modération.
+            </p>
+          </div>
+
+          <button id="refreshUploadsButton" type="button" class="poster-button poster-button-secondary">
+            Actualiser
+          </button>
+        </div>
+
+        <div id="uploadsList" class="poster-uploads"></div>
+
+        <div id="uploadsEmpty" class="poster-empty poster-empty-small" hidden>
+          <strong>
+            Aucune participation
+          </strong>
+
+          <p>
+            Tes prochains envois apparaîtront ici.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="poster-footer">
+    <img src="/assets/jevent_logo.png" alt="">
+
+    <div>
+      <strong>JEvent 26</strong>
+
+      <span>
+        Ensemble, réalisons des rêves.
+      </span>
+    </div>
+
+    <nav>
+      <a href="/">
+        Accueil
+      </a>
+
+      <a href="/programme.html">
+        Programme
+      </a>
+
+      <a href="/createurs.html">
+        Créateurs
+      </a>
+    </nav>
+  </footer>
+
+  <script src="/assets/js/interactions.js?v=3" defer></script>
+</body>
+
+</html>
