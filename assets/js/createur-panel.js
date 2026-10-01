@@ -2622,6 +2622,164 @@
         );
     }
 
+    let reminderAudioContext = null;
+
+    function playReminderSound() {
+        if (!state.settings.soundsEnabled) {
+            return;
+        }
+
+        const AudioContextClass =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if (!AudioContextClass) {
+            return;
+        }
+
+        try {
+            reminderAudioContext ??=
+                new AudioContextClass();
+
+            const play = () => {
+                const oscillator =
+                    reminderAudioContext
+                        .createOscillator();
+
+                const gain =
+                    reminderAudioContext
+                        .createGain();
+
+                const now =
+                    reminderAudioContext
+                        .currentTime;
+
+                oscillator.type = "sine";
+
+                oscillator.frequency
+                    .setValueAtTime(
+                        660,
+                        now
+                    );
+
+                oscillator.frequency
+                    .setValueAtTime(
+                        880,
+                        now + 0.12
+                    );
+
+                gain.gain.setValueAtTime(
+                    0.0001,
+                    now
+                );
+
+                gain.gain.exponentialRampToValueAtTime(
+                    0.12,
+                    now + 0.02
+                );
+
+                gain.gain.exponentialRampToValueAtTime(
+                    0.0001,
+                    now + 0.3
+                );
+
+                oscillator.connect(gain);
+                gain.connect(
+                    reminderAudioContext.destination
+                );
+
+                oscillator.start(now);
+                oscillator.stop(now + 0.32);
+            };
+
+            if (
+                reminderAudioContext.state ===
+                "suspended"
+            ) {
+                void reminderAudioContext
+                    .resume()
+                    .then(play);
+            } else {
+                play();
+            }
+        } catch (error) {
+            console.warn(
+                "Impossible de jouer le rappel sonore :",
+                error
+            );
+        }
+    }
+
+    function getCurrentRaisedCents() {
+        if (
+            state.creator?.raisedAvailable
+        ) {
+            return numberOrZero(
+                state.creator.raisedCents
+            );
+        }
+
+        const overview =
+            getOverviewStatistics();
+
+        if (
+            overview.raisedCents === null ||
+            overview.raisedCents === undefined
+        ) {
+            return null;
+        }
+
+        return numberOrZero(
+            overview.raisedCents
+        );
+    }
+
+    function getUpcomingGoalReminder() {
+        const raisedCents =
+            getCurrentRaisedCents();
+
+        if (raisedCents === null) {
+            return null;
+        }
+
+        for (const entry of todayProgram()) {
+            const goal = entry.goal;
+
+            if (!goal || goal.reached) {
+                continue;
+            }
+
+            const targetCents =
+                numberOrZero(
+                    goal.thresholdCents ??
+                    goal.targetAmountCents ??
+                    goal.targetCents
+                );
+
+            if (targetCents <= 0) {
+                continue;
+            }
+
+            const percentage =
+                raisedCents / targetCents;
+
+            if (
+                percentage >= 0.8 &&
+                raisedCents < targetCents
+            ) {
+                return {
+                    entry,
+                    goal,
+                    targetCents,
+                    remainingCents:
+                        targetCents - raisedCents
+                };
+            }
+        }
+
+        return null;
+    }
+
     function showReminder({
         key,
         type,
@@ -2667,6 +2825,8 @@
         elements.reminder.hidden =
             false;
 
+        playReminderSound();
+
         window.clearTimeout(
             state.reminderTimer
         );
@@ -2704,15 +2864,17 @@
 
     function checkReminders() {
         if (
-            !state.settings
-                .remindersEnabled
+            !state.settings.remindersEnabled
         ) {
             return;
         }
 
-        const now =
-            Date.now();
+        const now = Date.now();
 
+        /*
+         * Priorité 1 :
+         * prochain changement de programme.
+         */
         const nextEntry =
             todayProgram().find(
                 entry =>
@@ -2732,15 +2894,13 @@
 
             if (
                 remaining > 0 &&
-                remaining <=
-                10 * 60 * 1000
+                remaining <= 10 * 60 * 1000
             ) {
                 const minutes =
                     Math.max(
                         1,
                         Math.ceil(
-                            remaining /
-                            60000
+                            remaining / 60000
                         )
                     );
 
@@ -2750,54 +2910,88 @@
                         nextEntry.id
                         }`,
 
-                    type:
-                        "Programme",
+                    type: "Programme",
 
                     title:
                         "Changement de créneau imminent",
 
                     message:
+                        `${nextEntry.title} commence ` +
+                        `dans ${minutes} minute` +
                         (
-                            `${nextEntry.title} commence ` +
-                            `dans ${minutes} minute` +
-                            (
-                                minutes > 1
-                                    ? "s"
-                                    : ""
-                            ) +
-                            "."
-                        )
+                            minutes > 1
+                                ? "s"
+                                : ""
+                        ) +
+                        "."
                 });
 
                 return;
             }
         }
 
+        /*
+         * Priorité 2 :
+         * objectif bientôt atteint.
+         */
+        const goalReminder =
+            getUpcomingGoalReminder();
+
+        if (goalReminder) {
+            const {
+                goal,
+                entry,
+                remainingCents
+            } = goalReminder;
+
+            showReminder({
+                key:
+                    `goal-near-${goal.publicId ||
+                    entry.publicId ||
+                    entry.id
+                    }`,
+
+                type:
+                    "Objectif de dons",
+
+                title:
+                    "Objectif bientôt atteint",
+
+                message:
+                    `${formatMoney(
+                        remainingCents
+                    )} restent avant ` +
+                    `« ${goal.title || entry.title} ». ` +
+                    "Le programme pourrait changer automatiquement."
+            });
+
+            return;
+        }
+
+        /*
+         * Priorité 3 :
+         * interactions à utiliser.
+         */
         if (
             state.queueCounts.waiting > 0
         ) {
             showReminder({
                 key:
-                    (
-                        "interactions-" +
-                        state.queueCounts.waiting
-                    ),
+                    "interactions-" +
+                    state.queueCounts.waiting,
 
                 type:
                     "Interactions",
 
                 title:
+                    `${state.queueCounts.waiting} ` +
+                    "interaction" +
                     (
-                        `${state.queueCounts.waiting} ` +
-                        "interaction" +
-                        (
-                            state.queueCounts.waiting >
-                                1
-                                ? "s"
-                                : ""
-                        ) +
-                        " en attente"
-                    ),
+                        state.queueCounts.waiting > 1
+                            ? "s"
+                            : ""
+                    ) +
+                    " en attente",
 
                 message:
                     "Des participations acceptées attendent d’être utilisées."
