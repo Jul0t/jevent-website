@@ -364,99 +364,98 @@
               </p>
             </div>
           </section>
-        </section>
+          <section class="admin-interaction-moderation">
+            <header class="admin-section-heading">
+              <div>
+                <span class="admin-section-kicker">
+                  Modération
+                </span>
 
-        <section class="admin-interaction-moderation">
-          <header class="admin-section-heading">
-            <div>
-              <span class="admin-section-kicker">
-                Modération
-              </span>
+                <h2>
+                  Participations reçues
+                </h2>
 
-              <h2>
-                Participations reçues
-              </h2>
+                <p>
+                  Consulte, accepte ou refuse les contenus envoyés.
+                  Un refus rembourse automatiquement les crédits.
+                </p>
+              </div>
+
+              <button id="refreshInteractionUploadsButton" type="button" class="admin-secondary-button">
+                Actualiser
+              </button>
+            </header>
+
+            <div class="interaction-upload-stats">
+              <article>
+                <span>En attente</span>
+                <strong id="pendingUploadsCount">0</strong>
+              </article>
+
+              <article>
+                <span>Acceptées</span>
+                <strong id="approvedUploadsCount">0</strong>
+              </article>
+
+              <article>
+                <span>Refusées</span>
+                <strong id="rejectedUploadsCount">0</strong>
+              </article>
+
+              <article>
+                <span>Total</span>
+                <strong id="totalUploadsCount">0</strong>
+              </article>
+            </div>
+
+            <div class="interaction-upload-filters">
+              <div id="interactionUploadStatusFilters" class="interaction-upload-statuses"
+                aria-label="Filtrer par statut">
+                <button type="button" class="is-active" data-upload-status="pending">
+                  En attente
+                </button>
+
+                <button type="button" data-upload-status="approved">
+                  Acceptées
+                </button>
+
+                <button type="button" data-upload-status="rejected">
+                  Refusées
+                </button>
+
+                <button type="button" data-upload-status="all">
+                  Toutes
+                </button>
+              </div>
+
+              <label class="interaction-upload-search">
+                <span>Rechercher</span>
+
+                <input id="interactionUploadSearch" type="search" placeholder="Participant, créateur ou interaction…"
+                  autocomplete="off">
+              </label>
+            </div>
+
+            <p id="interactionUploadsMessage" class="admin-inline-message" role="status" aria-live="polite"></p>
+
+            <div id="interactionUploadsList" class="interaction-uploads-list"></div>
+
+            <div id="interactionUploadsEmpty" class="admin-empty-state" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 7h16v12H4z"></path>
+                <path d="M8 7V5h8v2"></path>
+                <path d="M9 12h6"></path>
+              </svg>
+
+              <strong>
+                Aucune participation
+              </strong>
 
               <p>
-                Consulte, accepte ou refuse les contenus envoyés.
-                Un refus rembourse automatiquement les crédits.
+                Aucun contenu ne correspond aux filtres sélectionnés.
               </p>
             </div>
-
-            <button id="refreshInteractionUploadsButton" type="button" class="admin-secondary-button">
-              Actualiser
-            </button>
-          </header>
-
-          <div class="interaction-upload-stats">
-            <article>
-              <span>En attente</span>
-              <strong id="pendingUploadsCount">0</strong>
-            </article>
-
-            <article>
-              <span>Acceptées</span>
-              <strong id="approvedUploadsCount">0</strong>
-            </article>
-
-            <article>
-              <span>Refusées</span>
-              <strong id="rejectedUploadsCount">0</strong>
-            </article>
-
-            <article>
-              <span>Total</span>
-              <strong id="totalUploadsCount">0</strong>
-            </article>
-          </div>
-
-          <div class="interaction-upload-filters">
-            <div id="interactionUploadStatusFilters" class="interaction-upload-statuses"
-              aria-label="Filtrer par statut">
-              <button type="button" class="is-active" data-upload-status="pending">
-                En attente
-              </button>
-
-              <button type="button" data-upload-status="approved">
-                Acceptées
-              </button>
-
-              <button type="button" data-upload-status="rejected">
-                Refusées
-              </button>
-
-              <button type="button" data-upload-status="all">
-                Toutes
-              </button>
-            </div>
-
-            <label class="interaction-upload-search">
-              <span>Rechercher</span>
-
-              <input id="interactionUploadSearch" type="search" placeholder="Participant, créateur ou interaction…"
-                autocomplete="off">
-            </label>
-          </div>
-
-          <p id="interactionUploadsMessage" class="admin-inline-message" role="status" aria-live="polite"></p>
-
-          <div id="interactionUploadsList" class="interaction-uploads-list"></div>
-
-          <div id="interactionUploadsEmpty" class="admin-empty-state" hidden>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 7h16v12H4z"></path>
-              <path d="M8 7V5h8v2"></path>
-              <path d="M9 12h6"></path>
-            </svg>
-
-            <strong>
-              Aucune participation
-            </strong>
-
-            <p>
-              Aucun contenu ne correspond aux filtres sélectionnés.
-            </p>
-          </div>
+          </section>
         </section>
 
         <!-- Administrateurs -->
