@@ -9,6 +9,7 @@
 
   <link rel="stylesheet" href="/assets/css/admin.css?v=10">
   <link rel="stylesheet" href="/assets/css/admin-interactions.css?v=1">
+  <link rel="stylesheet" href="/assets/css/admin-interaction-uploads.css?v=1">
 </head>
 
 <body>
@@ -363,6 +364,99 @@
               </p>
             </div>
           </section>
+        </section>
+
+        <section class="admin-interaction-moderation">
+          <header class="admin-section-heading">
+            <div>
+              <span class="admin-section-kicker">
+                Modération
+              </span>
+
+              <h2>
+                Participations reçues
+              </h2>
+
+              <p>
+                Consulte, accepte ou refuse les contenus envoyés.
+                Un refus rembourse automatiquement les crédits.
+              </p>
+            </div>
+
+            <button id="refreshInteractionUploadsButton" type="button" class="admin-secondary-button">
+              Actualiser
+            </button>
+          </header>
+
+          <div class="interaction-upload-stats">
+            <article>
+              <span>En attente</span>
+              <strong id="pendingUploadsCount">0</strong>
+            </article>
+
+            <article>
+              <span>Acceptées</span>
+              <strong id="approvedUploadsCount">0</strong>
+            </article>
+
+            <article>
+              <span>Refusées</span>
+              <strong id="rejectedUploadsCount">0</strong>
+            </article>
+
+            <article>
+              <span>Total</span>
+              <strong id="totalUploadsCount">0</strong>
+            </article>
+          </div>
+
+          <div class="interaction-upload-filters">
+            <div id="interactionUploadStatusFilters" class="interaction-upload-statuses"
+              aria-label="Filtrer par statut">
+              <button type="button" class="is-active" data-upload-status="pending">
+                En attente
+              </button>
+
+              <button type="button" data-upload-status="approved">
+                Acceptées
+              </button>
+
+              <button type="button" data-upload-status="rejected">
+                Refusées
+              </button>
+
+              <button type="button" data-upload-status="all">
+                Toutes
+              </button>
+            </div>
+
+            <label class="interaction-upload-search">
+              <span>Rechercher</span>
+
+              <input id="interactionUploadSearch" type="search" placeholder="Participant, créateur ou interaction…"
+                autocomplete="off">
+            </label>
+          </div>
+
+          <p id="interactionUploadsMessage" class="admin-inline-message" role="status" aria-live="polite"></p>
+
+          <div id="interactionUploadsList" class="interaction-uploads-list"></div>
+
+          <div id="interactionUploadsEmpty" class="admin-empty-state" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16v12H4z"></path>
+              <path d="M8 7V5h8v2"></path>
+              <path d="M9 12h6"></path>
+            </svg>
+
+            <strong>
+              Aucune participation
+            </strong>
+
+            <p>
+              Aucun contenu ne correspond aux filtres sélectionnés.
+            </p>
+          </div>
         </section>
 
         <!-- Administrateurs -->
@@ -868,10 +962,104 @@
         </form>
       </dialog>
 
+      <dialog id="interactionUploadDialog" class="admin-dialog interaction-upload-dialog">
+        <div class="admin-dialog-shell">
+          <header class="admin-dialog-header">
+            <div>
+              <span class="admin-section-kicker">
+                Modération
+              </span>
+
+              <h2 id="interactionUploadDialogTitle">
+                Participation
+              </h2>
+            </div>
+
+            <button id="closeInteractionUploadDialog" type="button" class="admin-dialog-close" aria-label="Fermer">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 5l14 14"></path>
+                <path d="M19 5 5 19"></path>
+              </svg>
+            </button>
+          </header>
+
+          <div class="interaction-upload-dialog-content">
+            <div class="interaction-upload-preview">
+              <div id="interactionUploadImageLoading" class="interaction-upload-image-loading">
+                Chargement de l’image…
+              </div>
+
+              <img id="interactionUploadImage" alt="Participation envoyée" hidden>
+            </div>
+
+            <aside class="interaction-upload-information">
+              <dl>
+                <div>
+                  <dt>Participant</dt>
+                  <dd id="interactionUploadUser">—</dd>
+                </div>
+
+                <div>
+                  <dt>Créateur</dt>
+                  <dd id="interactionUploadCreator">—</dd>
+                </div>
+
+                <div>
+                  <dt>Interaction</dt>
+                  <dd id="interactionUploadInteraction">—</dd>
+                </div>
+
+                <div>
+                  <dt>Fichier</dt>
+                  <dd id="interactionUploadFile">—</dd>
+                </div>
+
+                <div>
+                  <dt>Coût</dt>
+                  <dd id="interactionUploadCost">—</dd>
+                </div>
+
+                <div>
+                  <dt>Envoyée le</dt>
+                  <dd id="interactionUploadDate">—</dd>
+                </div>
+
+                <div>
+                  <dt>Statut</dt>
+                  <dd id="interactionUploadStatus">—</dd>
+                </div>
+              </dl>
+
+              <label class="interaction-upload-note">
+                <span>
+                  Raison du refus
+                </span>
+
+                <textarea id="interactionUploadModerationNote" maxlength="500" rows="4"
+                  placeholder="Obligatoire uniquement en cas de refus"></textarea>
+              </label>
+
+              <p id="interactionUploadDialogMessage" class="admin-inline-message" role="status" aria-live="polite"></p>
+            </aside>
+          </div>
+
+          <footer class="admin-dialog-footer">
+            <button id="rejectInteractionUploadButton" type="button" class="admin-danger-button">
+              Refuser et rembourser
+            </button>
+
+            <button id="approveInteractionUploadButton" type="button" class="admin-primary-button">
+              Accepter
+            </button>
+          </footer>
+        </div>
+      </dialog>
+
       <script src="/assets/js/admin.js?v=15"></script>
       <script src="/assets/js/admin-dashboard.js?v=1"></script>
       <script src="/assets/js/admin-users.js?v=1"></script>
       <script src="/assets/js/admin-interactions.js?v=1"></script>
+      <script src="/assets/js/admin-interaction-uploads.js?v=1"></script>
 </body>
 
 </html>
