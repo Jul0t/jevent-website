@@ -1949,9 +1949,7 @@
     }
 
     function renderOverviewInteractions() {
-        const raffle =
-            state.activeRaffle;
-            
+
         if (
             !elements.overviewInteractionsList
         ) {
@@ -3398,15 +3396,6 @@
 
             list.append(row);
         }
-
-        const winner =
-            raffle.winner
-                ?.twitchDisplayName ||
-            raffle.winner
-                ?.donorName ||
-            raffle.winner
-                ?.twitchLogin ||
-            null;
 
         elements.rafflesPanelContent
             .append(list);
