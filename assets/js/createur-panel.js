@@ -1949,6 +1949,9 @@
     }
 
     function renderOverviewInteractions() {
+        const raffle =
+            state.activeRaffle;
+            
         if (
             !elements.overviewInteractionsList
         ) {
