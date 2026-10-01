@@ -303,7 +303,13 @@
             $("#stopRaffleButton"),
 
         drawRaffleButton:
-            $("#drawRaffleButton")
+            $("#drawRaffleButton"),
+
+        themeToggleButton:
+            $("#themeToggleButton"),
+
+        darkModeEnabled:
+            $("#darkModeEnabled")
     };
 
     const state = {
@@ -313,6 +319,7 @@
 
         raffles: [],
         raffleTimer: null,
+        raffleDataTimer: null,
         raffleRefreshPending: false,
 
         availableCreators: [],
@@ -346,7 +353,8 @@
 
         settings: {
             remindersEnabled: true,
-            soundsEnabled: false
+            soundsEnabled: false,
+            darkMode: false
         }
     };
 
@@ -2007,22 +2015,37 @@
                 createElement(
                     "strong",
                     "",
-                    interactionTitle(
-                        upload
-                    )
+                    raffle.title
                 ),
-
                 createElement(
                     "span",
                     "",
                     (
-                        "Envoyée par " +
-                        interactionParticipantName(
-                            upload
-                        )
+                        `${RAFFLE_STATUS_LABELS[
+                        raffle.status
+                        ] || raffle.status} · ` +
+                        `${RAFFLE_METHOD_LABELS[
+                        raffle.method
+                        ] || raffle.method} · ` +
+                        `${formatNumber(
+                            raffle.participantsCount
+                        )} participant(s)`
                     )
                 )
             );
+
+            if (
+                raffle.status === "completed" &&
+                winner
+            ) {
+                content.append(
+                    createElement(
+                        "span",
+                        "dashboard-raffle-winner",
+                        `Gagnant : ${winner}`
+                    )
+                );
+            }
 
             const button =
                 createElement(
@@ -3179,6 +3202,15 @@
             list.append(row);
         }
 
+        const winner =
+            raffle.winner
+                ?.twitchDisplayName ||
+            raffle.winner
+                ?.donorName ||
+            raffle.winner
+                ?.twitchLogin ||
+            null;
+
         elements.rafflesPanelContent
             .append(list);
     }
@@ -3679,7 +3711,8 @@
         await Promise.all([
             loadProgram(),
             loadInteractionQueue(),
-            loadStatistics()
+            loadStatistics(),
+            loadRaffles()
         ]);
 
         renderCreator();
@@ -3764,6 +3797,10 @@
         );
 
         window.clearInterval(
+            state.raffleDataTimer
+        );
+
+        window.clearInterval(
             state.clockTimer
         );
 
@@ -3780,6 +3817,19 @@
                     checkReminders();
                 },
                 30 * 1000
+            );
+
+        state.raffleDataTimer =
+            window.setInterval(
+                () => {
+                    if (
+                        !document.hidden &&
+                        state.activeRaffle
+                    ) {
+                        void refreshRaffleOnly();
+                    }
+                },
+                10 * 1000
             );
     }
 
@@ -3823,6 +3873,78 @@
     /* ======================================================
        INITIALISATION
        ====================================================== */
+
+    const DASHBOARD_THEME_KEY =
+        "jevent-creator-dashboard-theme";
+
+    function getInitialTheme() {
+        const savedTheme =
+            localStorage.getItem(
+                DASHBOARD_THEME_KEY
+            );
+
+        if (savedTheme === "dark") {
+            return true;
+        }
+
+        if (savedTheme === "light") {
+            return false;
+        }
+
+        return Boolean(
+            window.matchMedia?.(
+                "(prefers-color-scheme: dark)"
+            ).matches
+        );
+    }
+
+    function applyDashboardTheme(
+        darkMode,
+        save = true
+    ) {
+        state.darkMode =
+            Boolean(darkMode);
+
+        document.documentElement.dataset
+            .dashboardTheme =
+            state.darkMode
+                ? "dark"
+                : "light";
+
+        if (elements.darkModeEnabled) {
+            elements.darkModeEnabled.checked =
+                state.darkMode;
+        }
+
+        if (elements.themeToggleButton) {
+            const label =
+                state.darkMode
+                    ? "Activer le mode clair"
+                    : "Activer le mode sombre";
+
+            elements.themeToggleButton.title =
+                label;
+
+            elements.themeToggleButton.setAttribute(
+                "aria-label",
+                label
+            );
+
+            elements.themeToggleButton.setAttribute(
+                "aria-pressed",
+                String(state.darkMode)
+            );
+        }
+
+        if (save) {
+            localStorage.setItem(
+                DASHBOARD_THEME_KEY,
+                state.darkMode
+                    ? "dark"
+                    : "light"
+            );
+        }
+    }
 
     async function startApplication() {
         if (state.loading) {
@@ -4070,6 +4192,44 @@
         }
     );
 
+    onSafe(
+        elements.themeToggleButton,
+        "click",
+        () => {
+            applyDashboardTheme(
+                !state.darkMode
+            );
+        }
+    );
+
+    onSafe(
+        elements.darkModeEnabled,
+        "change",
+        () => {
+            applyDashboardTheme(
+                elements.darkModeEnabled.checked
+            );
+        }
+    );
+
+    window.addEventListener(
+        "keydown",
+        event => {
+            if (event.key === "Escape") {
+                closeSidebar();
+            }
+        }
+    );
+
+    window.addEventListener(
+        "resize",
+        () => {
+            if (window.innerWidth > 900) {
+                closeSidebar();
+            }
+        }
+    );
+
     window.addEventListener(
         "hashchange",
         () => {
@@ -4116,6 +4276,11 @@
                 state.raffleTimer
             );
         }
+    );
+
+    applyDashboardTheme(
+        getInitialTheme(),
+        false
     );
 
     startApplication();
