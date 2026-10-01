@@ -3663,6 +3663,11 @@
                                         "raffleMethod"
                                     ),
 
+                                drawMode:
+                                    selectedRadioValue(
+                                        "raffleDrawMode"
+                                    ) || "manual",
+
                                 durationMinutes,
                                 countdownMinutes
                             })

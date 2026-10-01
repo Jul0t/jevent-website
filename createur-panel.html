@@ -920,6 +920,40 @@
           </label>
         </fieldset>
 
+        <fieldset class="dashboard-choice-group">
+          <legend>
+            Tirage du gagnant
+          </legend>
+
+          <label class="dashboard-choice-card">
+            <input type="radio" name="raffleDrawMode" value="manual" checked>
+
+            <span>
+              <strong>Tirage manuel</strong>
+
+              <small>
+                À la fin du chrono, tu devras appuyer sur
+                « Tirer le gagnant ».
+              </small>
+            </span>
+          </label>
+
+          <label class="dashboard-choice-card is-recommended">
+            <input type="radio" name="raffleDrawMode" value="automatic">
+
+            <span>
+              <strong>Tirage automatique</strong>
+
+              <small>
+                Le gagnant sera tiré automatiquement à la fin
+                du chrono, même si le tableau de bord est fermé.
+              </small>
+
+              <em>Automatique</em>
+            </span>
+          </label>
+        </fieldset>
+
         <p id="raffleFormMessage" class="dashboard-form-message" role="status" aria-live="polite"></p>
       </div>
 
@@ -935,7 +969,7 @@
     </form>
   </dialog>
 
-  <script src="/assets/js/createur-panel.js?v=6" defer></script>
+  <script src="/assets/js/createur-panel.js?v=7" defer></script>
 </body>
 
 </html>
