@@ -1,0 +1,1368 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Tableau de bord des créateurs du JEvent 26."
+  >
+
+  <title>Tableau de bord créateur — JEvent 26</title>
+
+  <link
+    rel="icon"
+    href="/assets/jevent_logo.png"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/assets/styles.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/createur-panel.css?v=1"
+  >
+</head>
+
+<body class="creator-dashboard-body">
+
+  <!-- Chargement -->
+
+  <section
+    id="dashboardLoading"
+    class="dashboard-page-state"
+  >
+    <span class="dashboard-loader"></span>
+
+    <p>
+      Chargement du tableau de bord…
+    </p>
+  </section>
+
+  <!-- Erreur -->
+
+  <section
+    id="dashboardError"
+    class="dashboard-page-state dashboard-error-state"
+    hidden
+  >
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+      ></circle>
+
+      <path d="M12 7v6"></path>
+      <path d="M12 17h.01"></path>
+    </svg>
+
+    <h1>
+      Impossible d’ouvrir le tableau de bord
+    </h1>
+
+    <p id="dashboardErrorMessage">
+      Une erreur est survenue.
+    </p>
+
+    <a
+      href="/"
+      class="dashboard-button dashboard-button-primary"
+    >
+      Retour à l’accueil
+    </a>
+  </section>
+
+  <!-- Application -->
+
+  <div
+    id="dashboardApplication"
+    class="creator-dashboard"
+    hidden
+  >
+
+    <!-- Navigation latérale -->
+
+    <aside
+      id="dashboardSidebar"
+      class="dashboard-sidebar"
+    >
+      <header class="dashboard-sidebar-header">
+        <a
+          href="/"
+          class="dashboard-brand"
+          aria-label="Accueil du JEvent"
+        >
+          <img
+            src="/assets/jevent_logo.png"
+            alt=""
+          >
+
+          <span>
+            <strong>JEvent 26</strong>
+            <small>Tableau créateur</small>
+          </span>
+        </a>
+
+        <button
+          id="closeSidebarButton"
+          type="button"
+          class="dashboard-sidebar-close"
+          aria-label="Fermer le menu"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M5 5l14 14"></path>
+            <path d="M19 5 5 19"></path>
+          </svg>
+        </button>
+      </header>
+
+      <section class="dashboard-creator-summary">
+        <img
+          id="sidebarCreatorAvatar"
+          src="/assets/jevent_logo.png"
+          alt=""
+        >
+
+        <div>
+          <strong id="sidebarCreatorName">
+            Créateur
+          </strong>
+
+          <span id="sidebarCreatorLogin">
+            @créateur
+          </span>
+        </div>
+
+        <span
+          id="sidebarLiveIndicator"
+          class="dashboard-live-dot"
+          title="Hors ligne"
+        ></span>
+      </section>
+
+      <!-- Sélecteur réservé aux admins -->
+
+      <label
+        id="adminCreatorSelectorWrapper"
+        class="dashboard-creator-selector"
+        hidden
+      >
+        <span>
+          Créateur administré
+        </span>
+
+        <select id="adminCreatorSelector"></select>
+      </label>
+
+      <nav
+        class="dashboard-navigation"
+        aria-label="Navigation du tableau de bord"
+      >
+        <button
+          type="button"
+          class="dashboard-navigation-button is-active"
+          data-dashboard-panel="overview"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <rect
+              x="3"
+              y="3"
+              width="7"
+              height="7"
+              rx="2"
+            ></rect>
+
+            <rect
+              x="14"
+              y="3"
+              width="7"
+              height="7"
+              rx="2"
+            ></rect>
+
+            <rect
+              x="3"
+              y="14"
+              width="7"
+              height="7"
+              rx="2"
+            ></rect>
+
+            <rect
+              x="14"
+              y="14"
+              width="7"
+              height="7"
+              rx="2"
+            ></rect>
+          </svg>
+
+          <span>Vue d’ensemble</span>
+        </button>
+
+        <button
+          type="button"
+          class="dashboard-navigation-button"
+          data-dashboard-panel="raffles"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M4 8h16v11H4z"></path>
+            <path d="M12 8v11"></path>
+            <path d="M4 12h16"></path>
+            <path d="M8 8c-2.5 0-3.5-1.2-3.5-2.5S5.4 3 7 3c2.8 0 5 5 5 5"></path>
+            <path d="M16 8c2.5 0 3.5-1.2 3.5-2.5S18.6 3 17 3c-2.8 0-5 5-5 5"></path>
+          </svg>
+
+          <span>Tombola</span>
+
+          <span
+            id="sidebarRaffleBadge"
+            class="dashboard-navigation-badge"
+            hidden
+          >
+            1
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="dashboard-navigation-button"
+          data-dashboard-panel="interactions"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M4 7h16v12H4z"></path>
+            <path d="M8 7V5h8v2"></path>
+            <path d="M9 12h6"></path>
+          </svg>
+
+          <span>Interactions</span>
+
+          <span
+            id="sidebarInteractionsBadge"
+            class="dashboard-navigation-badge"
+            hidden
+          >
+            0
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="dashboard-navigation-button"
+          data-dashboard-panel="program"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <rect
+              x="3"
+              y="5"
+              width="18"
+              height="16"
+              rx="3"
+            ></rect>
+
+            <path d="M8 3v4"></path>
+            <path d="M16 3v4"></path>
+            <path d="M3 10h18"></path>
+          </svg>
+
+          <span>Programme</span>
+        </button>
+
+        <button
+          type="button"
+          class="dashboard-navigation-button"
+          data-dashboard-panel="statistics"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M5 20V10"></path>
+            <path d="M12 20V4"></path>
+            <path d="M19 20v-7"></path>
+          </svg>
+
+          <span>Statistiques</span>
+        </button>
+
+        <button
+          type="button"
+          class="dashboard-navigation-button"
+          data-dashboard-panel="team"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle
+              cx="9"
+              cy="8"
+              r="3"
+            ></circle>
+
+            <circle
+              cx="17"
+              cy="9"
+              r="2"
+            ></circle>
+
+            <path d="M3 20c0-4 2.5-7 6-7s6 3 6 7"></path>
+            <path d="M15 14c3 0 5 2.2 5 5"></path>
+          </svg>
+
+          <span>Équipe</span>
+        </button>
+
+        <button
+          type="button"
+          class="dashboard-navigation-button"
+          data-dashboard-panel="settings"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="3"
+            ></circle>
+
+            <path d="M12 3v3"></path>
+            <path d="M12 18v3"></path>
+            <path d="M3 12h3"></path>
+            <path d="M18 12h3"></path>
+            <path d="m5.6 5.6 2.1 2.1"></path>
+            <path d="m16.3 16.3 2.1 2.1"></path>
+            <path d="m18.4 5.6-2.1 2.1"></path>
+            <path d="m7.7 16.3-2.1 2.1"></path>
+          </svg>
+
+          <span>Paramètres</span>
+        </button>
+      </nav>
+
+      <footer class="dashboard-sidebar-footer">
+        <a
+          id="publicCreatorPageLink"
+          href="/createur.html"
+          target="_blank"
+          rel="noopener"
+        >
+          Voir ma page publique
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M14 5h5v5"></path>
+            <path d="m19 5-8 8"></path>
+            <path d="M18 13v6H5V6h6"></path>
+          </svg>
+        </a>
+
+        <a href="/compte.html">
+          Mon compte
+        </a>
+      </footer>
+    </aside>
+
+    <button
+      id="sidebarBackdrop"
+      type="button"
+      class="dashboard-sidebar-backdrop"
+      aria-label="Fermer le menu"
+      hidden
+    ></button>
+
+    <!-- Zone principale -->
+
+    <div class="dashboard-workspace">
+
+      <header class="dashboard-topbar">
+        <button
+          id="openSidebarButton"
+          type="button"
+          class="dashboard-menu-button"
+          aria-label="Ouvrir le menu"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M4 7h16"></path>
+            <path d="M4 12h16"></path>
+            <path d="M4 17h16"></path>
+          </svg>
+        </button>
+
+        <div class="dashboard-topbar-title">
+          <span id="currentPanelKicker">
+            Tableau de bord
+          </span>
+
+          <h1 id="currentPanelTitle">
+            Vue d’ensemble
+          </h1>
+        </div>
+
+        <div class="dashboard-topbar-actions">
+          <div
+            id="dashboardLiveStatus"
+            class="dashboard-live-status"
+          >
+            <span></span>
+
+            <strong>Hors ligne</strong>
+          </div>
+
+          <button
+            id="refreshDashboardButton"
+            type="button"
+            class="dashboard-icon-button"
+            title="Actualiser les données"
+            aria-label="Actualiser les données"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M20 7v5h-5"></path>
+              <path d="M4 17v-5h5"></path>
+              <path d="M6.1 9A7 7 0 0 1 18 6l2 1"></path>
+              <path d="M17.9 15A7 7 0 0 1 6 18l-2-1"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="dashboard-main">
+
+        <!-- Rappel central temporaire -->
+
+        <section
+          id="dashboardReminder"
+          class="dashboard-reminder"
+          hidden
+        >
+          <button
+            id="dismissReminderButton"
+            type="button"
+            class="dashboard-reminder-dismiss"
+            aria-label="Fermer le rappel"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M5 5l14 14"></path>
+              <path d="M19 5 5 19"></path>
+            </svg>
+          </button>
+
+          <div class="dashboard-reminder-icon">
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M12 3a7 7 0 0 0-7 7v4l-2 3h18l-2-3v-4a7 7 0 0 0-7-7Z"></path>
+              <path d="M9 20h6"></path>
+            </svg>
+          </div>
+
+          <div>
+            <span id="dashboardReminderType">
+              Programme
+            </span>
+
+            <strong id="dashboardReminderTitle">
+              Changement de créneau imminent
+            </strong>
+
+            <p id="dashboardReminderMessage">
+              La prochaine activité commence dans quelques minutes.
+            </p>
+          </div>
+        </section>
+
+        <!-- Vue d’ensemble -->
+
+        <section
+          class="dashboard-panel is-active"
+          data-dashboard-panel-content="overview"
+        >
+          <div class="dashboard-overview-layout">
+
+            <div class="dashboard-overview-content">
+
+              <!-- Statistiques rapides -->
+
+              <section class="dashboard-block">
+                <header class="dashboard-block-heading">
+                  <div>
+                    <span>En direct</span>
+
+                    <h2>
+                      Vue d’ensemble
+                    </h2>
+                  </div>
+
+                  <span
+                    id="dashboardLastUpdate"
+                    class="dashboard-last-update"
+                  >
+                    Actualisation…
+                  </span>
+                </header>
+
+                <div class="dashboard-statistics-grid">
+                  <article class="dashboard-stat-card dashboard-stat-card-fundraising">
+                    <div class="dashboard-stat-card-heading">
+                      <span>
+                        Cagnotte de la chaîne
+                      </span>
+
+                      <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 21s-7-4.4-7-11a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 6.6-7 11-7 11Z"></path>
+                      </svg>
+                    </div>
+
+                    <strong id="overviewRaisedAmount">
+                      0 €
+                    </strong>
+
+                    <div class="dashboard-fundraising-progress">
+                      <span
+                        id="overviewRaisedProgress"
+                        style="width: 0%;"
+                      ></span>
+                    </div>
+
+                    <small id="overviewRaisedDetail">
+                      Aucun don pour le moment
+                    </small>
+                  </article>
+
+                  <article class="dashboard-stat-card">
+                    <span>Messages</span>
+
+                    <strong id="overviewMessagesCount">
+                      0
+                    </strong>
+
+                    <small>
+                      Aujourd’hui
+                    </small>
+                  </article>
+
+                  <article class="dashboard-stat-card">
+                    <span>Emotes</span>
+
+                    <strong id="overviewEmotesCount">
+                      0
+                    </strong>
+
+                    <small>
+                      Aujourd’hui
+                    </small>
+                  </article>
+
+                  <article class="dashboard-stat-card">
+                    <span>Interactions</span>
+
+                    <strong id="overviewInteractionsCount">
+                      0
+                    </strong>
+
+                    <small>
+                      En attente d’utilisation
+                    </small>
+                  </article>
+
+                  <article class="dashboard-stat-card">
+                    <span>Tombola</span>
+
+                    <strong id="overviewRaffleParticipants">
+                      —
+                    </strong>
+
+                    <small id="overviewRaffleStatus">
+                      Aucune tombola active
+                    </small>
+                  </article>
+                </div>
+              </section>
+
+              <!-- Actions rapides -->
+
+              <section class="dashboard-block">
+                <header class="dashboard-block-heading">
+                  <div>
+                    <span>Raccourcis</span>
+
+                    <h2>
+                      Actions rapides
+                    </h2>
+                  </div>
+                </header>
+
+                <div class="dashboard-quick-actions">
+                  <button
+                    id="quickStartRaffleButton"
+                    type="button"
+                    class="dashboard-quick-action is-primary"
+                  >
+                    <span class="dashboard-quick-action-icon">
+                      <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M4 8h16v11H4z"></path>
+                        <path d="M12 8v11"></path>
+                        <path d="M4 12h16"></path>
+                        <path d="M8 8c-2.5 0-3.5-1.2-3.5-2.5S5.4 3 7 3c2.8 0 5 5 5 5"></path>
+                        <path d="M16 8c2.5 0 3.5-1.2 3.5-2.5S18.6 3 17 3c-2.8 0-5 5-5 5"></path>
+                      </svg>
+                    </span>
+
+                    <span>
+                      <strong>Lancer une tombola</strong>
+                      <small>Créer et démarrer rapidement</small>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="dashboard-quick-action"
+                    data-open-dashboard-panel="interactions"
+                  >
+                    <span class="dashboard-quick-action-icon">
+                      <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M4 7h16v12H4z"></path>
+                        <path d="M8 7V5h8v2"></path>
+                        <path d="M9 12h6"></path>
+                      </svg>
+                    </span>
+
+                    <span>
+                      <strong>Interactions</strong>
+                      <small>Gérer les participations</small>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="dashboard-quick-action"
+                    data-open-dashboard-panel="program"
+                  >
+                    <span class="dashboard-quick-action-icon">
+                      <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <rect
+                          x="3"
+                          y="5"
+                          width="18"
+                          height="16"
+                          rx="3"
+                        ></rect>
+
+                        <path d="M8 3v4"></path>
+                        <path d="M16 3v4"></path>
+                        <path d="M3 10h18"></path>
+                      </svg>
+                    </span>
+
+                    <span>
+                      <strong>Programme</strong>
+                      <small>Voir ou modifier mes créneaux</small>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="dashboard-quick-action"
+                    data-open-dashboard-panel="statistics"
+                  >
+                    <span class="dashboard-quick-action-icon">
+                      <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 20V10"></path>
+                        <path d="M12 20V4"></path>
+                        <path d="M19 20v-7"></path>
+                      </svg>
+                    </span>
+
+                    <span>
+                      <strong>Statistiques</strong>
+                      <small>Suivre l’activité de la chaîne</small>
+                    </span>
+                  </button>
+                </div>
+              </section>
+
+              <!-- Tombola active -->
+
+              <section
+                id="activeRaffleCard"
+                class="dashboard-block dashboard-active-raffle"
+                hidden
+              >
+                <header class="dashboard-active-raffle-header">
+                  <div>
+                    <span>Tombola en cours</span>
+
+                    <h2 id="activeRaffleTitle">
+                      Lot à gagner
+                    </h2>
+                  </div>
+
+                  <span
+                    id="activeRaffleTimer"
+                    class="dashboard-raffle-timer"
+                  >
+                    05:00
+                  </span>
+                </header>
+
+                <p id="activeRaffleDescription"></p>
+
+                <div class="dashboard-raffle-summary">
+                  <div>
+                    <span>Participations</span>
+                    <strong id="activeRaffleEntries">0</strong>
+                  </div>
+
+                  <div>
+                    <span>Participants</span>
+                    <strong id="activeRaffleUsers">0</strong>
+                  </div>
+
+                  <div>
+                    <span>Montant associé</span>
+                    <strong id="activeRaffleAmount">0 €</strong>
+                  </div>
+                </div>
+
+                <div class="dashboard-raffle-actions">
+                  <button
+                    id="stopRaffleButton"
+                    type="button"
+                    class="dashboard-button dashboard-button-danger"
+                  >
+                    Arrêter
+                  </button>
+
+                  <button
+                    id="drawRaffleButton"
+                    type="button"
+                    class="dashboard-button dashboard-button-primary"
+                  >
+                    Tirer le gagnant
+                  </button>
+                </div>
+              </section>
+
+              <!-- Interactions en attente -->
+
+              <section class="dashboard-block">
+                <header class="dashboard-block-heading">
+                  <div>
+                    <span>Modération terminée</span>
+
+                    <h2>
+                      Interactions à utiliser
+                    </h2>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="dashboard-text-button"
+                    data-open-dashboard-panel="interactions"
+                  >
+                    Tout afficher
+                  </button>
+                </header>
+
+                <div
+                  id="overviewInteractionsList"
+                  class="dashboard-overview-interactions"
+                ></div>
+
+                <div
+                  id="overviewInteractionsEmpty"
+                  class="dashboard-compact-empty"
+                >
+                  <strong>
+                    Rien en attente
+                  </strong>
+
+                  <p>
+                    Les interactions acceptées apparaîtront ici.
+                  </p>
+                </div>
+              </section>
+            </div>
+
+            <!-- Programme à droite -->
+
+            <aside class="dashboard-schedule-column">
+              <header class="dashboard-schedule-heading">
+                <div>
+                  <span>Aujourd’hui</span>
+
+                  <h2 id="scheduleCurrentDate">
+                    Programme
+                  </h2>
+                </div>
+
+                <button
+                  type="button"
+                  class="dashboard-icon-button"
+                  data-open-dashboard-panel="program"
+                  title="Ouvrir le programme"
+                  aria-label="Ouvrir le programme"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M9 18l6-6-6-6"></path>
+                  </svg>
+                </button>
+              </header>
+
+              <div
+                id="dashboardScheduleTimeline"
+                class="dashboard-schedule-timeline"
+              >
+                <div
+                  id="dashboardCurrentTimeLine"
+                  class="dashboard-current-time-line"
+                  hidden
+                >
+                  <span id="dashboardCurrentTimeLabel">
+                    16:00
+                  </span>
+                </div>
+              </div>
+
+              <div
+                id="dashboardScheduleEmpty"
+                class="dashboard-compact-empty"
+              >
+                <strong>
+                  Aucun créneau aujourd’hui
+                </strong>
+
+                <p>
+                  Le programme de la journée apparaîtra ici.
+                </p>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- Tombola -->
+
+        <section
+          class="dashboard-panel"
+          data-dashboard-panel-content="raffles"
+          hidden
+        >
+          <div class="dashboard-placeholder-panel">
+            <h2>Tombola</h2>
+
+            <p>
+              Crée, lance et consulte les tombolas de ta chaîne.
+            </p>
+
+            <button
+              id="createRaffleButton"
+              type="button"
+              class="dashboard-button dashboard-button-primary"
+            >
+              Lancer une tombola
+            </button>
+
+            <div id="rafflesPanelContent"></div>
+          </div>
+        </section>
+
+        <!-- Interactions -->
+
+        <section
+          class="dashboard-panel"
+          data-dashboard-panel-content="interactions"
+          hidden
+        >
+          <div class="dashboard-panel-heading">
+            <div>
+              <span>Participations acceptées</span>
+
+              <h2>Interactions</h2>
+
+              <p>
+                Les images sont masquées par défaut pour éviter
+                de révéler leur contenu avant le live.
+              </p>
+            </div>
+
+            <div class="dashboard-panel-actions">
+              <button
+                id="hideAllInteractionImagesButton"
+                type="button"
+                class="dashboard-button dashboard-button-secondary"
+              >
+                Masquer toutes les images
+              </button>
+
+              <button
+                id="refreshInteractionsButton"
+                type="button"
+                class="dashboard-button dashboard-button-secondary"
+              >
+                Actualiser
+              </button>
+            </div>
+          </div>
+
+          <div class="dashboard-spoiler-warning">
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6Z"></path>
+              <circle
+                cx="12"
+                cy="12"
+                r="2.5"
+              ></circle>
+              <path d="M4 4l16 16"></path>
+            </svg>
+
+            <div>
+              <strong>Attention aux spoilers</strong>
+
+              <p>
+                Clique sur une participation pour révéler son image.
+              </p>
+            </div>
+          </div>
+
+          <div
+            id="creatorInteractionsList"
+            class="dashboard-interactions-list"
+          ></div>
+
+          <div
+            id="creatorInteractionsEmpty"
+            class="dashboard-large-empty"
+          >
+            <strong>
+              Aucune interaction à utiliser
+            </strong>
+
+            <p>
+              Les participations acceptées par la modération
+              apparaîtront ici.
+            </p>
+          </div>
+        </section>
+
+        <!-- Programme -->
+
+        <section
+          class="dashboard-panel"
+          data-dashboard-panel-content="program"
+          hidden
+        >
+          <div class="dashboard-placeholder-panel">
+            <h2>Programme</h2>
+
+            <p>
+              Consulte et modifie uniquement les créneaux de ta chaîne.
+            </p>
+
+            <a
+              href="/programme-panel-beta.html"
+              class="dashboard-button dashboard-button-primary"
+            >
+              Ouvrir l’éditeur du programme
+            </a>
+          </div>
+        </section>
+
+        <!-- Statistiques -->
+
+        <section
+          class="dashboard-panel"
+          data-dashboard-panel-content="statistics"
+          hidden
+        >
+          <div class="dashboard-placeholder-panel">
+            <h2>Statistiques</h2>
+
+            <p>
+              Cagnotte, dons, chat, emotes, interactions et tombolas.
+            </p>
+
+            <div id="creatorStatisticsContent"></div>
+          </div>
+        </section>
+
+        <!-- Équipe -->
+
+        <section
+          class="dashboard-panel"
+          data-dashboard-panel-content="team"
+          hidden
+        >
+          <div class="dashboard-placeholder-panel">
+            <h2>Équipe</h2>
+
+            <p>
+              Gère les personnes pouvant accéder à ton tableau de bord.
+            </p>
+
+            <div id="creatorTeamContent"></div>
+          </div>
+        </section>
+
+        <!-- Paramètres -->
+
+        <section
+          class="dashboard-panel"
+          data-dashboard-panel-content="settings"
+          hidden
+        >
+          <div class="dashboard-placeholder-panel">
+            <h2>Paramètres</h2>
+
+            <p>
+              Personnalise le comportement de ton tableau de bord.
+            </p>
+
+            <label class="dashboard-setting-row">
+              <span>
+                <strong>Rappels importants</strong>
+
+                <small>
+                  Afficher les rappels temporaires au centre du tableau.
+                </small>
+              </span>
+
+              <input
+                id="importantRemindersEnabled"
+                type="checkbox"
+                checked
+              >
+            </label>
+
+            <label class="dashboard-setting-row">
+              <span>
+                <strong>Alertes sonores</strong>
+
+                <small>
+                  Jouer un son discret lors d’un rappel important.
+                </small>
+              </span>
+
+              <input
+                id="reminderSoundsEnabled"
+                type="checkbox"
+              >
+            </label>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Création rapide d’une tombola -->
+
+  <dialog
+    id="raffleDialog"
+    class="dashboard-dialog dashboard-raffle-dialog"
+  >
+    <form
+      id="raffleForm"
+      class="dashboard-dialog-shell"
+    >
+      <header class="dashboard-dialog-header">
+        <div>
+          <span>Tombola</span>
+
+          <h2>
+            Lancer une tombola
+          </h2>
+
+          <p>
+            Configure rapidement la tombola de ta chaîne.
+          </p>
+        </div>
+
+        <button
+          id="closeRaffleDialogButton"
+          type="button"
+          class="dashboard-dialog-close"
+          aria-label="Fermer"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M5 5l14 14"></path>
+            <path d="M19 5 5 19"></path>
+          </svg>
+        </button>
+      </header>
+
+      <div class="dashboard-dialog-content">
+        <label class="dashboard-field">
+          <span>
+            Objet ou objets à gagner
+          </span>
+
+          <input
+            id="raffleTitle"
+            name="title"
+            type="text"
+            maxlength="150"
+            placeholder="Exemple : Une carte cadeau de 50 €"
+            required
+          >
+        </label>
+
+        <label class="dashboard-field">
+          <span>
+            Description
+          </span>
+
+          <textarea
+            id="raffleDescription"
+            name="description"
+            maxlength="1000"
+            rows="4"
+            placeholder="Décris le lot et les éventuelles conditions."
+          ></textarea>
+        </label>
+
+        <fieldset class="dashboard-choice-group">
+          <legend>
+            Méthode de participation
+          </legend>
+
+          <label class="dashboard-choice-card is-recommended">
+            <input
+              type="radio"
+              name="raffleMethod"
+              value="ticket_per_euro"
+              checked
+            >
+
+            <span>
+              <strong>1 € = 1 ticket</strong>
+
+              <small>
+                Chaque euro donné ajoute une chance de gagner.
+              </small>
+
+              <em>Recommandé</em>
+            </span>
+          </label>
+
+          <label class="dashboard-choice-card is-warning">
+            <input
+              type="radio"
+              name="raffleMethod"
+              value="highest_donor"
+            >
+
+            <span>
+              <strong>Le plus gros donateur</strong>
+
+              <small>
+                Le donateur ayant donné le plus remporte le lot.
+              </small>
+
+              <em>Non recommandé</em>
+            </span>
+          </label>
+        </fieldset>
+
+        <fieldset class="dashboard-choice-group">
+          <legend>
+            Durée de la tombola
+          </legend>
+
+          <div class="dashboard-inline-choices">
+            <label class="dashboard-small-choice">
+              <input
+                type="radio"
+                name="raffleDurationType"
+                value="five_minutes"
+                checked
+              >
+
+              <span>5 minutes</span>
+            </label>
+
+            <label class="dashboard-small-choice">
+              <input
+                type="radio"
+                name="raffleDurationType"
+                value="custom"
+              >
+
+              <span>Personnalisée</span>
+            </label>
+          </div>
+
+          <label
+            id="customRaffleDurationField"
+            class="dashboard-field dashboard-inline-field"
+            hidden
+          >
+            <span>
+              Durée personnalisée
+            </span>
+
+            <span class="dashboard-number-field">
+              <input
+                id="customRaffleDuration"
+                name="customDurationMinutes"
+                type="number"
+                min="1"
+                max="1440"
+                value="10"
+              >
+
+              <small>minutes</small>
+            </span>
+          </label>
+        </fieldset>
+
+        <fieldset class="dashboard-choice-group">
+          <legend>
+            Démarrage
+          </legend>
+
+          <div class="dashboard-inline-choices">
+            <label class="dashboard-small-choice">
+              <input
+                type="radio"
+                name="raffleStartType"
+                value="now"
+                checked
+              >
+
+              <span>Immédiatement</span>
+            </label>
+
+            <label class="dashboard-small-choice">
+              <input
+                type="radio"
+                name="raffleStartType"
+                value="countdown"
+              >
+
+              <span>Après un compte à rebours</span>
+            </label>
+          </div>
+
+          <label
+            id="raffleCountdownField"
+            class="dashboard-field dashboard-inline-field"
+            hidden
+          >
+            <span>
+              Compte à rebours
+            </span>
+
+            <span class="dashboard-number-field">
+              <input
+                id="raffleCountdownMinutes"
+                name="countdownMinutes"
+                type="number"
+                min="1"
+                max="60"
+                value="5"
+              >
+
+              <small>minutes</small>
+            </span>
+          </label>
+        </fieldset>
+
+        <p
+          id="raffleFormMessage"
+          class="dashboard-form-message"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </div>
+
+      <footer class="dashboard-dialog-footer">
+        <button
+          id="cancelRaffleButton"
+          type="button"
+          class="dashboard-button dashboard-button-secondary"
+        >
+          Annuler
+        </button>
+
+        <button
+          id="submitRaffleButton"
+          type="submit"
+          class="dashboard-button dashboard-button-primary"
+        >
+          Lancer la tombola
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script
+    src="/assets/js/createur-panel.js?v=1"
+    defer
+  ></script>
+</body>
+
+</html>
