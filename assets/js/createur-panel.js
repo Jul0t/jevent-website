@@ -1949,7 +1949,6 @@
     }
 
     function renderOverviewInteractions() {
-
         if (
             !elements.overviewInteractionsList
         ) {
@@ -1982,29 +1981,29 @@
                 );
 
             icon.innerHTML = `
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <rect
-            x="3"
-            y="4"
-            width="18"
-            height="16"
-            rx="3"
-          ></rect>
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <rect
+          x="3"
+          y="4"
+          width="18"
+          height="16"
+          rx="3"
+        ></rect>
 
-          <circle
-            cx="9"
-            cy="10"
-            r="2"
-          ></circle>
+        <circle
+          cx="9"
+          cy="10"
+          r="2"
+        ></circle>
 
-          <path
-            d="m5 18 5-5 3 3 2-2 4 4"
-          ></path>
-        </svg>
-      `;
+        <path
+          d="m5 18 5-5 3 3 2-2 4 4"
+        ></path>
+      </svg>
+    `;
 
             const content =
                 createElement(
@@ -2016,37 +2015,19 @@
                 createElement(
                     "strong",
                     "",
-                    raffle.title
+                    interactionTitle(upload)
                 ),
                 createElement(
                     "span",
                     "",
                     (
-                        `${RAFFLE_STATUS_LABELS[
-                        raffle.status
-                        ] || raffle.status} · ` +
-                        `${RAFFLE_METHOD_LABELS[
-                        raffle.method
-                        ] || raffle.method} · ` +
-                        `${formatNumber(
-                            raffle.participantsCount
-                        )} participant(s)`
+                        "Envoyée par " +
+                        interactionParticipantName(
+                            upload
+                        )
                     )
                 )
             );
-
-            if (
-                raffle.status === "completed" &&
-                winner
-            ) {
-                content.append(
-                    createElement(
-                        "span",
-                        "dashboard-raffle-winner",
-                        `Gagnant : ${winner}`
-                    )
-                );
-            }
 
             const button =
                 createElement(
@@ -2060,25 +2041,23 @@
             button.addEventListener(
                 "click",
                 () => {
-                    openPanel(
-                        "interactions"
-                    );
+                    openPanel("interactions");
 
                     window.setTimeout(
                         () => {
+                            const publicId =
+                                String(
+                                    upload.publicId || ""
+                                );
+
                             document
                                 .querySelector(
-                                    `[data-upload-id="${CSS.escape(
-                                        upload.publicId
-                                    )
+                                    `[data-upload-id="${CSS.escape(publicId)
                                     }"]`
                                 )
                                 ?.scrollIntoView({
-                                    behavior:
-                                        "smooth",
-
-                                    block:
-                                        "center"
+                                    behavior: "smooth",
+                                    block: "center"
                                 });
                         },
                         100
@@ -3289,18 +3268,14 @@
     }
 
     function renderRaffleHistory() {
-        if (
-            !elements.rafflesPanelContent
-        ) {
+        if (!elements.rafflesPanelContent) {
             return;
         }
 
         elements.rafflesPanelContent
             .replaceChildren();
 
-        if (
-            state.raffles.length === 0
-        ) {
+        if (state.raffles.length === 0) {
             const empty =
                 createElement(
                     "div",
@@ -3313,7 +3288,6 @@
                     "",
                     "Aucune tombola"
                 ),
-
                 createElement(
                     "p",
                     "",
@@ -3333,10 +3307,7 @@
                 "dashboard-overview-interactions"
             );
 
-        for (
-            const raffle of
-            state.raffles
-        ) {
+        for (const raffle of state.raffles) {
             const row =
                 createElement(
                     "article",
@@ -3349,29 +3320,52 @@
                     "dashboard-overview-interaction-content"
                 );
 
+            const winner =
+                raffle.winner
+                    ?.twitchDisplayName ||
+                raffle.winner
+                    ?.donorName ||
+                raffle.winner
+                    ?.twitchLogin ||
+                null;
+
             content.append(
                 createElement(
                     "strong",
                     "",
-                    raffle.title
+                    raffle.title || "Tombola"
                 ),
-
                 createElement(
                     "span",
                     "",
                     (
                         `${RAFFLE_STATUS_LABELS[
                         raffle.status
-                        ] || raffle.status} · ` +
+                        ] || raffle.status
+                        } · ` +
                         `${RAFFLE_METHOD_LABELS[
                         raffle.method
-                        ] || raffle.method} · ` +
+                        ] || raffle.method
+                        } · ` +
                         `${formatNumber(
                             raffle.participantsCount
                         )} participant(s)`
                     )
                 )
             );
+
+            if (
+                raffle.status === "completed" &&
+                winner
+            ) {
+                content.append(
+                    createElement(
+                        "span",
+                        "dashboard-raffle-winner",
+                        `Gagnant : ${winner}`
+                    )
+                );
+            }
 
             const status =
                 createElement(
