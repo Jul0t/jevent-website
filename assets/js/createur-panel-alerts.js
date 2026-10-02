@@ -185,16 +185,20 @@
                 .toLowerCase();
 
         const aliases = {
-            all: "any",
-            always: "any",
-            any_amount: "any",
+            all: "all",
+            any: "all",
+            always: "all",
+            any_amount: "all",
 
+            minimum: "minimum",
             at_least: "minimum",
             minimum_amount: "minimum",
 
+            exact: "exact",
             exact_amount: "exact",
             amount_exact: "exact",
 
+            range: "range",
             between: "range",
             amount_range: "range"
         };
@@ -202,7 +206,7 @@
         return (
             aliases[normalized] ||
             normalized ||
-            "any"
+            "all"
         );
     }
 
@@ -291,7 +295,7 @@
         const type =
             rule.conditionType ||
             rule.condition ||
-            "any";
+            "all";
 
         const minimum =
             Number(
@@ -651,7 +655,7 @@
 
         if (elements.ruleCondition) {
             elements.ruleCondition.value =
-                "any";
+                "all";
         }
 
         if (elements.minimum) {
@@ -729,7 +733,7 @@
             elements.ruleCondition.value =
                 rule.conditionType ||
                 rule.condition ||
-                "any";
+                "all";
 
             elements.minimum.value =
                 centsToEuros(
@@ -1373,54 +1377,27 @@
         rule,
         variant
     ) {
-        const editor =
-            window
-                .JEventDonationAlertEditor;
+        const parameters =
+            new URLSearchParams({
+                creatorId:
+                    String(currentCreatorId()),
 
-        if (!editor?.open) {
-            setMessage(
-                "L’éditeur visuel n’est pas encore chargé.",
-                "error"
-            );
+                rule:
+                    rule.publicId,
 
-            return;
-        }
+                variant:
+                    variant.publicId
+            });
 
-        editor.open({
-            rule,
-            variant,
-            editorSettings:
-                state.editorSettings,
-
-            creatorId:
-                currentCreatorId(),
-
-            apiFetch,
-
-            reload:
-                async () => {
-                    await loadRules();
-
-                    const updatedRule =
-                        getRuleByPublicId(
-                            rule.publicId
-                        );
-
-                    if (updatedRule) {
-                        renderVariants(
-                            updatedRule
-                        );
-                    }
-                }
-        });
+        window.location.href =
+            `/overlay-editor.html?${parameters.toString()}`;
     }
 
     function testRule(rule) {
         const variants =
             getVariants(rule).filter(
                 variant =>
-                    variant.enabled !==
-                    false
+                    variant.enabled !== false
             );
 
         if (variants.length === 0) {
@@ -1431,35 +1408,25 @@
             return;
         }
 
-        const variant =
-            variants[
-            Math.floor(
-                Math.random() *
-                variants.length
-            )
-            ];
+        let variant = variants[0];
+
+        if (
+            rule.selectionMode ===
+            "random"
+        ) {
+            variant =
+                variants[
+                Math.floor(
+                    Math.random() *
+                    variants.length
+                )
+                ];
+        }
 
         openVariantEditor(
             rule,
-            variant
-        );
-
-        window.setTimeout(
-            () => {
-                window
-                    .JEventDonationAlertEditor
-                    ?.preview?.({
-                        donorName:
-                            "Jean Dupont",
-
-                        amount:
-                            "10,00 €",
-
-                        message:
-                            "Bravo pour l’événement !"
-                    });
-            },
-            150
+            variant,
+            true
         );
     }
 

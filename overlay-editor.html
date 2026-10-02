@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
+
+  <title>Éditeur d’overlay — JEvent 26</title>
+
+  <link
+    rel="icon"
+    href="/assets/jevent_logo.png"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/overlay-editor.css?v=1"
+  >
+
+  <script
+    src="/assets/js/overlay-editor.js?v=1"
+    defer
+  ></script>
+</head>
+
+<body class="overlay-editor-page">
+
+  <!-- Chargement -->
+  <main
+    id="editorLoading"
+    class="editor-state editor-loading-state"
+  >
+    <div class="editor-state-card">
+      <div
+        class="editor-loader"
+        aria-hidden="true"
+      ></div>
+
+      <strong>
+        Chargement de l’éditeur…
+      </strong>
+
+      <span>
+        Préparation de l’overlay et de ses médias.
+      </span>
+    </div>
+  </main>
+
+  <!-- Erreur -->
+  <main
+    id="editorError"
+    class="editor-state editor-error-state"
+    hidden
+  >
+    <div class="editor-state-card">
+      <div
+        class="editor-error-icon"
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M12 9v4"
+          ></path>
+
+          <path
+            d="M12 17h.01"
+          ></path>
+
+          <path
+            d="M10.3 3.8 2.2 18a2 2 0 0 0 1.7 3h16.2a2 2 0 0 0 1.7-3L13.7 3.8a2 2 0 0 0-3.4 0Z"
+          ></path>
+        </svg>
+      </div>
+
+      <h1>
+        Impossible d’ouvrir l’éditeur
+      </h1>
+
+      <p id="editorErrorMessage">
+        Une erreur est survenue.
+      </p>
+
+      <a
+        id="editorErrorBackLink"
+        class="editor-primary-button"
+        href="/createur-panel.html"
+      >
+        Retour au tableau de bord
+      </a>
+    </div>
+  </main>
+
+  <!-- Application -->
+  <div
+    id="overlayEditorApplication"
+    class="overlay-editor-application"
+    hidden
+  >
+
+    <!-- Barre supérieure -->
+    <header class="editor-topbar">
+
+      <div class="editor-topbar-left">
+        <a
+          id="editorBackLink"
+          class="editor-icon-button editor-back-button"
+          href="/createur-panel.html"
+          title="Retour au tableau de bord"
+          aria-label="Retour au tableau de bord"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+        </a>
+
+        <img
+          class="editor-logo"
+          src="/assets/jevent_logo.png"
+          alt=""
+        >
+
+        <div class="editor-document-information">
+          <span class="editor-document-type">
+            Alerte de don
+          </span>
+
+          <strong id="editorVariantNameTop">
+            Animation
+          </strong>
+        </div>
+      </div>
+
+      <div class="editor-topbar-center">
+        <button
+          id="undoEditorButton"
+          class="editor-icon-button"
+          type="button"
+          title="Annuler"
+          aria-label="Annuler"
+          disabled
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M9 7 4 12l5 5"></path>
+            <path d="M20 17a8 8 0 0 0-13-5"></path>
+          </svg>
+        </button>
+
+        <button
+          id="redoEditorButton"
+          class="editor-icon-button"
+          type="button"
+          title="Rétablir"
+          aria-label="Rétablir"
+          disabled
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m15 7 5 5-5 5"></path>
+            <path d="M4 17a8 8 0 0 1 13-5"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="editor-topbar-right">
+        <span
+          id="editorSaveState"
+          class="editor-save-state"
+        >
+          Aucun changement
+        </span>
+
+        <button
+          id="testEditorButton"
+          class="editor-secondary-button"
+          type="button"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m8 5 11 7-11 7Z"></path>
+          </svg>
+
+          Tester
+        </button>
+
+        <button
+          id="saveEditorButton"
+          class="editor-primary-button"
+          type="button"
+        >
+          Enregistrer
+        </button>
+      </div>
+    </header>
+
+    <div class="editor-main-layout">
+
+      <!-- Colonne gauche -->
+      <aside class="editor-left-sidebar">
+
+        <nav
+          class="editor-sidebar-tabs"
+          aria-label="Outils de l’éditeur"
+        >
+          <button
+            class="editor-sidebar-tab is-active"
+            type="button"
+            data-editor-sidebar-tab="layers"
+            aria-label="Calques"
+            title="Calques"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m12 2 9 5-9 5-9-5Z"></path>
+              <path d="m3 12 9 5 9-5"></path>
+              <path d="m3 17 9 5 9-5"></path>
+            </svg>
+
+            <span>Calques</span>
+          </button>
+
+          <button
+            class="editor-sidebar-tab"
+            type="button"
+            data-editor-sidebar-tab="media"
+            aria-label="Médias"
+            title="Médias"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect
+                x="3"
+                y="3"
+                width="18"
+                height="18"
+                rx="3"
+              ></rect>
+
+              <circle
+                cx="8.5"
+                cy="8.5"
+                r="1.5"
+              ></circle>
+
+              <path d="m21 15-5-5L5 21"></path>
+            </svg>
+
+            <span>Médias</span>
+          </button>
+
+          <button
+            class="editor-sidebar-tab"
+            type="button"
+            data-editor-sidebar-tab="settings"
+            aria-label="Réglages"
+            title="Réglages"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              ></circle>
+
+              <path
+                d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"
+              ></path>
+            </svg>
+
+            <span>Réglages</span>
+          </button>
+        </nav>
+
+        <div class="editor-sidebar-content">
+
+          <!-- Calques -->
+          <section
+            class="editor-sidebar-panel"
+            data-editor-sidebar-content="layers"
+          >
+            <div class="editor-panel-heading">
+              <div>
+                <span class="editor-eyebrow">
+                  Composition
+                </span>
+
+                <h2>Calques</h2>
+              </div>
+
+              <button
+                id="addEditorTextButton"
+                class="editor-small-icon-button"
+                type="button"
+                title="Ajouter un texte"
+                aria-label="Ajouter un texte"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 5v14"></path>
+                  <path d="M5 12h14"></path>
+                </svg>
+              </button>
+            </div>
+
+            <p class="editor-panel-description">
+              Un calque vidéo et jusqu’à trois textes.
+            </p>
+
+            <div
+              id="editorLayersList"
+              class="editor-layers-list"
+            ></div>
+
+            <div
+              id="editorLayersEmpty"
+              class="editor-empty-panel"
+              hidden
+            >
+              Aucun calque disponible.
+            </div>
+
+            <button
+              id="addEditorTextLargeButton"
+              class="editor-outline-button editor-full-button"
+              type="button"
+            >
+              Ajouter un texte
+            </button>
+          </section>
+
+          <!-- Médias -->
+          <section
+            class="editor-sidebar-panel"
+            data-editor-sidebar-content="media"
+            hidden
+          >
+            <div class="editor-panel-heading">
+              <div>
+                <span class="editor-eyebrow">
+                  Fichiers
+                </span>
+
+                <h2>Médias</h2>
+              </div>
+            </div>
+
+            <div class="editor-media-section">
+              <div class="editor-media-heading">
+                <div>
+                  <strong>Vidéo</strong>
+
+                  <span>
+                    Une vidéo maximum
+                  </span>
+                </div>
+              </div>
+
+              <div
+                id="editorVideoMedia"
+                class="editor-media-preview"
+              >
+                <div class="editor-media-placeholder">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect
+                      x="3"
+                      y="5"
+                      width="14"
+                      height="14"
+                      rx="2"
+                    ></rect>
+
+                    <path d="m17 10 4-2v8l-4-2Z"></path>
+                  </svg>
+
+                  <span>
+                    Aucune vidéo
+                  </span>
+                </div>
+              </div>
+
+              <input
+                id="editorVideoFile"
+                type="file"
+                accept="video/mp4,video/webm"
+                hidden
+              >
+
+              <div class="editor-media-actions">
+                <button
+                  id="selectEditorVideoButton"
+                  class="editor-secondary-button editor-full-button"
+                  type="button"
+                >
+                  Choisir une vidéo
+                </button>
+
+                <button
+                  id="removeEditorVideoButton"
+                  class="editor-danger-text-button"
+                  type="button"
+                  hidden
+                >
+                  Retirer la vidéo
+                </button>
+              </div>
+            </div>
+
+            <div class="editor-media-section">
+              <div class="editor-media-heading">
+                <div>
+                  <strong>Son</strong>
+
+                  <span>
+                    Joué avec l’animation
+                  </span>
+                </div>
+              </div>
+
+              <div
+                id="editorSoundMedia"
+                class="editor-sound-file"
+              >
+                Aucun son sélectionné
+              </div>
+
+              <input
+                id="editorSoundFile"
+                type="file"
+                accept="audio/mpeg,audio/ogg,audio/wav,audio/webm"
+                hidden
+              >
+
+              <div class="editor-media-actions">
+                <button
+                  id="selectEditorSoundButton"
+                  class="editor-secondary-button editor-full-button"
+                  type="button"
+                >
+                  Choisir un son
+                </button>
+
+                <button
+                  id="removeEditorSoundButton"
+                  class="editor-danger-text-button"
+                  type="button"
+                  hidden
+                >
+                  Retirer le son
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Réglages -->
+          <section
+            class="editor-sidebar-panel"
+            data-editor-sidebar-content="settings"
+            hidden
+          >
+            <div class="editor-panel-heading">
+              <div>
+                <span class="editor-eyebrow">
+                  Animation
+                </span>
+
+                <h2>Réglages</h2>
+              </div>
+            </div>
+
+            <label class="editor-field">
+              <span>Nom de l’animation</span>
+
+              <input
+                id="editorVariantName"
+                type="text"
+                maxlength="100"
+                autocomplete="off"
+              >
+            </label>
+
+            <label class="editor-field">
+              <span>Poids de sélection</span>
+
+              <input
+                id="editorVariantWeight"
+                type="number"
+                min="1"
+                max="1000"
+                step="1"
+                value="1"
+              >
+
+              <small>
+                Utilisé lorsqu’une règle possède plusieurs animations.
+              </small>
+            </label>
+
+            <label class="editor-switch-field">
+              <span>
+                <strong>Animation activée</strong>
+
+                <small>
+                  Une animation désactivée ne sera jamais affichée.
+                </small>
+              </span>
+
+              <input
+                id="editorVariantEnabled"
+                type="checkbox"
+                checked
+              >
+            </label>
+
+            <div class="editor-field-group">
+              <span class="editor-field-group-title">
+                Résolution
+              </span>
+
+              <div class="editor-inline-fields">
+                <label class="editor-field">
+                  <span>Largeur</span>
+
+                  <input
+                    id="editorCanvasWidth"
+                    type="number"
+                    value="1920"
+                    readonly
+                  >
+                </label>
+
+                <label class="editor-field">
+                  <span>Hauteur</span>
+
+                  <input
+                    id="editorCanvasHeight"
+                    type="number"
+                    value="1080"
+                    readonly
+                  >
+                </label>
+              </div>
+            </div>
+
+            <label class="editor-field">
+              <span>Durée totale</span>
+
+              <div class="editor-unit-input">
+                <input
+                  id="editorTotalDuration"
+                  type="number"
+                  min="500"
+                  max="60000"
+                  step="100"
+                  value="5000"
+                >
+
+                <span>ms</span>
+              </div>
+            </label>
+          </section>
+
+        </div>
+      </aside>
+
+      <!-- Zone centrale -->
+      <main class="editor-workspace">
+
+        <div class="editor-workspace-toolbar">
+          <div class="editor-toolbar-group">
+            <strong id="editorResolutionLabel">
+              1920 × 1080
+            </strong>
+
+            <span class="editor-toolbar-separator"></span>
+
+            <button
+              id="toggleEditorGridButton"
+              class="editor-toolbar-button is-active"
+              type="button"
+              aria-pressed="true"
+            >
+              Grille
+            </button>
+
+            <button
+              id="toggleEditorSafeAreaButton"
+              class="editor-toolbar-button"
+              type="button"
+              aria-pressed="false"
+            >
+              Zone sûre
+            </button>
+          </div>
+
+          <div class="editor-toolbar-group editor-zoom-controls">
+            <button
+              id="zoomOutEditorButton"
+              class="editor-icon-button"
+              type="button"
+              aria-label="Réduire le zoom"
+              title="Réduire le zoom"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <path d="M5 12h14"></path>
+              </svg>
+            </button>
+
+            <input
+              id="editorZoomInput"
+              type="range"
+              min="10"
+              max="100"
+              step="5"
+              value="50"
+              aria-label="Zoom"
+            >
+
+            <span id="editorZoomValue">
+              50 %
+            </span>
+
+            <button
+              id="zoomInEditorButton"
+              class="editor-icon-button"
+              type="button"
+              aria-label="Augmenter le zoom"
+              title="Augmenter le zoom"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+              </svg>
+            </button>
+
+            <button
+              id="fitEditorCanvasButton"
+              class="editor-toolbar-button"
+              type="button"
+            >
+              Adapter
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="editorViewport"
+          class="editor-viewport"
+        >
+          <div
+            id="editorStage"
+            class="editor-stage"
+          >
+            <div
+              id="editorCanvas"
+              class="editor-canvas"
+            >
+              <div
+                id="editorGrid"
+                class="editor-grid"
+                aria-hidden="true"
+              ></div>
+
+              <div
+                id="editorSafeArea"
+                class="editor-safe-area"
+                aria-hidden="true"
+                hidden
+              ></div>
+
+              <!-- Vidéo -->
+              <div
+                id="editorVideoLayer"
+                class="editor-layer editor-video-layer"
+                data-layer-id="video"
+                data-layer-type="video"
+                tabindex="0"
+                hidden
+              >
+                <video
+                  id="editorVideoPreview"
+                  muted
+                  playsinline
+                  preload="metadata"
+                ></video>
+
+                <div
+                  id="editorVideoPlaceholder"
+                  class="editor-video-placeholder"
+                >
+                  Vidéo
+                </div>
+              </div>
+
+              <!-- Les textes seront ajoutés ici -->
+              <div
+                id="editorTextLayers"
+                class="editor-text-layers"
+              ></div>
+
+              <!-- Sélection -->
+              <div
+                id="editorSelectionBox"
+                class="editor-selection-box"
+                hidden
+              >
+                <button
+                  class="editor-resize-handle is-north-west"
+                  type="button"
+                  data-resize-handle="nw"
+                  aria-label="Redimensionner"
+                ></button>
+
+                <button
+                  class="editor-resize-handle is-north"
+                  type="button"
+                  data-resize-handle="n"
+                  aria-label="Redimensionner"
+                ></button>
+
+                <button
+                  class="editor-resize-handle is-north-east"
+                  type="button"
+                  data-resize-handle="ne"
+                  aria-label="Redimensionner"
+                ></button>
+
+                <button
+                  class="editor-resize-handle is-east"
+                  type="button"
+                  data-resize-handle="e"
+                  aria-label="Redimensionner"
+                ></button>
+
+                <button
+                  class="editor-resize-handle is-south-east"
+                  type="button"
+                  data-resize-handle="se"
+                  aria-label="Redimensionner"
+                ></button>
+
+                <button
+                  class="editor-resize-handle is-south"
+                  type="button"
+                  data-resize-handle="s"
+                  aria-label="Redimensionner"
+                ></button>
+
+                <button
+                  class="editor-resize-handle is-south-west"
+                  type="button"
+                  data-resize-handle="sw"
+                  aria-label="Redimensionner"
+                ></button>
+
+                <button
+                  class="editor-resize-handle is-west"
+                  type="button"
+                  data-resize-handle="w"
+                  aria-label="Redimensionner"
+                ></button>
+
+                <button
+                  id="editorRotateHandle"
+                  class="editor-rotate-handle"
+                  type="button"
+                  aria-label="Faire pivoter"
+                >
+                  <span></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chronologie -->
+        <section
+          id="editorTimeline"
+          class="editor-timeline"
+        >
+          <div class="editor-timeline-toolbar">
+            <button
+              id="replayEditorButton"
+              class="editor-icon-button"
+              type="button"
+              title="Rejouer"
+              aria-label="Rejouer"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 12a9 9 0 1 0 3-6.7"></path>
+                <path d="M3 4v6h6"></path>
+              </svg>
+            </button>
+
+            <strong>Chronologie</strong>
+
+            <span id="editorTimelineDuration">
+              5,0 s
+            </span>
+          </div>
+
+          <div class="editor-timeline-content">
+            <div
+              id="editorTimelineRuler"
+              class="editor-timeline-ruler"
+            ></div>
+
+            <div
+              id="editorTimelineRows"
+              class="editor-timeline-rows"
+            ></div>
+
+            <div
+              id="editorPlayhead"
+              class="editor-playhead"
+              aria-hidden="true"
+            ></div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Propriétés -->
+      <aside class="editor-properties-sidebar">
+
+        <div
+          id="editorNoSelection"
+          class="editor-no-selection"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m4 4 7 17 2-8 8-2Z"></path>
+            <path d="m13 13 6 6"></path>
+          </svg>
+
+          <strong>
+            Aucun élément sélectionné
+          </strong>
+
+          <span>
+            Clique sur un texte ou une vidéo pour afficher ses propriétés.
+          </span>
+        </div>
+
+        <div
+          id="editorProperties"
+          class="editor-properties"
+          hidden
+        >
+          <div class="editor-properties-heading">
+            <div>
+              <span id="selectedLayerType">
+                Texte
+              </span>
+
+              <strong id="selectedLayerName">
+                Texte
+              </strong>
+            </div>
+
+            <div class="editor-properties-actions">
+              <button
+                id="duplicateLayerButton"
+                class="editor-icon-button"
+                type="button"
+                title="Dupliquer"
+                aria-label="Dupliquer"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect
+                    x="8"
+                    y="8"
+                    width="12"
+                    height="12"
+                    rx="2"
+                  ></rect>
+
+                  <path
+                    d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"
+                  ></path>
+                </svg>
+              </button>
+
+              <button
+                id="deleteLayerButton"
+                class="editor-icon-button is-danger"
+                type="button"
+                title="Supprimer"
+                aria-label="Supprimer"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 6h18"></path>
+                  <path d="M8 6V4h8v2"></path>
+                  <path d="m19 6-1 14H6L5 6"></path>
+                  <path d="M10 11v5"></path>
+                  <path d="M14 11v5"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Général -->
+          <section class="editor-properties-section">
+            <h3>Général</h3>
+
+            <div class="editor-switches-row">
+              <label class="editor-compact-switch">
+                <input
+                  id="layerVisible"
+                  type="checkbox"
+                  checked
+                >
+
+                <span>Visible</span>
+              </label>
+
+              <label class="editor-compact-switch">
+                <input
+                  id="layerLocked"
+                  type="checkbox"
+                >
+
+                <span>Verrouillé</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- Transformation -->
+          <section class="editor-properties-section">
+            <h3>Transformation</h3>
+
+            <div class="editor-properties-grid">
+              <label class="editor-field">
+                <span>X</span>
+
+                <input
+                  id="layerX"
+                  type="number"
+                  step="1"
+                >
+              </label>
+
+              <label class="editor-field">
+                <span>Y</span>
+
+                <input
+                  id="layerY"
+                  type="number"
+                  step="1"
+                >
+              </label>
+
+              <label class="editor-field">
+                <span>Largeur</span>
+
+                <input
+                  id="layerWidth"
+                  type="number"
+                  min="1"
+                  step="1"
+                >
+              </label>
+
+              <label class="editor-field">
+                <span>Hauteur</span>
+
+                <input
+                  id="layerHeight"
+                  type="number"
+                  min="1"
+                  step="1"
+                >
+              </label>
+
+              <label class="editor-field">
+                <span>Rotation</span>
+
+                <div class="editor-unit-input">
+                  <input
+                    id="layerRotation"
+                    type="number"
+                    min="-360"
+                    max="360"
+                    step="1"
+                  >
+
+                  <span>°</span>
+                </div>
+              </label>
+
+              <label class="editor-field">
+                <span>Calque</span>
+
+                <input
+                  id="layerZIndex"
+                  type="number"
+                  min="1"
+                  max="100"
+                  step="1"
+                >
+              </label>
+            </div>
+
+            <label class="editor-range-field">
+              <span>
+                <strong>Opacité</strong>
+
+                <output id="layerOpacityValue">
+                  100 %
+                </output>
+              </span>
+
+              <input
+                id="layerOpacity"
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                value="100"
+              >
+            </label>
+          </section>
+
+          <!-- Texte -->
+          <section
+            id="textLayerProperties"
+            class="editor-properties-section"
+          >
+            <h3>Texte</h3>
+
+            <label class="editor-field">
+              <span>Nom du calque</span>
+
+              <input
+                id="textLayerName"
+                type="text"
+                maxlength="50"
+              >
+            </label>
+
+            <label class="editor-field">
+              <span>Contenu</span>
+
+              <textarea
+                id="textTemplate"
+                rows="4"
+                maxlength="500"
+              ></textarea>
+            </label>
+
+            <div class="editor-variables">
+              <span>Insérer une variable</span>
+
+              <div class="editor-variable-buttons">
+                <button
+                  type="button"
+                  data-editor-variable="{name}"
+                >
+                  Nom
+                </button>
+
+                <button
+                  type="button"
+                  data-editor-variable="{amount}"
+                >
+                  Montant
+                </button>
+
+                <button
+                  type="button"
+                  data-editor-variable="{message}"
+                >
+                  Message
+                </button>
+
+                <button
+                  type="button"
+                  data-editor-variable="{creator}"
+                >
+                  Créateur
+                </button>
+              </div>
+            </div>
+
+            <div class="editor-properties-grid">
+              <label class="editor-field">
+                <span>Police</span>
+
+                <select id="textFontFamily">
+                  <option value="Inter">
+                    Inter
+                  </option>
+
+                  <option value="Arial">
+                    Arial
+                  </option>
+
+                  <option value="Montserrat">
+                    Montserrat
+                  </option>
+
+                  <option value="Poppins">
+                    Poppins
+                  </option>
+
+                  <option value="Roboto">
+                    Roboto
+                  </option>
+                </select>
+              </label>
+
+              <label class="editor-field">
+                <span>Taille</span>
+
+                <div class="editor-unit-input">
+                  <input
+                    id="textFontSize"
+                    type="number"
+                    min="8"
+                    max="300"
+                    step="1"
+                  >
+
+                  <span>px</span>
+                </div>
+              </label>
+
+              <label class="editor-field">
+                <span>Épaisseur</span>
+
+                <select id="textFontWeight">
+                  <option value="400">
+                    Normal
+                  </option>
+
+                  <option value="500">
+                    Moyen
+                  </option>
+
+                  <option value="600">
+                    Semi-gras
+                  </option>
+
+                  <option value="700">
+                    Gras
+                  </option>
+
+                  <option value="800">
+                    Très gras
+                  </option>
+
+                  <option value="900">
+                    Noir
+                  </option>
+                </select>
+              </label>
+
+              <label class="editor-field">
+                <span>Alignement</span>
+
+                <select id="textAlign">
+                  <option value="left">
+                    Gauche
+                  </option>
+
+                  <option value="center">
+                    Centre
+                  </option>
+
+                  <option value="right">
+                    Droite
+                  </option>
+                </select>
+              </label>
+
+              <label class="editor-field">
+                <span>Interligne</span>
+
+                <input
+                  id="textLineHeight"
+                  type="number"
+                  min="0.7"
+                  max="3"
+                  step="0.1"
+                  value="1.1"
+                >
+              </label>
+            </div>
+
+            <div class="editor-color-field">
+              <label for="textColor">
+                Couleur
+              </label>
+
+              <div class="editor-color-input">
+                <input
+                  id="textColor"
+                  type="color"
+                  value="#ffffff"
+                >
+
+                <input
+                  id="textColorValue"
+                  type="text"
+                  value="#ffffff"
+                  maxlength="7"
+                >
+              </div>
+
+              <div class="editor-recommended-colors">
+                <button
+                  type="button"
+                  data-editor-color="#183d2d"
+                  style="--recommended-color: #183d2d"
+                  aria-label="Vert foncé"
+                  title="Vert foncé"
+                ></button>
+
+                <button
+                  type="button"
+                  data-editor-color="#55c685"
+                  style="--recommended-color: #55c685"
+                  aria-label="Vert clair"
+                  title="Vert clair"
+                ></button>
+
+                <button
+                  type="button"
+                  data-editor-color="#f1dfb3"
+                  style="--recommended-color: #f1dfb3"
+                  aria-label="Crème"
+                  title="Crème"
+                ></button>
+
+                <button
+                  type="button"
+                  data-editor-color="#ffffff"
+                  style="--recommended-color: #ffffff"
+                  aria-label="Blanc"
+                  title="Blanc"
+                ></button>
+              </div>
+            </div>
+
+            <label class="editor-switch-field">
+              <span>
+                <strong>Ombre du texte</strong>
+
+                <small>
+                  Améliore la lisibilité sur une vidéo.
+                </small>
+              </span>
+
+              <input
+                id="textShadowEnabled"
+                type="checkbox"
+              >
+            </label>
+          </section>
+
+          <!-- Vidéo -->
+          <section
+            id="videoLayerProperties"
+            class="editor-properties-section"
+            hidden
+          >
+            <h3>Vidéo</h3>
+
+            <label class="editor-field">
+              <span>Ajustement</span>
+
+              <select id="videoFit">
+                <option value="contain">
+                  Contenir
+                </option>
+
+                <option value="cover">
+                  Remplir
+                </option>
+
+                <option value="fill">
+                  Étirer
+                </option>
+              </select>
+            </label>
+
+            <label class="editor-switch-field">
+              <span>
+                <strong>Lecture en boucle</strong>
+
+                <small>
+                  Recommence la vidéo si l’alerte est plus longue.
+                </small>
+              </span>
+
+              <input
+                id="videoLoop"
+                type="checkbox"
+              >
+            </label>
+          </section>
+
+          <!-- Animation -->
+          <section class="editor-properties-section">
+            <h3>Animation et durée</h3>
+
+            <label class="editor-field">
+              <span>Animation d’entrée</span>
+
+              <select id="layerEnterAnimation">
+                <option value="none">
+                  Aucune
+                </option>
+
+                <option value="fade">
+                  Fondu
+                </option>
+
+                <option value="slide-up">
+                  Glissement vers le haut
+                </option>
+
+                <option value="slide-down">
+                  Glissement vers le bas
+                </option>
+
+                <option value="slide-left">
+                  Glissement vers la gauche
+                </option>
+
+                <option value="slide-right">
+                  Glissement vers la droite
+                </option>
+
+                <option value="scale">
+                  Agrandissement
+                </option>
+
+                <option value="bounce">
+                  Rebond
+                </option>
+              </select>
+            </label>
+
+            <label class="editor-field">
+              <span>Animation de sortie</span>
+
+              <select id="layerExitAnimation">
+                <option value="none">
+                  Aucune
+                </option>
+
+                <option value="fade">
+                  Fondu
+                </option>
+
+                <option value="slide-up">
+                  Glissement vers le haut
+                </option>
+
+                <option value="slide-down">
+                  Glissement vers le bas
+                </option>
+
+                <option value="scale">
+                  Réduction
+                </option>
+              </select>
+            </label>
+
+            <div class="editor-properties-grid">
+              <label class="editor-field">
+                <span>Délai</span>
+
+                <div class="editor-unit-input">
+                  <input
+                    id="layerDelayMs"
+                    type="number"
+                    min="0"
+                    max="60000"
+                    step="100"
+                  >
+
+                  <span>ms</span>
+                </div>
+              </label>
+
+              <label class="editor-field">
+                <span>Durée</span>
+
+                <div class="editor-unit-input">
+                  <input
+                    id="layerDurationMs"
+                    type="number"
+                    min="100"
+                    max="60000"
+                    step="100"
+                  >
+
+                  <span>ms</span>
+                </div>
+              </label>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Barre inférieure -->
+    <footer class="editor-statusbar">
+      <div>
+        <span id="editorSelectedLayerStatus">
+          Aucun calque sélectionné
+        </span>
+      </div>
+
+      <div>
+        <span id="editorPointerCoordinates">
+          X : — · Y : —
+        </span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Notifications -->
+  <div
+    id="editorToastRegion"
+    class="editor-toast-region"
+    aria-live="polite"
+    aria-atomic="true"
+  ></div>
+
+</body>
+</html>
