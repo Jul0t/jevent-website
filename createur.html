@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Créateur — JEvent 26</title>
-  <link rel="stylesheet" href="/assets/css/createur.css?v=3" />
+  <link rel="stylesheet" href="/assets/css/createur.css?v=4" />
 </head>
 
 <body>
@@ -149,6 +149,74 @@
                   </div>
                 </header>
                 <div id="liveInformation" class="information-list"></div>
+              </section>
+              <!-- Tombola publique -->
+              <section id="publicRaffleCard" class="content-card public-raffle-card" hidden>
+                <header class="card-heading">
+                  <div>
+                    <p class="eyebrow">
+                      Tombola
+                    </p>
+
+                    <h2 id="publicRaffleTitle">
+                      Tombola en cours
+                    </h2>
+                  </div>
+
+                  <span id="publicRaffleState" class="public-raffle-state">
+                    En cours
+                  </span>
+                </header>
+
+                <div class="public-raffle-content">
+                  <p id="publicRaffleDescription" class="public-raffle-description" hidden></p>
+
+                  <div class="public-raffle-countdown-box">
+                    <span id="publicRaffleCountdownLabel">
+                      Fin dans
+                    </span>
+
+                    <strong id="publicRaffleCountdown">
+                      00:00
+                    </strong>
+                  </div>
+
+                  <p id="publicRaffleMethod" class="public-raffle-method"></p>
+
+                  <div class="public-raffle-statistics">
+                    <div>
+                      <span>Participants</span>
+
+                      <strong id="publicRaffleParticipants">
+                        0
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>Tickets</span>
+
+                      <strong id="publicRaffleTickets">
+                        0
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>Montant</span>
+
+                      <strong id="publicRaffleAmount">
+                        0 €
+                      </strong>
+                    </div>
+                  </div>
+
+                  <div id="publicRaffleWinner" class="public-raffle-winner" hidden>
+                    <span>Gagnant</span>
+
+                    <strong id="publicRaffleWinnerName">
+                      Participant
+                    </strong>
+                  </div>
+                </div>
               </section>
               <!-- Cagnotte du créateur -->
               <section id="creatorFundraisingCard" class="content-card creator-fundraising-card" hidden>
@@ -393,7 +461,7 @@
   <script src="https://cdn.jsdelivr.net/npm/marked@18.0.12/lib/marked.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.15/dist/purify.min.js"></script>
   <script src="/assets/js/createur-calendar.js?v=2"></script>
-  <script src="/assets/js/createur.js?v=6"></script>
+  <script src="/assets/js/createur.js?v=7"></script>
 </body>
 
 </html>

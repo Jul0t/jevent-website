@@ -646,7 +646,7 @@ button {
     width: 100%;
     text-align: left;
   }
-  
+
   .creator-avatar {
     width: 112px;
     height: 112px;
@@ -1442,11 +1442,9 @@ iframe.twitch-player {
   border-color: var(--green);
 
   background:
-    linear-gradient(
-      145deg,
+    linear-gradient(145deg,
       rgba(0, 178, 55, 0.18),
-      rgba(0, 178, 55, 0.05)
-    );
+      rgba(0, 178, 55, 0.05));
 
   box-shadow:
     0 10px 28px rgba(0, 178, 55, 0.12);
@@ -1456,8 +1454,7 @@ iframe.twitch-player {
   transform: scale(1);
 }
 
-.day-filter-button.is-active
-.day-filter-weekday {
+.day-filter-button.is-active .day-filter-weekday {
   color: var(--green-light);
 }
 
@@ -1468,8 +1465,7 @@ iframe.twitch-player {
   color: var(--green-light);
 }
 
-.creator-filter-button.is-active
-.creator-filter-avatar {
+.creator-filter-button.is-active .creator-filter-avatar {
   border-color: var(--green);
 
   box-shadow:
@@ -1571,11 +1567,9 @@ iframe.twitch-player {
   overflow: hidden;
 
   background:
-    linear-gradient(
-      90deg,
+    linear-gradient(90deg,
       rgba(255, 255, 255, 0.012),
-      transparent 40%
-    );
+      transparent 40%);
 }
 
 .calendar-hour-label {
@@ -1630,11 +1624,9 @@ iframe.twitch-player {
   border-radius: 11px;
 
   background:
-    linear-gradient(
-      145deg,
+    linear-gradient(145deg,
       rgba(255, 255, 255, 0.11),
-      rgba(255, 255, 255, 0.045)
-    );
+      rgba(255, 255, 255, 0.045));
 
   color: var(--text);
 
@@ -1668,11 +1660,9 @@ iframe.twitch-player {
   border-left-color: var(--green);
 
   background:
-    linear-gradient(
-      145deg,
+    linear-gradient(145deg,
       rgba(0, 178, 55, 0.2),
-      rgba(0, 178, 55, 0.07)
-    );
+      rgba(0, 178, 55, 0.07));
 }
 
 .calendar-event.is-live {
@@ -1682,11 +1672,9 @@ iframe.twitch-player {
   border-left-color: var(--green-light);
 
   background:
-    linear-gradient(
-      145deg,
+    linear-gradient(145deg,
       rgba(0, 178, 55, 0.3),
-      rgba(0, 178, 55, 0.11)
-    );
+      rgba(0, 178, 55, 0.11));
 
   box-shadow:
     0 0 0 2px rgba(0, 178, 55, 0.1),
@@ -1803,14 +1791,12 @@ iframe.twitch-player {
   padding-block: 7px;
 }
 
-.calendar-event.is-compact
-.calendar-event-avatar {
+.calendar-event.is-compact .calendar-event-avatar {
   width: 20px;
   height: 20px;
 }
 
-.calendar-event.is-compact
-.calendar-event-title {
+.calendar-event.is-compact .calendar-event-title {
   margin-top: 4px;
 
   overflow: hidden;
@@ -1822,8 +1808,7 @@ iframe.twitch-player {
   line-clamp: 1;
 }
 
-.calendar-event.is-compact
-.calendar-event-condition {
+.calendar-event.is-compact .calendar-event-condition {
   display: none;
 }
 
@@ -1855,11 +1840,9 @@ iframe.twitch-player {
     rgba(0, 178, 55, 0.3);
 
   background:
-    radial-gradient(
-      circle at 100% 0,
+    radial-gradient(circle at 100% 0,
       rgba(0, 178, 55, 0.14),
-      transparent 16rem
-    ),
+      transparent 16rem),
     rgba(14, 26, 18, 0.96);
 }
 
@@ -1885,11 +1868,9 @@ iframe.twitch-player {
 
   color: var(--green2);
 
-  font-size: clamp(
-    2rem,
-    4vw,
-    2.8rem
-  );
+  font-size: clamp(2rem,
+      4vw,
+      2.8rem);
 
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
@@ -1924,10 +1905,8 @@ iframe.twitch-player {
   grid-template-columns:
     auto minmax(0, 1fr) auto;
 
-  width: min(
-    1180px,
-    calc(100% - 32px)
-  );
+  width: min(1180px,
+      calc(100% - 32px));
 
   margin-inline: auto;
   padding-block: 34px;
@@ -1950,7 +1929,7 @@ iframe.twitch-player {
   object-fit: contain;
 }
 
-.footer-brand > div {
+.footer-brand>div {
   display: grid;
 }
 
@@ -2029,5 +2008,231 @@ iframe.twitch-player {
 
   .footer-navigation {
     gap: 12px 18px;
+  }
+}
+
+/* =========================================================
+   Tombola publique
+   ========================================================= */
+
+.public-raffle-card {
+  overflow: hidden;
+
+  border-color:
+    rgba(243, 201, 105, 0.32);
+
+  background:
+    radial-gradient(circle at 100% 0,
+      rgba(243, 201, 105, 0.13),
+      transparent 15rem),
+    var(--surface);
+}
+
+.public-raffle-card.is-active {
+  border-color:
+    rgba(66, 232, 117, 0.38);
+
+  background:
+    radial-gradient(circle at 100% 0,
+      rgba(66, 232, 117, 0.16),
+      transparent 15rem),
+    var(--surface);
+}
+
+.public-raffle-card.is-completed {
+  border-color:
+    rgba(66, 232, 117, 0.38);
+}
+
+.public-raffle-state {
+  display: inline-flex;
+  min-height: 27px;
+  padding: 6px 9px;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid rgba(243, 201, 105, 0.28);
+
+  border-radius: 999px;
+
+  background:
+    rgba(243, 201, 105, 0.1);
+
+  color: var(--gold);
+
+  font-size: 0.62rem;
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.is-active .public-raffle-state {
+  border-color:
+    rgba(66, 232, 117, 0.3);
+
+  background:
+    rgba(66, 232, 117, 0.1);
+
+  color: var(--green2);
+}
+
+.public-raffle-content {
+  display: grid;
+  padding: 20px;
+
+  gap: 15px;
+}
+
+.public-raffle-description {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.public-raffle-countdown-box {
+  display: grid;
+  padding: 16px;
+
+  gap: 5px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+}
+
+.public-raffle-countdown-box span {
+  color: var(--muted);
+
+  font-size: 0.65rem;
+  font-weight: 850;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#publicRaffleCountdown {
+  color: var(--text);
+
+  font-size:
+    clamp(1.6rem, 4vw, 2.3rem);
+
+  font-variant-numeric:
+    tabular-nums;
+
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.public-raffle-method {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.public-raffle-statistics {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  overflow: hidden;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 13px;
+}
+
+.public-raffle-statistics>div {
+  display: grid;
+  min-width: 0;
+  padding: 11px 8px;
+
+  gap: 4px;
+  text-align: center;
+}
+
+.public-raffle-statistics>div+div {
+  border-left:
+    1px solid var(--border);
+}
+
+.public-raffle-statistics span {
+  overflow: hidden;
+
+  color: var(--muted);
+
+  font-size: 0.57rem;
+  font-weight: 800;
+
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.public-raffle-statistics strong {
+  overflow: hidden;
+
+  color: var(--text);
+
+  font-size: 0.82rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.public-raffle-winner {
+  display: grid;
+  padding: 15px;
+
+  gap: 4px;
+
+  border:
+    1px solid rgba(66, 232, 117, 0.3);
+
+  border-radius: 13px;
+
+  background:
+    rgba(66, 232, 117, 0.09);
+}
+
+.public-raffle-winner span {
+  color: var(--muted);
+
+  font-size: 0.62rem;
+  font-weight: 850;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.public-raffle-winner strong {
+  color: var(--green2);
+
+  font-size: 1.15rem;
+}
+
+@media (max-width: 380px) {
+  .public-raffle-statistics {
+    grid-template-columns: 1fr;
+  }
+
+  .public-raffle-statistics>div+div {
+    border-top:
+      1px solid var(--border);
+
+    border-left: 0;
   }
 }

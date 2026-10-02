@@ -70,9 +70,24 @@
     cancelStreamlabsButton: $("#cancelStreamlabsButton"),
     saveStreamlabsButton: $("#saveStreamlabsButton"),
 
-    // TwitchPlayer
+    // Tombola
 
-    twitchPlayer: $("#twitchPlayer")
+    // Tombola publique
+    publicRaffleCard: $("#publicRaffleCard"),
+    publicRaffleTitle: $("#publicRaffleTitle"),
+    publicRaffleState: $("#publicRaffleState"),
+    publicRaffleDescription: $("#publicRaffleDescription"),
+    publicRaffleCountdownLabel: $("#publicRaffleCountdownLabel"),
+    publicRaffleCountdown: $("#publicRaffleCountdown"),
+    publicRaffleMethod: $("#publicRaffleMethod"),
+    publicRaffleParticipants: $("#publicRaffleParticipants"),
+    publicRaffleTickets: $("#publicRaffleTickets"),
+    publicRaffleAmount: $("#publicRaffleAmount"),
+    publicRaffleWinner: $("#publicRaffleWinner"),
+    publicRaffleWinnerName: $("#publicRaffleWinnerName"),
+
+    // TwitchPlayer
+    twitchPlayer: $("#twitchPlayer"),
   };
 
   let creator = null;
@@ -85,6 +100,11 @@
   let goalFormOrigin = "";
   let descFormOrigin = "";
   let creatorPanel = null;
+  let publicRaffle = null;
+
+  let publicRaffleClock = null;
+  let publicRaffleRefresh = null;
+  let raffleReloading = false;
 
   const painter = `P${"ath"}`; // garde-fou anti-linter inutile, ignoré
 
@@ -667,6 +687,309 @@
       `https://player.twitch.tv/?${parameters}`;
   }
 
+  function raffleMethodLabel(method) {
+    if (
+      method === "highest_donation" ||
+      method === "highest_amount" ||
+      method === "highest_donor"
+    ) {
+      return "Le participant ayant donné le plus gagne.";
+    }
+
+    return "Chaque euro donné offre un ticket.";
+  }
+
+  function formatRaffleCountdown(targetDate) {
+    const target =
+      Date.parse(targetDate);
+
+    if (!Number.isFinite(target)) {
+      return "—";
+    }
+
+    let seconds =
+      Math.max(
+        0,
+        Math.ceil(
+          (target - Date.now()) / 1000
+        )
+      );
+
+    const days =
+      Math.floor(seconds / 86400);
+
+    seconds %= 86400;
+
+    const hours =
+      Math.floor(seconds / 3600);
+
+    seconds %= 3600;
+
+    const minutes =
+      Math.floor(seconds / 60);
+
+    const remainingSeconds =
+      seconds % 60;
+
+    const pad = value =>
+      String(value).padStart(2, "0");
+
+    if (days > 0) {
+      return (
+        `${days} j ` +
+        `${pad(hours)}:` +
+        `${pad(minutes)}:` +
+        `${pad(remainingSeconds)}`
+      );
+    }
+
+    if (hours > 0) {
+      return (
+        `${pad(hours)}:` +
+        `${pad(minutes)}:` +
+        `${pad(remainingSeconds)}`
+      );
+    }
+
+    return (
+      `${pad(minutes)}:` +
+      `${pad(remainingSeconds)}`
+    );
+  }
+
+  function updatePublicRaffleCountdown() {
+    if (
+      !publicRaffle ||
+      !elements.publicRaffleCountdown
+    ) {
+      return;
+    }
+
+    if (
+      publicRaffle.phase === "scheduled"
+    ) {
+      elements.publicRaffleCountdown.textContent =
+        formatRaffleCountdown(
+          publicRaffle.startsAt
+        );
+
+      return;
+    }
+
+    if (
+      publicRaffle.phase === "active"
+    ) {
+      elements.publicRaffleCountdown.textContent =
+        formatRaffleCountdown(
+          publicRaffle.endsAt
+        );
+
+      return;
+    }
+
+    if (
+      publicRaffle.phase === "waiting_draw"
+    ) {
+      elements.publicRaffleCountdown.textContent =
+        "Tirage en cours";
+
+      return;
+    }
+
+    elements.publicRaffleCountdown.textContent =
+      "Terminée";
+  }
+
+  function renderPublicRaffle() {
+    const card =
+      elements.publicRaffleCard;
+
+    if (!card) {
+      return;
+    }
+
+    if (!publicRaffle) {
+      card.hidden = true;
+      return;
+    }
+
+    card.hidden = false;
+
+    card.classList.remove(
+      "is-scheduled",
+      "is-active",
+      "is-waiting",
+      "is-completed"
+    );
+
+    elements.publicRaffleTitle.textContent =
+      publicRaffle.title ||
+      "Tombola";
+
+    const description =
+      String(
+        publicRaffle.description || ""
+      ).trim();
+
+    elements.publicRaffleDescription.hidden =
+      !description;
+
+    elements.publicRaffleDescription.textContent =
+      description;
+
+    elements.publicRaffleMethod.textContent =
+      raffleMethodLabel(
+        publicRaffle.method
+      );
+
+    elements.publicRaffleParticipants.textContent =
+      fmtNumber(
+        publicRaffle.participantCount
+      );
+
+    elements.publicRaffleTickets.textContent =
+      fmtNumber(
+        publicRaffle.ticketCount
+      );
+
+    elements.publicRaffleAmount.textContent =
+      fmtMoney(
+        publicRaffle.amountCents,
+        publicRaffle.currency || "EUR"
+      );
+
+    elements.publicRaffleWinner.hidden = true;
+
+    switch (publicRaffle.phase) {
+      case "scheduled":
+        card.classList.add(
+          "is-scheduled"
+        );
+
+        elements.publicRaffleState.textContent =
+          "Prochainement";
+
+        elements.publicRaffleCountdownLabel.textContent =
+          "Démarre dans";
+
+        break;
+
+      case "active":
+        card.classList.add(
+          "is-active"
+        );
+
+        elements.publicRaffleState.textContent =
+          "En cours";
+
+        elements.publicRaffleCountdownLabel.textContent =
+          "Fin dans";
+
+        break;
+
+      case "waiting_draw":
+        card.classList.add(
+          "is-waiting"
+        );
+
+        elements.publicRaffleState.textContent =
+          "Tirage";
+
+        elements.publicRaffleCountdownLabel.textContent =
+          publicRaffle.drawMode ===
+            "automatic"
+            ? "Tirage automatique"
+            : "En attente du streamer";
+
+        break;
+
+      case "completed":
+        card.classList.add(
+          "is-completed"
+        );
+
+        elements.publicRaffleState.textContent =
+          "Terminée";
+
+        elements.publicRaffleCountdownLabel.textContent =
+          "Résultat";
+
+        if (publicRaffle.winner) {
+          elements.publicRaffleWinner.hidden =
+            false;
+
+          elements.publicRaffleWinnerName.textContent =
+            publicRaffle.winner.name ||
+            "Participant anonyme";
+        }
+
+        break;
+
+      default:
+        elements.publicRaffleState.textContent =
+          "Tombola";
+    }
+
+    updatePublicRaffleCountdown();
+  }
+
+  async function loadPublicRaffle() {
+    const slug =
+      creator?.slug ||
+      routeDescriptionId();
+
+    if (!slug || raffleReloading) {
+      return;
+    }
+
+    raffleReloading = true;
+
+    try {
+      const data =
+        await apiFetch(
+          `/api/raffles/creator/${encodeURIComponent(slug)
+          }`
+        );
+
+      publicRaffle =
+        data?.raffle ?? null;
+
+      renderPublicRaffle();
+    } catch (error) {
+      console.error(
+        "Impossible de charger la tombola :",
+        error
+      );
+
+      publicRaffle = null;
+      renderPublicRaffle();
+    } finally {
+      raffleReloading = false;
+    }
+  }
+
+  function startPublicRaffleUpdates() {
+    clearInterval(
+      publicRaffleClock
+    );
+
+    clearInterval(
+      publicRaffleRefresh
+    );
+
+    publicRaffleClock =
+      setInterval(
+        updatePublicRaffleCountdown,
+        1000
+      );
+
+    publicRaffleRefresh =
+      setInterval(
+        loadPublicRaffle,
+        5000
+      );
+  }
+
   function fillProfile() {
     if (!creator) return;
 
@@ -1237,9 +1560,13 @@
       );
     }
 
-    await reloadGoals();
+    await Promise.all([
+      reloadGoals(),
+      loadPublicRaffle()
+    ]);
 
     fillProfile();
+    startPublicRaffleUpdates();
 
     if (window.JEventCreatorCalendar) {
       await window.JEventCreatorCalendar.load({
