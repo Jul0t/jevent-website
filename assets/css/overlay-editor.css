@@ -2041,3 +2041,17 @@ body.is-editor-dragging * {
     max-width: 64px !important;
     max-height: 64px !important;
 }
+
+/* Taille du logo JEvent */
+#overlayEditorApplication img[src*="jevent"],
+#overlayEditorApplication img[src*="logo"],
+.overlay-editor-logo,
+.overlay-editor-brand img {
+    display: block;
+    width: 44px !important;
+    height: 44px !important;
+    max-width: 44px !important;
+    max-height: 44px !important;
+    object-fit: contain;
+    flex: 0 0 44px;
+}
