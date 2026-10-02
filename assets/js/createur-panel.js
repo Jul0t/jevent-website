@@ -4423,6 +4423,18 @@
         renderOverlays();
         renderTeam();
 
+        window.dispatchEvent(
+            new CustomEvent(
+                "jevent:creator-dashboard-ready",
+                {
+                    detail: {
+                        creatorId:
+                            currentCreatorId()
+                    }
+                }
+            )
+        );
+
         updateLastRefresh();
         checkReminders();
     }
@@ -4598,6 +4610,11 @@
             ).matches
         );
     }
+
+    window.JEventCreatorDashboard = {
+        apiFetch,
+        currentCreatorId
+    };
 
     function applyDashboardTheme(
         darkMode,

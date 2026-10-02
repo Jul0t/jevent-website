@@ -4273,3 +4273,1186 @@ html[data-dashboard-theme="dark"] .dashboard-spoiler-warning p {
     width: 100%;
   }
 }
+
+/* ==========================================================
+   ALERTES DE DONS
+   ========================================================== */
+
+#donationAlertDialog,
+#donationAlertEditorDialog {
+  --alert-green-dark: #173d2c;
+  --alert-green: #2f8f5b;
+  --alert-green-light: #62d38b;
+  --alert-cream: #f4f0e6;
+  --alert-danger: #d84f4f;
+
+  --alert-background:
+    var(--dashboard-background, #f4f7f4);
+
+  --alert-surface:
+    var(--dashboard-surface, #ffffff);
+
+  --alert-surface-soft:
+    var(--dashboard-surface-soft, #f3f7f4);
+
+  --alert-border:
+    var(--dashboard-border, #d9e3dc);
+
+  --alert-text:
+    var(--dashboard-text, #14241b);
+
+  --alert-muted:
+    var(--dashboard-muted, #68786e);
+
+  color: var(--alert-text);
+}
+
+#donationAlertDialog [hidden],
+#donationAlertEditorDialog [hidden],
+#donationAlertsEmpty[hidden],
+#donationAlertVariantsEmpty[hidden] {
+  display: none !important;
+}
+
+
+/* ==========================================================
+   LISTE DES RÈGLES
+   ========================================================== */
+
+#donationAlertsList {
+  display: grid;
+  gap: 14px;
+}
+
+#donationAlertsEmpty {
+  margin: 0;
+  padding: 24px;
+
+  text-align: center;
+  color: var(--dashboard-muted, #68786e);
+
+  border:
+    1px dashed var(--dashboard-border, #d9e3dc);
+
+  border-radius: 16px;
+
+  background:
+    var(--dashboard-surface-soft, #f3f7f4);
+}
+
+.donation-alert-rule-card {
+  display: grid;
+  gap: 16px;
+
+  padding: 18px;
+
+  border:
+    1px solid var(--dashboard-border, #d9e3dc);
+
+  border-radius: 18px;
+
+  background:
+    var(--dashboard-surface, #ffffff);
+
+  box-shadow:
+    0 8px 30px rgba(20, 45, 31, 0.05);
+
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+.donation-alert-rule-card:hover {
+  transform: translateY(-1px);
+
+  border-color:
+    rgba(47, 143, 91, 0.45);
+
+  box-shadow:
+    0 12px 34px rgba(20, 45, 31, 0.09);
+}
+
+.donation-alert-rule-card.is-disabled {
+  opacity: 0.66;
+}
+
+.donation-alert-rule-heading {
+  display: flex;
+  gap: 16px;
+
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.donation-alert-rule-title {
+  min-width: 0;
+}
+
+.donation-alert-rule-title h3 {
+  margin: 0;
+
+  font-size: 1.05rem;
+  line-height: 1.25;
+  color: inherit;
+}
+
+.donation-alert-rule-title p {
+  margin: 5px 0 0;
+
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--dashboard-muted, #68786e);
+}
+
+.donation-alert-rule-status {
+  display: inline-flex;
+  flex: 0 0 auto;
+
+  min-height: 28px;
+  padding: 5px 10px;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.donation-alert-rule-status.is-enabled {
+  color: #155b35;
+  background: rgba(98, 211, 139, 0.18);
+}
+
+.donation-alert-rule-status.is-disabled {
+  color: #69736d;
+  background: rgba(110, 120, 114, 0.14);
+}
+
+.donation-alert-rule-information {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.donation-alert-rule-information span {
+  display: inline-flex;
+  min-height: 30px;
+  padding: 6px 10px;
+
+  align-items: center;
+
+  border:
+    1px solid var(--dashboard-border, #d9e3dc);
+
+  border-radius: 999px;
+
+  background:
+    var(--dashboard-surface-soft, #f3f7f4);
+
+  color: var(--dashboard-muted, #68786e);
+
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.donation-alert-rule-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+
+  justify-content: flex-end;
+}
+
+
+/* ==========================================================
+   POPUP DE CONFIGURATION D’UNE RÈGLE
+   ========================================================== */
+
+#donationAlertDialog {
+  width: min(760px, calc(100vw - 28px));
+  max-height: calc(100dvh - 28px);
+  padding: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid var(--alert-border);
+
+  border-radius: 22px;
+
+  background: var(--alert-surface);
+  color: var(--alert-text);
+
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.28);
+}
+
+#donationAlertDialog::backdrop,
+#donationAlertEditorDialog::backdrop {
+  background:
+    rgba(4, 12, 8, 0.72);
+
+  backdrop-filter: blur(7px);
+}
+
+#donationAlertForm {
+  max-height: calc(100dvh - 28px);
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+#donationAlertForm>header,
+#donationAlertForm>footer {
+  flex: 0 0 auto;
+}
+
+#donationAlertForm>header {
+  padding: 20px 22px;
+
+  border-bottom:
+    1px solid var(--alert-border);
+}
+
+#donationAlertForm>footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  padding: 16px 22px;
+
+  align-items: center;
+  justify-content: flex-end;
+
+  border-top:
+    1px solid var(--alert-border);
+
+  background:
+    var(--alert-surface);
+}
+
+#donationAlertForm>main,
+#donationAlertForm>.dashboard-dialog-content,
+#donationAlertForm>.dialog-content {
+  min-height: 0;
+  padding: 20px 22px;
+
+  overflow-y: auto;
+}
+
+#donationAlertVariantsSection {
+  margin-top: 24px;
+  padding-top: 20px;
+
+  border-top:
+    1px solid var(--alert-border);
+}
+
+#donationAlertVariantsList {
+  display: grid;
+  gap: 10px;
+
+  margin-top: 12px;
+}
+
+#donationAlertVariantsEmpty {
+  margin: 12px 0 0;
+  padding: 18px;
+
+  text-align: center;
+
+  border:
+    1px dashed var(--alert-border);
+
+  border-radius: 14px;
+
+  background:
+    var(--alert-surface-soft);
+
+  color: var(--alert-muted);
+}
+
+.donation-alert-variant {
+  display: flex;
+  gap: 14px;
+
+  padding: 13px 14px;
+
+  align-items: center;
+  justify-content: space-between;
+
+  border:
+    1px solid var(--alert-border);
+
+  border-radius: 14px;
+
+  background:
+    var(--alert-surface-soft);
+}
+
+.donation-alert-variant-information {
+  display: grid;
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.donation-alert-variant-information strong {
+  overflow: hidden;
+
+  color: var(--alert-text);
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.donation-alert-variant-information span {
+  color: var(--alert-muted);
+  font-size: 0.78rem;
+}
+
+.donation-alert-variant-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+
+/* ==========================================================
+   ÉDITEUR VISUEL
+   ========================================================== */
+
+#donationAlertEditorDialog {
+  width: min(1580px, calc(100vw - 20px));
+  height: min(940px, calc(100dvh - 20px));
+  max-width: none;
+  max-height: none;
+  padding: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid var(--alert-border);
+
+  border-radius: 22px;
+
+  background: var(--alert-background);
+  color: var(--alert-text);
+
+  box-shadow:
+    0 30px 100px rgba(0, 0, 0, 0.38);
+}
+
+#donationAlertEditorForm {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+
+  display: grid;
+  grid-template-rows:
+    auto minmax(0, 1fr) auto;
+
+  overflow: hidden;
+}
+
+
+/* En-tête et barre d’outils */
+
+.donation-alert-editor-header {
+  display: flex;
+  gap: 18px;
+
+  padding: 14px 18px;
+
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom:
+    1px solid var(--alert-border);
+
+  background:
+    var(--alert-surface);
+}
+
+.donation-alert-editor-heading {
+  min-width: 0;
+}
+
+.donation-alert-editor-heading h2 {
+  margin: 0;
+
+  font-size: 1.1rem;
+  line-height: 1.25;
+}
+
+.donation-alert-editor-heading p {
+  margin: 4px 0 0;
+
+  color: var(--alert-muted);
+  font-size: 0.78rem;
+}
+
+.donation-alert-editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.donation-alert-editor-zoom {
+  display: flex;
+  gap: 8px;
+
+  align-items: center;
+}
+
+.donation-alert-editor-zoom label {
+  color: var(--alert-muted);
+
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+#donationAlertEditorZoom {
+  width: 110px;
+}
+
+
+/* Disposition en trois colonnes */
+
+.donation-alert-editor-workspace,
+.donation-alert-editor-layout {
+  min-height: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(210px, 250px) minmax(420px, 1fr) minmax(270px, 330px);
+
+  overflow: hidden;
+}
+
+.donation-alert-editor-sidebar,
+.donation-alert-layers-panel,
+.donation-alert-properties-panel {
+  min-width: 0;
+  min-height: 0;
+
+  overflow-y: auto;
+
+  background:
+    var(--alert-surface);
+}
+
+.donation-alert-editor-sidebar,
+.donation-alert-layers-panel {
+  border-right:
+    1px solid var(--alert-border);
+}
+
+.donation-alert-properties-panel {
+  border-left:
+    1px solid var(--alert-border);
+}
+
+.donation-alert-editor-panel-section {
+  display: grid;
+  gap: 13px;
+
+  padding: 17px;
+}
+
+.donation-alert-editor-panel-section+.donation-alert-editor-panel-section {
+  border-top:
+    1px solid var(--alert-border);
+}
+
+.donation-alert-editor-panel-title {
+  display: flex;
+  gap: 10px;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.donation-alert-editor-panel-title h3 {
+  margin: 0;
+
+  font-size: 0.84rem;
+  letter-spacing: 0.02em;
+}
+
+#donationAlertSelectedLayerName {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* Liste des calques */
+
+#donationAlertLayersList {
+  display: grid;
+  gap: 7px;
+}
+
+.donation-alert-layer-row {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr) auto;
+
+  gap: 6px;
+
+  padding: 5px;
+
+  border:
+    1px solid var(--alert-border);
+
+  border-radius: 11px;
+
+  background:
+    var(--alert-surface-soft);
+
+  transition:
+    border-color 150ms ease,
+    background 150ms ease;
+}
+
+.donation-alert-layer-row.is-selected {
+  border-color:
+    var(--alert-green);
+
+  background:
+    rgba(98, 211, 139, 0.12);
+}
+
+.donation-alert-layer-select {
+  min-width: 0;
+  padding: 8px 9px;
+
+  overflow: hidden;
+
+  border: 0;
+  background: transparent;
+  color: var(--alert-text);
+
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+
+.donation-alert-layer-controls {
+  display: flex;
+  gap: 3px;
+}
+
+.donation-alert-layer-controls button {
+  width: 31px;
+  height: 31px;
+  padding: 0;
+
+  border:
+    1px solid var(--alert-border);
+
+  border-radius: 8px;
+
+  background:
+    var(--alert-surface);
+
+  color: var(--alert-text);
+
+  cursor: pointer;
+}
+
+.donation-alert-layer-controls button:hover {
+  border-color:
+    var(--alert-green);
+
+  color: var(--alert-green);
+}
+
+
+/* ==========================================================
+   ZONE DU CANVAS
+   ========================================================== */
+
+.donation-alert-stage-panel,
+.donation-alert-editor-stage {
+  min-width: 0;
+  min-height: 0;
+
+  display: flex;
+
+  padding: 20px;
+
+  align-items: flex-start;
+  justify-content: center;
+
+  overflow: auto;
+
+  background:
+    radial-gradient(circle at center,
+      rgba(98, 211, 139, 0.08),
+      transparent 48%),
+    var(--alert-background);
+}
+
+.donation-alert-canvas-wrapper,
+.donation-alert-canvas-scroll {
+  width: 100%;
+  min-width: 520px;
+
+  display: flex;
+
+  padding: 18px;
+
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#donationAlertCanvas {
+  --editor-zoom: 1;
+
+  position: relative;
+
+  width: min(100%, 960px);
+  aspect-ratio: 16 / 9;
+
+  flex: 0 0 auto;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.15);
+
+  border-radius: 13px;
+
+  background-color: #101713;
+
+  background-image:
+    linear-gradient(45deg,
+      rgba(255, 255, 255, 0.025) 25%,
+      transparent 25%),
+    linear-gradient(-45deg,
+      rgba(255, 255, 255, 0.025) 25%,
+      transparent 25%),
+    linear-gradient(45deg,
+      transparent 75%,
+      rgba(255, 255, 255, 0.025) 75%),
+    linear-gradient(-45deg,
+      transparent 75%,
+      rgba(255, 255, 255, 0.025) 75%);
+
+  background-size: 30px 30px;
+  background-position:
+    0 0,
+    0 15px,
+    15px -15px,
+    -15px 0;
+
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.28);
+
+  container-type: size;
+
+  zoom: var(--editor-zoom);
+}
+
+#donationAlertVideoLayer {
+  position: absolute;
+
+  display: grid;
+
+  place-items: center;
+
+  overflow: hidden;
+
+  border:
+    1px dashed rgba(255, 255, 255, 0.18);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  cursor: grab;
+  user-select: none;
+
+  transform-origin: center;
+}
+
+#donationAlertVideoLayer:active,
+.donation-alert-canvas-text:active {
+  cursor: grabbing;
+}
+
+#donationAlertVideoPreview {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  pointer-events: none;
+}
+
+#donationAlertVideoPlaceholder {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+
+  place-items: center;
+
+  color:
+    rgba(255, 255, 255, 0.48);
+
+  text-align: center;
+
+  font-size: 0.85rem;
+  font-weight: 700;
+
+  pointer-events: none;
+}
+
+#donationAlertCanvasTexts {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+}
+
+.donation-alert-canvas-text {
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+  padding: 8px;
+
+  overflow: hidden;
+
+  line-height: 1.12;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+
+  text-shadow:
+    0 3px 14px rgba(0, 0, 0, 0.55);
+
+  cursor: grab;
+  user-select: none;
+
+  transform-origin: center;
+
+  pointer-events: auto;
+}
+
+#donationAlertVideoLayer.is-selected,
+.donation-alert-canvas-text.is-selected {
+  outline:
+    3px solid var(--alert-green-light);
+
+  outline-offset: -3px;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(10, 30, 19, 0.65);
+}
+
+#donationAlertVideoLayer.is-selected::after,
+.donation-alert-canvas-text.is-selected::after {
+  content: "";
+
+  position: absolute;
+  inset: 5px;
+
+  border:
+    1px dashed rgba(255, 255, 255, 0.65);
+
+  border-radius: 4px;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   PROPRIÉTÉS
+   ========================================================== */
+
+#donationAlertVideoProperties,
+#donationAlertTextProperties,
+#donationAlertCommonProperties {
+  display: grid;
+  gap: 13px;
+}
+
+.donation-alert-properties-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+.donation-alert-property {
+  display: grid;
+  gap: 6px;
+
+  min-width: 0;
+}
+
+.donation-alert-property.is-full {
+  grid-column: 1 / -1;
+}
+
+.donation-alert-property label {
+  color: var(--alert-muted);
+
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+#donationAlertEditorDialog input,
+#donationAlertEditorDialog select,
+#donationAlertEditorDialog textarea {
+  width: 100%;
+  min-width: 0;
+
+  border:
+    1px solid var(--alert-border);
+
+  border-radius: 10px;
+
+  background:
+    var(--alert-surface-soft);
+
+  color: var(--alert-text);
+
+  font: inherit;
+}
+
+#donationAlertEditorDialog input,
+#donationAlertEditorDialog select {
+  min-height: 40px;
+  padding: 8px 10px;
+}
+
+#donationAlertEditorDialog textarea {
+  min-height: 92px;
+  padding: 10px;
+
+  resize: vertical;
+}
+
+#donationAlertEditorDialog input:focus,
+#donationAlertEditorDialog select:focus,
+#donationAlertEditorDialog textarea:focus {
+  outline:
+    3px solid rgba(98, 211, 139, 0.18);
+
+  border-color:
+    var(--alert-green);
+}
+
+#donationAlertLayerVisible,
+#donationAlertVariantEnabled {
+  width: 18px !important;
+  min-height: 18px !important;
+  margin: 0;
+
+  accent-color:
+    var(--alert-green);
+}
+
+#donationAlertTextColors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.donation-alert-color-button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+
+  border:
+    3px solid var(--alert-surface);
+
+  border-radius: 50%;
+
+  outline:
+    1px solid var(--alert-border);
+
+  background:
+    var(--alert-color);
+
+  cursor: pointer;
+
+  transition:
+    scale 150ms ease,
+    outline-color 150ms ease;
+}
+
+.donation-alert-color-button:hover {
+  scale: 1.1;
+
+  outline-color:
+    var(--alert-green);
+}
+
+
+/* Médias */
+
+#donationAlertSoundPreview {
+  width: 100%;
+  max-width: 100%;
+  min-height: 42px;
+}
+
+.donation-alert-media-field {
+  display: grid;
+  gap: 9px;
+
+  padding: 12px;
+
+  border:
+    1px solid var(--alert-border);
+
+  border-radius: 13px;
+
+  background:
+    var(--alert-surface-soft);
+}
+
+
+/* ==========================================================
+   PIED DE LA POPUP
+   ========================================================== */
+
+.donation-alert-editor-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  padding: 13px 18px;
+
+  align-items: center;
+  justify-content: flex-end;
+
+  border-top:
+    1px solid var(--alert-border);
+
+  background:
+    var(--alert-surface);
+}
+
+#donationAlertEditorMessage {
+  margin-right: auto;
+}
+
+#donationAlertEditorMessage:empty {
+  display: none;
+}
+
+
+/* ==========================================================
+   MODE SOMBRE
+   ========================================================== */
+
+html[data-theme="dark"] #donationAlertDialog,
+html[data-theme="dark"] #donationAlertEditorDialog,
+body[data-theme="dark"] #donationAlertDialog,
+body[data-theme="dark"] #donationAlertEditorDialog,
+body.is-dark #donationAlertDialog,
+body.is-dark #donationAlertEditorDialog {
+  --alert-background: #07110b;
+  --alert-surface: #0d1a12;
+  --alert-surface-soft: #122219;
+  --alert-border: #263a2d;
+  --alert-text: #f0f6f2;
+  --alert-muted: #9bad9f;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 1180px) {
+
+  .donation-alert-editor-workspace,
+  .donation-alert-editor-layout {
+    grid-template-columns:
+      210px minmax(380px, 1fr) 270px;
+  }
+
+  .donation-alert-editor-panel-section {
+    padding: 14px;
+  }
+
+  .donation-alert-stage-panel,
+  .donation-alert-editor-stage {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 920px) {
+  #donationAlertEditorDialog {
+    width: calc(100vw - 10px);
+    height: calc(100dvh - 10px);
+
+    border-radius: 15px;
+  }
+
+  .donation-alert-editor-workspace,
+  .donation-alert-editor-layout {
+    grid-template-columns:
+      minmax(170px, 210px) minmax(440px, 1fr);
+
+    overflow-x: auto;
+  }
+
+  .donation-alert-properties-panel {
+    grid-column: 1 / -1;
+
+    max-height: 340px;
+
+    border-top:
+      1px solid var(--alert-border);
+
+    border-left: 0;
+  }
+
+  .donation-alert-properties-grid {
+    grid-template-columns:
+      repeat(4, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+
+  .donation-alert-rule-heading,
+  .donation-alert-variant {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .donation-alert-rule-status {
+    align-self: flex-start;
+  }
+
+  .donation-alert-rule-actions,
+  .donation-alert-variant-actions {
+    justify-content: stretch;
+  }
+
+  .donation-alert-rule-actions button,
+  .donation-alert-variant-actions button {
+    flex: 1;
+  }
+
+  #donationAlertDialog {
+    width: calc(100vw - 10px);
+    max-height: calc(100dvh - 10px);
+
+    border-radius: 15px;
+  }
+
+  .donation-alert-editor-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .donation-alert-editor-toolbar {
+    justify-content: flex-start;
+  }
+
+  .donation-alert-editor-workspace,
+  .donation-alert-editor-layout {
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto;
+  }
+
+  .donation-alert-editor-sidebar,
+  .donation-alert-layers-panel {
+    max-height: 250px;
+
+    border-right: 0;
+    border-bottom:
+      1px solid var(--alert-border);
+  }
+
+  .donation-alert-stage-panel,
+  .donation-alert-editor-stage {
+    min-height: 420px;
+  }
+
+  .donation-alert-properties-panel {
+    max-height: none;
+  }
+
+  .donation-alert-properties-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .donation-alert-editor-footer {
+    align-items: stretch;
+  }
+
+  #donationAlertEditorMessage {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 460px) {
+  .donation-alert-rule-card {
+    padding: 14px;
+  }
+
+  .donation-alert-rule-actions,
+  .donation-alert-variant-actions {
+    flex-direction: column;
+  }
+
+  .donation-alert-properties-grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .donation-alert-property.is-full {
+    grid-column: auto;
+  }
+
+  .donation-alert-editor-footer {
+    flex-direction: column;
+  }
+
+  .donation-alert-editor-footer button {
+    width: 100%;
+  }
+}
