@@ -44,6 +44,11 @@
             title: "Équipe"
         },
 
+        overlays: {
+            kicker: "Diffusion",
+            title: "Overlays"
+        },
+
         settings: {
             kicker: "Configuration",
             title: "Paramètres"
@@ -305,6 +310,15 @@
         drawRaffleButton:
             $("#drawRaffleButton"),
 
+        creatorOverlaysList:
+            $("#creatorOverlaysList"),
+
+        overlaysMessage:
+            $("#overlaysMessage"),
+
+        refreshOverlaysButton:
+            $("#refreshOverlaysButton"),
+
         themeToggleButton:
             $("#themeToggleButton"),
 
@@ -318,6 +332,7 @@
         creatorPanel: null,
 
         raffles: [],
+        overlays: [],
         raffleTimer: null,
         raffleDataTimer: null,
         raffleRefreshPending: false,
@@ -3872,6 +3887,505 @@
     }
 
     /* ======================================================
+   OVERLAYS
+   ====================================================== */
+
+    const OVERLAY_INFORMATION = {
+        raffle: {
+            title: "Tombola",
+            description:
+                "Affiche la tombola en cours, le chrono et le gagnant."
+        },
+
+        donations: {
+            title: "Alertes de dons",
+            description:
+                "Affiche les nouveaux dons reçus pendant le direct."
+        },
+
+        donation_bar: {
+            title: "Barre de dons",
+            description:
+                "Affiche la progression de la cagnotte de ta chaîne."
+        }
+    };
+
+    function setOverlaysMessage(
+        message = "",
+        type = ""
+    ) {
+        if (!elements.overlaysMessage) {
+            return;
+        }
+
+        elements.overlaysMessage.textContent =
+            message;
+
+        elements.overlaysMessage.className =
+            "dashboard-message";
+
+        if (type) {
+            elements.overlaysMessage
+                .classList.add(
+                    `is-${type}`
+                );
+        }
+
+        elements.overlaysMessage.hidden =
+            !message;
+    }
+
+    async function loadOverlays() {
+        const creatorId =
+            currentCreatorId();
+
+        const data =
+            await safeApiFetch(
+                (
+                    "/api/creator-panel/overlays" +
+                    `?creatorId=${encodeURIComponent(
+                        creatorId
+                    )}`
+                )
+            );
+
+        const overlays =
+            data?.overlays ??
+            data?.items ??
+            [];
+
+        state.overlays =
+            Array.isArray(overlays)
+                ? overlays
+                : [];
+    }
+
+    function createOverlayButton({
+        label,
+        action,
+        overlayType,
+        primary = false
+    }) {
+        const button =
+            document.createElement(
+                "button"
+            );
+
+        button.type = "button";
+
+        button.className =
+            primary
+                ? "dashboard-button dashboard-button-primary"
+                : "dashboard-button dashboard-button-secondary";
+
+        button.textContent =
+            label;
+
+        button.dataset.overlayAction =
+            action;
+
+        button.dataset.overlayType =
+            overlayType;
+
+        return button;
+    }
+
+    function renderOverlays() {
+        if (
+            !elements.creatorOverlaysList
+        ) {
+            return;
+        }
+
+        elements.creatorOverlaysList
+            .replaceChildren();
+
+        for (
+            const [
+                overlayType,
+                information
+            ] of Object.entries(
+                OVERLAY_INFORMATION
+            )
+        ) {
+            const overlay =
+                state.overlays.find(
+                    item =>
+                        item.overlayType ===
+                        overlayType
+                );
+
+            const card =
+                createElement(
+                    "article",
+                    "dashboard-overlay-card"
+                );
+
+            const heading =
+                createElement(
+                    "div",
+                    "dashboard-overlay-card-heading"
+                );
+
+            const titleWrapper =
+                createElement(
+                    "div"
+                );
+
+            const title =
+                createElement(
+                    "h3",
+                    "",
+                    information.title
+                );
+
+            const description =
+                createElement(
+                    "p",
+                    "",
+                    information.description
+                );
+
+            titleWrapper.append(
+                title,
+                description
+            );
+
+            const status =
+                createElement(
+                    "span",
+                    (
+                        "dashboard-overlay-status " +
+                        (
+                            overlay
+                                ? "is-configured"
+                                : "is-unconfigured"
+                        )
+                    ),
+                    overlay
+                        ? "Configuré"
+                        : "Non configuré"
+                );
+
+            heading.append(
+                titleWrapper,
+                status
+            );
+
+            card.append(heading);
+
+            if (!overlay) {
+                const empty =
+                    createElement(
+                        "div",
+                        "dashboard-overlay-empty"
+                    );
+
+                empty.append(
+                    createElement(
+                        "p",
+                        "",
+                        "Aucun lien n’a encore été généré."
+                    ),
+
+                    createOverlayButton({
+                        label:
+                            "Créer l’overlay",
+                        action:
+                            "create",
+                        overlayType,
+                        primary: true
+                    })
+                );
+
+                card.append(empty);
+            } else {
+                const urlWrapper =
+                    createElement(
+                        "div",
+                        "dashboard-overlay-url"
+                    );
+
+                const label =
+                    createElement(
+                        "label",
+                        "",
+                        "Lien OBS"
+                    );
+
+                const input =
+                    document.createElement(
+                        "input"
+                    );
+
+                input.type = "text";
+                input.readOnly = true;
+                input.value =
+                    overlay.url || "";
+
+                input.setAttribute(
+                    "aria-label",
+                    `Lien de l’overlay ${information.title}`
+                );
+
+                label.append(input);
+                urlWrapper.append(label);
+
+                const actions =
+                    createElement(
+                        "div",
+                        "dashboard-overlay-actions"
+                    );
+
+                actions.append(
+                    createOverlayButton({
+                        label:
+                            "Copier le lien",
+                        action:
+                            "copy",
+                        overlayType,
+                        primary: true
+                    }),
+
+                    createOverlayButton({
+                        label:
+                            "Ouvrir",
+                        action:
+                            "open",
+                        overlayType
+                    }),
+
+                    createOverlayButton({
+                        label:
+                            "Générer un nouveau lien",
+                        action:
+                            "rotate",
+                        overlayType
+                    })
+                );
+
+                card.append(
+                    urlWrapper,
+                    actions
+                );
+            }
+
+            elements.creatorOverlaysList
+                .append(card);
+        }
+    }
+
+    async function copyOverlayUrl(
+        overlay
+    ) {
+        if (!overlay?.url) {
+            throw new Error(
+                "Aucun lien à copier."
+            );
+        }
+
+        if (
+            navigator.clipboard?.writeText
+        ) {
+            await navigator.clipboard
+                .writeText(
+                    overlay.url
+                );
+
+            return;
+        }
+
+        const textarea =
+            document.createElement(
+                "textarea"
+            );
+
+        textarea.value =
+            overlay.url;
+
+        textarea.style.position =
+            "fixed";
+
+        textarea.style.opacity =
+            "0";
+
+        document.body.append(
+            textarea
+        );
+
+        textarea.select();
+
+        document.execCommand(
+            "copy"
+        );
+
+        textarea.remove();
+    }
+
+    async function createOverlay(
+        overlayType
+    ) {
+        const creatorId =
+            currentCreatorId();
+
+        await apiFetch(
+            (
+                "/api/creator-panel/overlays" +
+                `?creatorId=${encodeURIComponent(
+                    creatorId
+                )}`
+            ),
+            {
+                method: "POST",
+
+                body: JSON.stringify({
+                    overlayType
+                })
+            }
+        );
+
+        await loadOverlays();
+        renderOverlays();
+
+        setOverlaysMessage(
+            "L’overlay a été créé.",
+            "success"
+        );
+    }
+
+    async function rotateOverlay(
+        overlayType
+    ) {
+        const confirmed =
+            window.confirm(
+                "L’ancien lien cessera immédiatement de fonctionner. Continuer ?"
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        const creatorId =
+            currentCreatorId();
+
+        await apiFetch(
+            (
+                "/api/creator-panel/overlays/" +
+                encodeURIComponent(
+                    overlayType
+                ) +
+                "/rotate" +
+                `?creatorId=${encodeURIComponent(
+                    creatorId
+                )}`
+            ),
+            {
+                method: "POST"
+            }
+        );
+
+        await loadOverlays();
+        renderOverlays();
+
+        setOverlaysMessage(
+            "Un nouveau lien sécurisé a été généré.",
+            "success"
+        );
+    }
+
+    async function handleOverlayAction(
+        event
+    ) {
+        const button =
+            event.target.closest(
+                "[data-overlay-action]"
+            );
+
+        if (
+            !button ||
+            !elements.creatorOverlaysList
+                ?.contains(button)
+        ) {
+            return;
+        }
+
+        const action =
+            button.dataset.overlayAction;
+
+        const overlayType =
+            button.dataset.overlayType;
+
+        const overlay =
+            state.overlays.find(
+                item =>
+                    item.overlayType ===
+                    overlayType
+            );
+
+        button.disabled = true;
+
+        setOverlaysMessage();
+
+        try {
+            if (action === "create") {
+                await createOverlay(
+                    overlayType
+                );
+
+                return;
+            }
+
+            if (action === "copy") {
+                await copyOverlayUrl(
+                    overlay
+                );
+
+                setOverlaysMessage(
+                    "Lien copié dans le presse-papiers.",
+                    "success"
+                );
+
+                return;
+            }
+
+            if (action === "open") {
+                if (!overlay?.url) {
+                    throw new Error(
+                        "Aucun lien disponible."
+                    );
+                }
+
+                window.open(
+                    overlay.url,
+                    "_blank",
+                    "noopener,noreferrer"
+                );
+
+                return;
+            }
+
+            if (action === "rotate") {
+                await rotateOverlay(
+                    overlayType
+                );
+            }
+        } catch (error) {
+            console.error(
+                "Action overlay impossible :",
+                error
+            );
+
+            setOverlaysMessage(
+                error.message ||
+                "Impossible de gérer cet overlay.",
+                "error"
+            );
+        } finally {
+            button.disabled = false;
+        }
+    }
+
+    /* ======================================================
        ACTUALISATION
        ====================================================== */
 
@@ -3897,7 +4411,8 @@
             loadProgram(),
             loadInteractionQueue(),
             loadStatistics(),
-            loadRaffles()
+            loadRaffles(),
+            loadOverlays()
         ]);
 
         renderCreator();
@@ -3905,6 +4420,7 @@
         renderSchedule();
         renderInteractions();
         renderRaffle();
+        renderOverlays();
         renderTeam();
 
         updateLastRefresh();
@@ -4394,6 +4910,42 @@
             applyDashboardTheme(
                 elements.darkModeEnabled.checked
             );
+        }
+    );
+
+    onSafe(
+        elements.creatorOverlaysList,
+        "click",
+        handleOverlayAction
+    );
+
+    onSafe(
+        elements.refreshOverlaysButton,
+        "click",
+        async () => {
+            elements.refreshOverlaysButton
+                .disabled = true;
+
+            setOverlaysMessage();
+
+            try {
+                await loadOverlays();
+                renderOverlays();
+
+                setOverlaysMessage(
+                    "Overlays actualisés.",
+                    "success"
+                );
+            } catch (error) {
+                setOverlaysMessage(
+                    error.message ||
+                    "Impossible d’actualiser les overlays.",
+                    "error"
+                );
+            } finally {
+                elements.refreshOverlaysButton
+                    .disabled = false;
+            }
         }
     );
 

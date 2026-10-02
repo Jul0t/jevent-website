@@ -70,8 +70,6 @@
     cancelStreamlabsButton: $("#cancelStreamlabsButton"),
     saveStreamlabsButton: $("#saveStreamlabsButton"),
 
-    // Tombola
-
     // Tombola publique
     publicRaffleCard: $("#publicRaffleCard"),
     publicRaffleTitle: $("#publicRaffleTitle"),
