@@ -2206,3 +2206,52 @@ body.is-editor-dragging * {
             220px minmax(500px, 1fr) 270px !important;
     }
 }
+
+/* Correction définitive des icônes SVG géantes */
+
+#overlayEditorApplication svg {
+    display: block !important;
+
+    width: 20px !important;
+    height: 20px !important;
+
+    min-width: 20px !important;
+    min-height: 20px !important;
+
+    max-width: 20px !important;
+    max-height: 20px !important;
+
+    flex: 0 0 20px !important;
+}
+
+/* Onglets Calques, Médias et Paramètres */
+
+[data-editor-sidebar-tab] {
+    min-height: 42px !important;
+}
+
+[data-editor-sidebar-tab] svg {
+    width: 18px !important;
+    height: 18px !important;
+
+    min-width: 18px !important;
+    min-height: 18px !important;
+
+    max-width: 18px !important;
+    max-height: 18px !important;
+}
+
+/* Seule l’illustration vidéo peut être plus grande */
+
+#editorVideoPlaceholder svg {
+    width: 64px !important;
+    height: 64px !important;
+
+    min-width: 64px !important;
+    min-height: 64px !important;
+
+    max-width: 64px !important;
+    max-height: 64px !important;
+
+    flex-basis: 64px !important;
+}
