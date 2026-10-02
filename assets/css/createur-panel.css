@@ -5456,3 +5456,287 @@ body.is-dark #donationAlertEditorDialog {
     width: 100%;
   }
 }
+
+/* ==========================================================
+   CORRECTION DES ESPACEMENTS DES ALERTES
+   ========================================================== */
+
+#createDonationAlertButton {
+  display: flex;
+  width: max-content;
+  margin:
+    0
+    0
+    22px
+    auto;
+}
+
+#donationAlertsList,
+#donationAlertsEmpty {
+  margin-top: 22px;
+}
+
+#donationAlertsEmpty {
+  min-height: 220px;
+  padding: 32px;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Contenu principal de la popup */
+
+#donationAlertForm
+  > :is(
+    main,
+    .dialog-content,
+    .dashboard-dialog-content,
+    .dashboard-modal-content
+  ) {
+  display: grid;
+  gap: 20px;
+
+  padding: 24px;
+}
+
+
+/* Chaque groupe de formulaire */
+
+#donationAlertForm
+  :is(
+    .dashboard-field,
+    .dashboard-form-field,
+    .form-field,
+    .field,
+    .dialog-field
+  ) {
+  display: grid;
+  gap: 8px;
+
+  min-width: 0;
+  margin: 0;
+}
+
+
+/* Grilles de champs */
+
+#donationAlertForm
+  :is(
+    .dashboard-form-grid,
+    .form-grid,
+    .dialog-grid
+  ) {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+}
+
+
+/* Libellés */
+
+#donationAlertForm label {
+  display: block;
+  margin: 0;
+
+  color:
+    var(
+      --alert-text,
+      #f0f6f2
+    );
+
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+
+/* Champs */
+
+#donationAlertForm
+  :is(
+    input:not(
+
+[type="checkbox"]
+
+    ):not(
+
+[type="range"]
+
+    ),
+    select,
+    textarea
+  ) {
+  width: 100%;
+  min-height: 43px;
+  margin: 0;
+  padding: 10px 12px;
+
+  border:
+    1px solid
+    var(
+      --alert-border,
+      #263a2d
+    );
+
+  border-radius: 11px;
+
+  background:
+    var(
+      --alert-surface-soft,
+      #122219
+    );
+
+  color:
+    var(
+      --alert-text,
+      #f0f6f2
+    );
+}
+
+
+/* Aides sous les champs */
+
+#donationAlertForm
+  :is(
+    small,
+    .field-help,
+    .dashboard-field-help,
+    .form-help,
+    .field-description
+  ) {
+  display: block;
+  margin: 0;
+
+  color:
+    var(
+      --alert-muted,
+      #9bad9f
+    );
+
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+
+/* Suffixes comme “secondes” */
+
+#donationAlertForm
+  input[type="number"]
+  + span {
+  display: block;
+  margin-top: 2px;
+
+  color:
+    var(
+      --alert-muted,
+      #9bad9f
+    );
+
+  font-size: 0.76rem;
+}
+
+
+/* Volume */
+
+#donationAlertForm
+  input[type="range"] {
+  width: 100%;
+  margin: 8px 0 2px;
+}
+
+
+/* Checkbox “Alerte activée” */
+
+#donationAlertForm
+  :is(
+    .dashboard-checkbox,
+    .form-checkbox,
+    .switch-field
+  ) {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  gap: 16px;
+
+  padding-top: 18px;
+
+  align-items: center;
+
+  border-top:
+    1px solid
+    var(
+      --alert-border,
+      #263a2d
+    );
+}
+
+#donationAlertForm
+  input[type="checkbox"] {
+  width: 21px;
+  height: 21px;
+  margin: 0;
+
+  accent-color: #62d38b;
+}
+
+
+/* Espacement des variantes */
+
+#donationAlertVariantsSection {
+  display: grid;
+  gap: 14px;
+
+  margin-top: 8px;
+  padding-top: 22px;
+}
+
+#donationAlertVariantsList {
+  margin-top: 0;
+}
+
+
+/* Pied de popup */
+
+#donationAlertForm > footer {
+  gap: 12px;
+  padding: 16px 24px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 620px) {
+  #donationAlertForm
+    :is(
+      .dashboard-form-grid,
+      .form-grid,
+      .dialog-grid
+    ) {
+    grid-template-columns: 1fr;
+  }
+
+  #donationAlertForm
+    > :is(
+      main,
+      .dialog-content,
+      .dashboard-dialog-content,
+      .dashboard-modal-content
+    ) {
+    padding: 18px;
+  }
+
+  #createDonationAlertButton {
+    width: 100%;
+    margin-top: 16px;
+
+    justify-content: center;
+  }
+}

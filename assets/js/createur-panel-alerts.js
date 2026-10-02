@@ -153,18 +153,56 @@
     }
 
     function eurosToCents(value) {
-        const amount =
-            Number(
-                String(value || "0")
-                    .replace(",", ".")
-            );
+        const normalized =
+            String(value ?? "")
+                .trim()
+                .replace(/\s/g, "")
+                .replace(",", ".");
 
-        if (!Number.isFinite(amount)) {
-            return 0;
+        if (!normalized) {
+            return null;
+        }
+
+        const amount =
+            Number.parseFloat(normalized);
+
+        if (
+            !Number.isFinite(amount) ||
+            amount <= 0
+        ) {
+            return null;
         }
 
         return Math.round(
             amount * 100
+        );
+    }
+
+    function normalizeConditionType(value) {
+        const normalized =
+            String(value || "")
+                .trim()
+                .toLowerCase();
+
+        const aliases = {
+            all: "any",
+            always: "any",
+            any_amount: "any",
+
+            at_least: "minimum",
+            minimum_amount: "minimum",
+
+            exact_amount: "exact",
+            amount_exact: "exact",
+
+            between: "range",
+            amount_range: "range"
+        };
+
+        return (
+            aliases[normalized] ||
+            normalized ||
+            "any"
         );
     }
 
@@ -297,15 +335,15 @@
 
     function updateConditionFields() {
         const condition =
-            elements.ruleCondition
-                ?.value || "any";
+            normalizeConditionType(
+                elements.ruleCondition
+                    ?.value
+            );
 
         const usesMinimum =
-            [
-                "minimum",
-                "range",
-                "exact"
-            ].includes(condition);
+            condition === "minimum" ||
+            condition === "exact" ||
+            condition === "range";
 
         const usesMaximum =
             condition === "range";
@@ -320,9 +358,18 @@
                 !usesMaximum;
         }
 
+        if (elements.minimum) {
+            elements.minimum.required =
+                usesMinimum;
+        }
+
+        if (elements.maximum) {
+            elements.maximum.required =
+                usesMaximum;
+        }
+
         if (elements.minimumLabel) {
-            elements.minimumLabel
-                .textContent =
+            elements.minimumLabel.textContent =
                 condition === "exact"
                     ? "Montant exact"
                     : "Montant minimum";
@@ -753,15 +800,18 @@
 
     function buildRulePayload() {
         const conditionType =
-            elements.ruleCondition
-                ?.value || "any";
+            normalizeConditionType(
+                elements.ruleCondition
+                    ?.value
+            );
+
+        const needsAmount =
+            conditionType === "minimum" ||
+            conditionType === "exact" ||
+            conditionType === "range";
 
         const minimumCents =
-            [
-                "minimum",
-                "range",
-                "exact"
-            ].includes(conditionType)
+            needsAmount
                 ? eurosToCents(
                     elements.minimum?.value
                 )
@@ -781,8 +831,28 @@
 
             conditionType,
 
+            /*
+             * Plusieurs noms sont volontairement
+             * envoyés pour être compatibles avec
+             * les différentes conditions de l’API.
+             */
             minimumCents,
+            minimumAmountCents:
+                minimumCents,
+
             maximumCents,
+            maximumAmountCents:
+                maximumCents,
+
+            exactAmountCents:
+                conditionType === "exact"
+                    ? minimumCents
+                    : null,
+
+            amountCents:
+                conditionType === "exact"
+                    ? minimumCents
+                    : null,
 
             selectionMode:
                 elements.selectionMode
@@ -840,16 +910,27 @@
             return;
         }
 
+        const requiresMinimum =
+            payload.conditionType ===
+            "minimum" ||
+            payload.conditionType ===
+            "exact" ||
+            payload.conditionType ===
+            "range";
+
         if (
-            payload.conditionType !==
-                "any" &&
+            requiresMinimum &&
             (
-                !payload.minimumCents ||
-                payload.minimumCents < 1
+                !Number.isInteger(
+                    payload.minimumCents
+                ) ||
+                payload.minimumCents <= 0
             )
         ) {
             setMessage(
-                "Le montant doit être supérieur à zéro.",
+                payload.conditionType === "exact"
+                    ? "Indique un montant exact valide."
+                    : "Indique un montant minimum valide.",
                 "error"
             );
 
@@ -858,13 +939,17 @@
         }
 
         if (
-            payload.conditionType ===
-                "range" &&
-            payload.maximumCents <=
+            payload.conditionType === "range" &&
+            (
+                !Number.isInteger(
+                    payload.maximumCents
+                ) ||
+                payload.maximumCents <=
                 payload.minimumCents
+            )
         ) {
             setMessage(
-                "Le montant maximum doit être supérieur au minimum.",
+                "Le montant maximum doit être supérieur au montant minimum.",
                 "error"
             );
 
@@ -1067,10 +1152,9 @@
                         variant.enabled === false
                             ? "Désactivée"
                             : (
-                                `Poids : ${
-                                    Number(
-                                        variant.weight ?? 1
-                                    )
+                                `Poids : ${Number(
+                                    variant.weight ?? 1
+                                )
                                 }`
                             )
                     )
@@ -1349,10 +1433,10 @@
 
         const variant =
             variants[
-                Math.floor(
-                    Math.random() *
-                    variants.length
-                )
+            Math.floor(
+                Math.random() *
+                variants.length
+            )
             ];
 
         openVariantEditor(

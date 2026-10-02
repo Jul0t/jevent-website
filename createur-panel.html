@@ -12,7 +12,7 @@
 
   <link rel="icon" href="/assets/jevent_logo.png">
 
-  <link rel="stylesheet" href="/assets/css/createur-panel.css?v=6">
+  <link rel="stylesheet" href="/assets/css/createur-panel.css?v=7">
 </head>
 
 <body class="creator-dashboard-body">
@@ -889,21 +889,21 @@
           <label class="dashboard-field">
             <span>Condition</span>
 
-            <select id="donationAlertCondition">
-              <option value="default">
-                Alerte par défaut
-              </option>
-
-              <option value="exact">
-                Montant exact
+            <select id="donationAlertCondition" required>
+              <option value="any">
+                Tous les dons
               </option>
 
               <option value="minimum">
                 Montant minimum
               </option>
 
+              <option value="exact">
+                Montant exact
+              </option>
+
               <option value="range">
-                Tranche de montants
+                Fourchette de montants
               </option>
             </select>
           </label>
@@ -1765,7 +1765,7 @@
   </dialog>
 
   <script src="/assets/js/createur-panel.js?v=9" defer></script>
-  <script src="/assets/js/createur-panel-alerts.js?v=1" defer></script>
+  <script src="/assets/js/createur-panel-alerts.js?v=2" defer></script>
   <script src="/assets/js/createur-panel-alert-editor.js?v=1" defer></script>
 </body>
 
