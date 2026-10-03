@@ -630,8 +630,35 @@
                             <label class="editor-field">
                                 <span>Calque</span>
 
-                                <input id="layerZIndex" type="number" min="1" max="100" step="1">
+                                <input id="layerZIndex" type="number" min="0" max="100" step="1">
                             </label>
+                            <div class="editor-layer-actions">
+                                <button type="button" id="layerBringFrontButton">
+                                    Premier plan
+                                </button>
+
+                                <button type="button" id="layerMoveForwardButton">
+                                    Monter
+                                </button>
+
+                                <button type="button" id="layerMoveBackwardButton">
+                                    Descendre
+                                </button>
+
+                                <button type="button" id="layerSendBackButton">
+                                    Arrière-plan
+                                </button>
+                            </div>
+
+                            <div class="editor-layer-actions">
+                                <button type="button" id="centerLayerHorizontalButton">
+                                    Centrer horizontalement
+                                </button>
+
+                                <button type="button" id="centerLayerVerticalButton">
+                                    Centrer verticalement
+                                </button>
+                            </div>
                         </div>
 
                         <label class="editor-range-field">
@@ -686,6 +713,40 @@
                                 <button type="button" data-editor-variable="{creator}">
                                     Créateur
                                 </button>
+                            </div>
+                            <div class="editor-rich-colors">
+                                <span class="editor-rich-colors-title">
+                                    Colorer une partie du texte
+                                </span>
+
+                                <div class="editor-rich-color-buttons">
+                                    <button type="button" data-editor-rich-color="vert">
+                                        Vert foncé
+                                    </button>
+
+                                    <button type="button" data-editor-rich-color="vert-clair">
+                                        Vert clair
+                                    </button>
+
+                                    <button type="button" data-editor-rich-color="creme">
+                                        Crème
+                                    </button>
+
+                                    <button type="button" data-editor-rich-color="blanc">
+                                        Blanc
+                                    </button>
+                                </div>
+
+                                <small>
+                                    Sélectionne une partie du texte, puis choisis une couleur.
+                                </small>
+
+                                <small>
+                                    Exemple :
+                                    &lt;vert: {name}&gt;
+                                    &lt;blanc: donne&gt;
+                                    &lt;vert-clair: {amount}{unit}&gt;
+                                </small>
                             </div>
                         </div>
 

@@ -541,32 +541,53 @@
     }
 
     function totalDurationMs() {
-        const configured = numberValue(
-            state.layout?.durationMs,
-            6000
+        const configuredDuration = Math.max(
+            1000,
+            numberValue(
+                state.layout?.durationMs,
+                6000
+            )
         );
 
-        const textDuration =
-            state.layout?.texts?.reduce(
-                (maximum, layer) =>
-                    Math.max(
-                        maximum,
+        if (!state.layout) {
+            return configuredDuration;
+        }
+
+        const layers = [
+            state.layout.video,
+            ...(state.layout.texts ?? [])
+        ].filter(Boolean);
+
+        const latestLayerEnd =
+            layers.reduce(
+                (maximum, layer) => {
+                    const start = Math.max(
+                        0,
                         numberValue(
                             layer.delayMs,
                             0
-                        ) +
+                        )
+                    );
+
+                    const duration = Math.max(
+                        100,
                         numberValue(
                             layer.durationMs,
-                            5000
+                            configuredDuration
                         )
-                    ),
+                    );
+
+                    return Math.max(
+                        maximum,
+                        start + duration
+                    );
+                },
                 0
-            ) ?? 0;
+            );
 
         return Math.max(
-            1000,
-            configured,
-            textDuration
+            configuredDuration,
+            latestLayerEnd
         );
     }
 
@@ -584,14 +605,14 @@
 
             width: 1920,
             height: 1080,
+            aspectRatio: 16 / 9,
 
             rotation: 0,
             opacity: 1,
-            zIndex: 0,
+            zIndex: 1,
 
-            fit: "contain",
-            loop: false,
-            muted: true
+            delayMs: 0,
+            durationMs: 6000
         };
     }
 
@@ -801,6 +822,46 @@
             ...defaultVideoLayer(),
             ...(source.video || {})
         };
+
+        video.width = Math.max(
+            30,
+            numberValue(
+                video.width,
+                width
+            )
+        );
+
+        video.height = Math.max(
+            30,
+            numberValue(
+                video.height,
+                height
+            )
+        );
+
+        video.aspectRatio = Math.max(
+            0.01,
+            numberValue(
+                video.aspectRatio,
+                video.width / video.height
+            )
+        );
+
+        video.delayMs = Math.max(
+            0,
+            numberValue(
+                video.delayMs,
+                0
+            )
+        );
+
+        video.durationMs = Math.max(
+            100,
+            numberValue(
+                video.durationMs,
+                source.durationMs ?? 6000
+            )
+        );
 
         video.id = "video";
         video.type = "video";
