@@ -469,6 +469,7 @@
 
         previewAnimations: [],
         previewTimers: [],
+        previewPlaying: false,
         previewFrame: null,
         previewAudio: null
     };
