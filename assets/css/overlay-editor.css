@@ -2300,3 +2300,69 @@ body {
     flex: 0 0 18px;
     accent-color: var(--editor-accent);
 }
+
+#editorTimeline {
+    display: grid;
+    grid-template-rows:
+        42px minmax(0, 1fr);
+
+    overflow: hidden;
+}
+
+.editor-timeline-content {
+    position: relative;
+
+    display: grid;
+    min-width: 600px;
+    min-height: 0;
+
+    grid-template-rows:
+        26px minmax(0, 1fr);
+
+    overflow: hidden;
+    touch-action: none;
+}
+
+.editor-timeline-track,
+#editorTimelineRuler {
+    cursor: pointer;
+}
+
+.editor-timeline-bar {
+    overflow: visible;
+    cursor: pointer;
+}
+
+.editor-timeline-resize {
+    position: absolute;
+
+    top: -2px;
+    right: -5px;
+    bottom: -2px;
+
+    width: 10px;
+    min-width: 10px;
+    padding: 0;
+
+    border: 0;
+    border-radius: 4px;
+
+    background:
+        var(--editor-accent);
+
+    cursor: ew-resize;
+    touch-action: none;
+}
+
+.editor-timeline-resize:hover {
+    filter: brightness(1.2);
+}
+
+#editorPlayhead {
+    top: 0;
+    left: 170px;
+
+    margin-left: 0;
+
+    pointer-events: none;
+}

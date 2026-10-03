@@ -183,6 +183,9 @@
         timeline:
             $("#editorTimeline"),
 
+        timelineContent:
+            $(".editor-timeline-content"),
+
         timelineRuler:
             $("#editorTimelineRuler"),
 
@@ -458,6 +461,9 @@
 
         operation: null,
 
+        currentTimeMs: 0,
+        timelineScrubbing: false,
+
         history: [],
         future: [],
 
@@ -596,7 +602,7 @@
             {
                 name: "Nom et montant",
                 template:
-                    "{{donorName}} a donné {{amount}}",
+                    "{{donorName}} a donné {{amount}} {{unit}}",
                 y: 330,
                 fontSizePx: 82,
                 fontWeight: 800
@@ -1167,7 +1173,9 @@
         const values = {
             donorName: "Jean Dupont",
             name: "Jean Dupont",
-            amount: "10,00 €",
+            amount: "10.00",
+            unit: "€",
+            currency: "€",
             message:
                 "Merci pour cet événement !",
             creator:
@@ -1997,6 +2005,197 @@
         }
     }
 
+    function setPlayheadTime(
+        rawTime,
+        syncMedia = true
+    ) {
+        const duration =
+            totalDurationMs();
+
+        const time = clamp(
+            numberValue(rawTime, 0),
+            0,
+            duration
+        );
+
+        state.currentTimeMs = time;
+
+        if (
+            elements.playhead &&
+            elements.timelineContent
+        ) {
+            const availableWidth =
+                Math.max(
+                    1,
+                    elements.timelineContent
+                        .clientWidth - 170
+                );
+
+            elements.playhead.style.left =
+                `${170 +
+                time / duration *
+                availableWidth
+                }px`;
+        }
+
+        if (
+            syncMedia &&
+            elements.videoPreview &&
+            Number.isFinite(
+                elements.videoPreview.duration
+            )
+        ) {
+            try {
+                elements.videoPreview.currentTime =
+                    Math.min(
+                        time / 1000,
+                        elements.videoPreview.duration
+                    );
+            } catch {
+                // La vidéo n’est pas encore prête.
+            }
+        }
+    }
+
+    function seekTimeline(event) {
+        if (!elements.timelineContent) {
+            return;
+        }
+
+        const rect =
+            elements.timelineContent
+                .getBoundingClientRect();
+
+        const trackLeft =
+            rect.left + 170;
+
+        const trackWidth =
+            Math.max(
+                1,
+                rect.width - 170
+            );
+
+        const ratio = clamp(
+            (
+                event.clientX -
+                trackLeft
+            ) /
+            trackWidth,
+            0,
+            1
+        );
+
+        setPlayheadTime(
+            ratio * totalDurationMs()
+        );
+    }
+
+    function startTimelineResize(
+        event,
+        layer
+    ) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const track =
+            event.currentTarget.closest(
+                ".editor-timeline-track"
+            );
+
+        if (!track) {
+            return;
+        }
+
+        const startX =
+            event.clientX;
+
+        const trackWidth =
+            Math.max(
+                track.clientWidth,
+                1
+            );
+
+        const timelineDuration =
+            totalDurationMs();
+
+        const startDuration =
+            layer.type === "text"
+                ? numberValue(
+                    layer.durationMs,
+                    5000
+                )
+                : numberValue(
+                    state.layout.durationMs,
+                    6000
+                );
+
+        pushHistory();
+
+        const move = moveEvent => {
+            const difference =
+                (
+                    moveEvent.clientX -
+                    startX
+                ) /
+                trackWidth *
+                timelineDuration;
+
+            const duration = clamp(
+                Math.round(
+                    (
+                        startDuration +
+                        difference
+                    ) / 100
+                ) * 100,
+                100,
+                60000
+            );
+
+            if (layer.type === "text") {
+                layer.durationMs =
+                    duration;
+
+                state.layout.durationMs =
+                    Math.max(
+                        state.layout.durationMs,
+                        layer.delayMs +
+                        duration
+                    );
+            } else {
+                state.layout.durationMs =
+                    Math.max(
+                        1000,
+                        duration
+                    );
+            }
+
+            markDirty();
+            renderGeneralSettings();
+            renderTimeline();
+            renderProperties();
+        };
+
+        const stop = () => {
+            window.removeEventListener(
+                "pointermove",
+                move
+            );
+        };
+
+        window.addEventListener(
+            "pointermove",
+            move
+        );
+
+        window.addEventListener(
+            "pointerup",
+            stop,
+            {
+                once: true
+            }
+        );
+    }
+
     function renderTimeline() {
         if (!elements.timelineRows) {
             return;
@@ -2082,6 +2281,41 @@
                 100
                 }%`;
 
+            bar.addEventListener(
+                "click",
+                () => selectLayer(layer.id)
+            );
+
+            const resizeHandle =
+                document.createElement("button");
+
+            resizeHandle.type = "button";
+
+            resizeHandle.className =
+                "editor-timeline-resize";
+
+            resizeHandle.title =
+                "Modifier la durée";
+
+            resizeHandle.setAttribute(
+                "aria-label",
+                "Modifier la durée"
+            );
+
+            resizeHandle.addEventListener(
+                "pointerdown",
+                event => {
+                    startTimelineResize(
+                        event,
+                        layer
+                    );
+                }
+            );
+
+            bar.append(
+                resizeHandle
+            );
+
             track.append(bar);
 
             row.append(
@@ -2132,6 +2366,11 @@
                     duration / 1000
                 ).toFixed(1)} s`;
         }
+        setPlayheadTime(
+            state.currentTimeMs,
+            false
+        );
+
     }
 
     function renderGeneralSettings() {
@@ -2753,10 +2992,8 @@
         state.previewTimers = [];
         state.previewFrame = null;
 
-        if (elements.playhead) {
-            elements.playhead.style.left =
-                "0%";
-        }
+        setPlayheadTime(0);
+
     }
 
     function enterKeyframes(
@@ -2985,17 +3222,10 @@
             const elapsed =
                 now - startedAt;
 
-            const percentage =
-                clamp(
-                    elapsed / duration * 100,
-                    0,
-                    100
-                );
-
-            if (elements.playhead) {
-                elements.playhead.style.left =
-                    `${percentage}%`;
-            }
+            setPlayheadTime(
+                elapsed,
+                false
+            );
 
             if (elapsed < duration) {
                 state.previewFrame =
@@ -3077,6 +3307,64 @@
 
         state.videoObjectUrl =
             URL.createObjectURL(file);
+
+        const metadataVideo =
+            document.createElement(
+                "video"
+            );
+
+        metadataVideo.preload =
+            "metadata";
+
+        metadataVideo.src =
+            state.videoObjectUrl;
+
+        metadataVideo.addEventListener(
+            "loadedmetadata",
+            () => {
+                if (
+                    !Number.isFinite(
+                        metadataVideo.duration
+                    )
+                ) {
+                    return;
+                }
+
+                const duration =
+                    clamp(
+                        Math.round(
+                            metadataVideo.duration *
+                            1000
+                        ),
+                        1000,
+                        60000
+                    );
+
+                state.layout.durationMs =
+                    duration;
+
+                for (
+                    const text of
+                    state.layout.texts
+                ) {
+                    text.durationMs =
+                        Math.max(
+                            100,
+                            duration -
+                            numberValue(
+                                text.delayMs,
+                                0
+                            )
+                        );
+                }
+
+                markDirty();
+                renderEverything();
+            },
+            {
+                once: true
+            }
+        );
 
         markDirty();
         renderEverything();
@@ -3802,6 +4090,50 @@
                 "click",
                 preview
             );
+
+        elements.timelineContent
+            ?.addEventListener(
+                "pointerdown",
+                event => {
+                    if (
+                        event.target.closest(
+                            ".editor-timeline-label"
+                        ) ||
+                        event.target.closest(
+                            ".editor-timeline-resize"
+                        )
+                    ) {
+                        return;
+                    }
+
+                    clearPreview();
+                    renderCanvas();
+
+                    state.timelineScrubbing =
+                        true;
+
+                    seekTimeline(event);
+                }
+            );
+
+        window.addEventListener(
+            "pointermove",
+            event => {
+                if (
+                    state.timelineScrubbing
+                ) {
+                    seekTimeline(event);
+                }
+            }
+        );
+
+        window.addEventListener(
+            "pointerup",
+            () => {
+                state.timelineScrubbing =
+                    false;
+            }
+        );
 
         elements.saveButton
             ?.addEventListener(
