@@ -1576,39 +1576,52 @@ textarea:focus-visible {
     font-size: 10px !important;
 }
 
-[data-editor-color] {
-    position: relative;
-
-    width: 32px;
-    min-width: 32px;
-    min-height: 32px !important;
-    padding: 0 !important;
-
-    border:
-        3px solid rgba(255, 255, 255, 0.12) !important;
-
-    border-radius: 50% !important;
-
-    background:
-        var(--editor-color-preview,
-            var(--editor-accent)) !important;
-
-    font-size: 0;
+.editor-recommended-colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-[data-editor-color]::after {
-    content: "";
+.editor-recommended-colors [data-editor-color] {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    min-height: 38px !important;
+    padding: 0 !important;
 
-    position: absolute;
-    inset: 4px;
+    border: 3px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 50% !important;
 
-    border:
-        1px solid rgba(0, 0, 0, 0.3);
+    background: var(--recommended-color) !important;
 
-    border-radius: inherit;
+    box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, 0.35),
+        0 4px 10px rgba(0, 0, 0, 0.25);
 
-    background:
-        attr(data-editor-color color);
+    cursor: pointer;
+
+    transition:
+        transform 140ms ease,
+        border-color 140ms ease,
+        box-shadow 140ms ease;
+}
+
+.editor-recommended-colors [data-editor-color]::after {
+    display: none;
+}
+
+.editor-recommended-colors [data-editor-color]:hover {
+    transform: translateY(-2px) scale(1.05);
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.editor-recommended-colors [data-editor-color].is-active {
+    border-color: var(--editor-accent) !important;
+
+    box-shadow:
+        0 0 0 2px var(--editor-bg),
+        0 0 0 4px var(--editor-accent);
 }
 
 /* ==========================================================
@@ -2365,4 +2378,247 @@ body {
     margin-left: 0;
 
     pointer-events: none;
+}
+
+/* ==========================================================
+   ESPACEMENTS DES PROPRIÉTÉS
+   ========================================================== */
+
+#editorProperties {
+    padding: 18px;
+}
+
+.editor-properties-section {
+    padding: 17px;
+
+    border: 1px solid var(--editor-border);
+    border-radius: 12px;
+
+    background: rgba(7, 16, 11, 0.48);
+}
+
+.editor-properties-section+.editor-properties-section {
+    margin-top: 17px;
+}
+
+.editor-properties-section h3 {
+    margin: 0 0 16px;
+}
+
+.editor-properties-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.editor-field {
+    display: grid;
+    gap: 7px;
+}
+
+.editor-field+.editor-field {
+    margin-top: 14px;
+}
+
+.editor-properties-grid .editor-field+.editor-field {
+    margin-top: 0;
+}
+
+.editor-selected-layer-actions {
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.editor-selected-layer-actions button {
+    min-height: 40px;
+}
+
+.editor-variables {
+    display: grid;
+    gap: 9px;
+    margin: 16px 0;
+}
+
+.editor-variable-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+[data-editor-variable] {
+    min-height: 34px !important;
+    padding: 7px 10px !important;
+}
+
+
+/* ==========================================================
+   CHAMP DE COULEUR
+   ========================================================== */
+
+.editor-color-field {
+    display: grid;
+    gap: 10px;
+    margin-top: 17px;
+}
+
+.editor-color-input {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 10px;
+}
+
+#textColor {
+    width: 54px;
+    height: 42px;
+    padding: 3px;
+
+    border: 1px solid var(--editor-border);
+    border-radius: 8px;
+
+    background: var(--editor-panel);
+    cursor: pointer;
+}
+
+#textColorValue {
+    min-width: 0;
+}
+
+
+/* ==========================================================
+   SECTION MÉDIAS
+   ========================================================== */
+
+[data-editor-sidebar-content="media"] {
+    padding: 18px;
+}
+
+.editor-media-section {
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+
+    border: 1px solid var(--editor-border);
+    border-radius: 12px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(18, 33, 25, 0.92),
+            rgba(7, 16, 11, 0.92));
+
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+.editor-media-section+.editor-media-section {
+    margin-top: 16px;
+}
+
+.editor-media-heading>div {
+    display: grid;
+    gap: 3px;
+}
+
+.editor-media-heading strong {
+    color: var(--editor-text);
+    font-size: 14px;
+}
+
+.editor-media-heading span {
+    color: var(--editor-muted);
+    font-size: 11px;
+}
+
+.editor-media-preview {
+    min-height: 150px;
+    overflow: hidden;
+
+    border: 1px dashed var(--editor-border-strong);
+    border-radius: 10px;
+
+    background:
+        rgba(4, 10, 7, 0.62);
+}
+
+.editor-media-placeholder {
+    display: grid;
+    min-height: 150px;
+
+    align-content: center;
+    justify-items: center;
+    gap: 13px;
+
+    color: var(--editor-muted);
+    text-align: center;
+}
+
+.editor-media-placeholder svg {
+    width: 48px !important;
+    height: 48px !important;
+
+    color: var(--editor-accent);
+}
+
+.editor-media-preview video {
+    display: block;
+    width: 100%;
+    height: 150px;
+
+    object-fit: contain;
+    background: #030806;
+}
+
+.editor-sound-file {
+    padding: 14px;
+
+    overflow-wrap: anywhere;
+
+    border: 1px dashed var(--editor-border-strong);
+    border-radius: 9px;
+
+    background: rgba(4, 10, 7, 0.55);
+    color: var(--editor-muted);
+
+    font-size: 12px;
+    text-align: center;
+}
+
+.editor-media-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+}
+
+.editor-media-actions button {
+    width: 100%;
+    min-height: 42px;
+
+    border-radius: 8px;
+
+    font-weight: 750;
+}
+
+.editor-media-actions .editor-secondary-button {
+    border-color: rgba(89, 201, 135, 0.42);
+
+    background:
+        var(--editor-accent-soft);
+
+    color:
+        var(--editor-accent-hover);
+}
+
+.editor-media-actions .editor-secondary-button:hover {
+    border-color: var(--editor-accent);
+
+    background:
+        rgba(89, 201, 135, 0.2);
+}
+
+.editor-media-actions .editor-danger-text-button {
+    border-color: rgba(240, 113, 103, 0.35);
+
+    background:
+        var(--editor-danger-soft);
+
+    color:
+        var(--editor-danger);
 }

@@ -1953,6 +1953,20 @@
                 layer.color
             );
 
+            document
+                .querySelectorAll(
+                    "[data-editor-color]"
+                )
+                .forEach(button => {
+                    button.classList.toggle(
+                        "is-active",
+                        button.dataset.editorColor
+                            ?.toLowerCase() ===
+                        String(layer.color)
+                            .toLowerCase()
+                    );
+                });
+
             setValue(
                 elements.textAlign,
                 layer.textAlign
