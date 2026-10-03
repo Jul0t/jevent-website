@@ -427,7 +427,25 @@
             $("#layerDelayMs"),
 
         animationDuration:
-            $("#layerDurationMs")
+            $("#layerDurationMs"),
+
+        layerBringFrontButton:
+            $("#layerBringFrontButton"),
+
+        layerMoveForwardButton:
+            $("#layerMoveForwardButton"),
+
+        layerMoveBackwardButton:
+            $("#layerMoveBackwardButton"),
+
+        layerSendBackButton:
+            $("#layerSendBackButton"),
+
+        centerLayerHorizontalButton:
+            $("#centerLayerHorizontalButton"),
+
+        centerLayerVerticalButton:
+            $("#centerLayerVerticalButton")
     });
 
     const state = {
@@ -1764,6 +1782,196 @@
             : "Texte";
     }
 
+    function getOrderedLayers() {
+        return [
+            state.layout.video,
+            ...state.layout.texts
+        ]
+            .filter(Boolean)
+            .sort(
+                (first, second) =>
+                    Number(second.zIndex || 0) -
+                    Number(first.zIndex || 0)
+            );
+    }
+
+    function applyLayerOrder(layers) {
+        const maximumZIndex =
+            layers.length;
+
+        layers.forEach(
+            (layer, index) => {
+                layer.zIndex =
+                    maximumZIndex - index;
+            }
+        );
+    }
+
+    function changeSelectedLayerOrder(action) {
+        const layer =
+            selectedLayer();
+
+        if (!layer) return;
+
+        const layers =
+            getOrderedLayers();
+
+        const currentIndex =
+            layers.findIndex(
+                item => item.id === layer.id
+            );
+
+        if (currentIndex < 0) return;
+
+        let destinationIndex =
+            currentIndex;
+
+        switch (action) {
+            case "front":
+                destinationIndex = 0;
+                break;
+
+            case "forward":
+                destinationIndex =
+                    Math.max(
+                        0,
+                        currentIndex - 1
+                    );
+                break;
+
+            case "backward":
+                destinationIndex =
+                    Math.min(
+                        layers.length - 1,
+                        currentIndex + 1
+                    );
+                break;
+
+            case "back":
+                destinationIndex =
+                    layers.length - 1;
+                break;
+
+            default:
+                return;
+        }
+
+        if (
+            destinationIndex ===
+            currentIndex
+        ) {
+            return;
+        }
+
+        pushHistory();
+
+        layers.splice(
+            currentIndex,
+            1
+        );
+
+        layers.splice(
+            destinationIndex,
+            0,
+            layer
+        );
+
+        applyLayerOrder(layers);
+
+        markDirty();
+        renderEverything();
+    }
+
+    function reorderLayer(
+        draggedLayerId,
+        targetLayerId
+    ) {
+        if (
+            !draggedLayerId ||
+            !targetLayerId ||
+            draggedLayerId === targetLayerId
+        ) {
+            return;
+        }
+
+        const layers =
+            getOrderedLayers();
+
+        const draggedIndex =
+            layers.findIndex(
+                layer =>
+                    layer.id === draggedLayerId
+            );
+
+        const targetIndex =
+            layers.findIndex(
+                layer =>
+                    layer.id === targetLayerId
+            );
+
+        if (
+            draggedIndex < 0 ||
+            targetIndex < 0
+        ) {
+            return;
+        }
+
+        pushHistory();
+
+        const [draggedLayer] =
+            layers.splice(
+                draggedIndex,
+                1
+            );
+
+        layers.splice(
+            targetIndex,
+            0,
+            draggedLayer
+        );
+
+        applyLayerOrder(layers);
+
+        markDirty();
+        renderEverything();
+    }
+
+    function centerSelectedLayer(axis) {
+        const layer =
+            selectedLayer();
+
+        if (!layer) return;
+
+        pushHistory();
+
+        if (
+            axis === "horizontal" ||
+            axis === "both"
+        ) {
+            layer.x = Math.round(
+                (
+                    canvasWidth() -
+                    Number(layer.width || 0)
+                ) / 2
+            );
+        }
+
+        if (
+            axis === "vertical" ||
+            axis === "both"
+        ) {
+            layer.y = Math.round(
+                (
+                    canvasHeight() -
+                    Number(layer.height || 0)
+                ) / 2
+            );
+        }
+
+        markDirty();
+        renderEverything();
+    }
+
     function renderLayersList() {
         if (!elements.layersList) {
             return;
@@ -1794,6 +2002,62 @@
                 "is-selected",
                 layer.id ===
                 state.selectedLayerId
+            );
+
+            row.draggable = true;
+            row.dataset.layerId = layer.id;
+
+            row.addEventListener(
+                "dragstart",
+                event => {
+                    row.classList.add(
+                        "is-dragging"
+                    );
+
+                    event.dataTransfer.effectAllowed =
+                        "move";
+
+                    event.dataTransfer.setData(
+                        "text/plain",
+                        layer.id
+                    );
+                }
+            );
+
+            row.addEventListener(
+                "dragend",
+                () => {
+                    row.classList.remove(
+                        "is-dragging"
+                    );
+                }
+            );
+
+            row.addEventListener(
+                "dragover",
+                event => {
+                    event.preventDefault();
+
+                    event.dataTransfer.dropEffect =
+                        "move";
+                }
+            );
+
+            row.addEventListener(
+                "drop",
+                event => {
+                    event.preventDefault();
+
+                    const draggedLayerId =
+                        event.dataTransfer.getData(
+                            "text/plain"
+                        );
+
+                    reorderLayer(
+                        draggedLayerId,
+                        layer.id
+                    );
+                }
             );
 
             const selectButton =
@@ -4206,12 +4470,121 @@
             );
     }
 
+    function configureLayerActionButtons() {
+        const buttons = [
+            {
+                element:
+                    elements.layerBringFrontButton,
+
+                label:
+                    "Mettre au premier plan",
+
+                icon: `
+        <path d="M7 3h14v14H7z"/>
+        <path d="M3 7v14h14"/>
+      `
+            },
+
+            {
+                element:
+                    elements.layerMoveForwardButton,
+
+                label:
+                    "Avancer d’un plan",
+
+                icon: `
+        <path d="m6 15 6-6 6 6"/>
+      `
+            },
+
+            {
+                element:
+                    elements.layerMoveBackwardButton,
+
+                label:
+                    "Reculer d’un plan",
+
+                icon: `
+        <path d="m6 9 6 6 6-6"/>
+      `
+            },
+
+            {
+                element:
+                    elements.layerSendBackButton,
+
+                label:
+                    "Mettre à l’arrière-plan",
+
+                icon: `
+        <path d="M3 7h14v14H3z"/>
+        <path d="M7 3h14v14"/>
+      `
+            },
+
+            {
+                element:
+                    elements.centerLayerHorizontalButton,
+
+                label:
+                    "Centrer horizontalement",
+
+                icon: `
+        <path d="M12 3v18"/>
+        <path d="m8 8-4 4 4 4"/>
+        <path d="m16 8 4 4-4 4"/>
+      `
+            },
+
+            {
+                element:
+                    elements.centerLayerVerticalButton,
+
+                label:
+                    "Centrer verticalement",
+
+                icon: `
+        <path d="M3 12h18"/>
+        <path d="m8 8 4-4 4 4"/>
+        <path d="m8 16 4 4 4-4"/>
+      `
+            }
+        ];
+
+        for (const button of buttons) {
+            if (!button.element) continue;
+
+            button.element.title =
+                button.label;
+
+            button.element.setAttribute(
+                "aria-label",
+                button.label
+            );
+
+            button.element.innerHTML = `
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        ${button.icon}
+      </svg>
+    `;
+        }
+    }
+
     function bindEvents() {
         bindTabs();
         bindVariableButtons();
         bindColorButtons();
         bindRichColorButtons();
         bindSelectionHandles();
+        configureLayerActionButtons();
 
         elements.canvas
             ?.addEventListener(
@@ -4311,6 +4684,60 @@
 
                     seekTimeline(event);
                 }
+            );
+
+        elements.layerBringFrontButton
+            ?.addEventListener(
+                "click",
+                () =>
+                    changeSelectedLayerOrder(
+                        "front"
+                    )
+            );
+
+        elements.layerMoveForwardButton
+            ?.addEventListener(
+                "click",
+                () =>
+                    changeSelectedLayerOrder(
+                        "forward"
+                    )
+            );
+
+        elements.layerMoveBackwardButton
+            ?.addEventListener(
+                "click",
+                () =>
+                    changeSelectedLayerOrder(
+                        "backward"
+                    )
+            );
+
+        elements.layerSendBackButton
+            ?.addEventListener(
+                "click",
+                () =>
+                    changeSelectedLayerOrder(
+                        "back"
+                    )
+            );
+
+        elements.centerLayerHorizontalButton
+            ?.addEventListener(
+                "click",
+                () =>
+                    centerSelectedLayer(
+                        "horizontal"
+                    )
+            );
+
+        elements.centerLayerVerticalButton
+            ?.addEventListener(
+                "click",
+                () =>
+                    centerSelectedLayer(
+                        "vertical"
+                    )
             );
 
         window.addEventListener(
