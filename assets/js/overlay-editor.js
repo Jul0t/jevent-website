@@ -1404,6 +1404,65 @@
                         : "Aucune vidéo";
         }
     }
+    const RICH_TEXT_COLORS = {
+        vert: "#183d2d",
+        "vert-clair": "#55c685",
+        creme: "#f1dfb3",
+        blanc: "#ffffff"
+    };
+
+    function renderRichText(
+        element,
+        template
+    ) {
+        element.replaceChildren();
+
+        const value =
+            replaceVariables(template);
+
+        const pattern =
+            /<(vert|vert-clair|creme|blanc):\s*([\s\S]*?)>/gi;
+
+        let cursor = 0;
+        let match;
+
+        while (
+            (match = pattern.exec(value))
+        ) {
+            if (match.index > cursor) {
+                element.append(
+                    document.createTextNode(
+                        value.slice(
+                            cursor,
+                            match.index
+                        )
+                    )
+                );
+            }
+
+            const span =
+                document.createElement("span");
+
+            span.style.color =
+                RICH_TEXT_COLORS[
+                match[1].toLowerCase()
+                ];
+
+            span.textContent = match[2];
+
+            element.append(span);
+
+            cursor = pattern.lastIndex;
+        }
+
+        if (cursor < value.length) {
+            element.append(
+                document.createTextNode(
+                    value.slice(cursor)
+                )
+            );
+        }
+    }
 
     function createTextElement(layer) {
         const element =
@@ -1415,10 +1474,10 @@
         element.dataset.layerId =
             layer.id;
 
-        element.textContent =
-            replaceVariables(
-                layer.template
-            );
+        renderRichText(
+            element,
+            layer.template
+        );
 
         element.style.display = "flex";
         element.style.alignItems =
@@ -1494,6 +1553,64 @@
         );
 
         return element;
+    }
+
+    function bindRichColorButtons() {
+        document
+            .querySelectorAll(
+                "[data-editor-rich-color]"
+            )
+            .forEach(button => {
+                button.addEventListener(
+                    "click",
+                    () => {
+                        const layer =
+                            selectedLayer();
+
+                        const textarea =
+                            elements.textTemplate;
+
+                        if (
+                            !layer ||
+                            layer.type !== "text" ||
+                            !textarea
+                        ) {
+                            return;
+                        }
+
+                        const color =
+                            button.dataset
+                                .editorRichColor;
+
+                        const start =
+                            textarea.selectionStart;
+
+                        const end =
+                            textarea.selectionEnd;
+
+                        const selectedText =
+                            textarea.value.slice(
+                                start,
+                                end
+                            ) || "Texte";
+
+                        textarea.setRangeText(
+                            `<${color}: ${selectedText}>`,
+                            start,
+                            end,
+                            "end"
+                        );
+
+                        textarea.dispatchEvent(
+                            new Event("input", {
+                                bubbles: true
+                            })
+                        );
+
+                        textarea.focus();
+                    }
+                );
+            });
     }
 
     function renderTextLayers() {
@@ -3902,7 +4019,11 @@
                 "{{message}}",
 
             "{creator}":
-                "{{creator}}"
+                "{{creator}}",
+
+            "{unit}":
+                "{{unit}}",
+
         };
 
         document
@@ -4089,6 +4210,7 @@
         bindTabs();
         bindVariableButtons();
         bindColorButtons();
+        bindRichColorButtons();
         bindSelectionHandles();
 
         elements.canvas
