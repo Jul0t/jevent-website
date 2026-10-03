@@ -460,8 +460,8 @@
         soundObjectUrl: null,
 
         operation: null,
-
         currentTimeMs: 0,
+        previewPlaying: false,
         timelineScrubbing: false,
 
         history: [],
@@ -469,7 +469,6 @@
 
         previewAnimations: [],
         previewTimers: [],
-        previewPlaying: false,
         previewFrame: null,
         previewAudio: null
     };
