@@ -1302,69 +1302,69 @@
         return result;
     }
 
-function mediaVideoUrl() {
-    if (
-        state.videoObjectUrl &&
-        !state.removeVideo
-    ) {
-        return state.videoObjectUrl;
-    }
+    function mediaVideoUrl() {
+        if (
+            state.videoObjectUrl &&
+            !state.removeVideo
+        ) {
+            return state.videoObjectUrl;
+        }
 
-    if (state.removeVideo) {
+        if (state.removeVideo) {
+            return "";
+        }
+
+        const directUrl =
+            state.variant?.videoUrl ??
+            state.variant?.media?.videoUrl;
+
+        if (directUrl) {
+            return directUrl;
+        }
+
+        if (
+            state.variant?.videoStorageKey
+        ) {
+            return (
+                API_BASE +
+                mediaPath("video")
+            );
+        }
+
         return "";
     }
 
-    const directUrl =
-        state.variant?.videoUrl ??
-        state.variant?.media?.videoUrl;
+    function mediaSoundUrl() {
+        if (
+            state.soundObjectUrl &&
+            !state.removeSound
+        ) {
+            return state.soundObjectUrl;
+        }
 
-    if (directUrl) {
-        return directUrl;
-    }
+        if (state.removeSound) {
+            return "";
+        }
 
-    if (
-        state.variant?.videoStorageKey
-    ) {
-        return (
-            API_BASE +
-            mediaPath("video")
-        );
-    }
+        const directUrl =
+            state.variant?.soundUrl ??
+            state.variant?.media?.soundUrl;
 
-    return "";
-}
+        if (directUrl) {
+            return directUrl;
+        }
 
-function mediaSoundUrl() {
-    if (
-        state.soundObjectUrl &&
-        !state.removeSound
-    ) {
-        return state.soundObjectUrl;
-    }
+        if (
+            state.variant?.soundStorageKey
+        ) {
+            return (
+                API_BASE +
+                mediaPath("sound")
+            );
+        }
 
-    if (state.removeSound) {
         return "";
     }
-
-    const directUrl =
-        state.variant?.soundUrl ??
-        state.variant?.media?.soundUrl;
-
-    if (directUrl) {
-        return directUrl;
-    }
-
-    if (
-        state.variant?.soundStorageKey
-    ) {
-        return (
-            API_BASE +
-            mediaPath("sound")
-        );
-    }
-
-    return "";
-}
 
     function applyLayerStyle(
         element,
@@ -4109,6 +4109,95 @@ function mediaSoundUrl() {
         );
     }
 
+    async function loadSavedMedia(
+        type,
+        objectUrlKey
+    ) {
+        const isVideo =
+            type === "video";
+
+        const hasMedia =
+            isVideo
+                ? Boolean(
+                    state.variant?.videoStorageKey ||
+                    state.variant?.videoUrl ||
+                    state.variant?.media?.videoUrl
+                )
+                : Boolean(
+                    state.variant?.soundStorageKey ||
+                    state.variant?.soundUrl ||
+                    state.variant?.media?.soundUrl
+                );
+
+        revokeObjectUrl(objectUrlKey);
+
+        if (!hasMedia) {
+            return;
+        }
+
+        const response = await fetch(
+            API_BASE + mediaPath(type),
+            {
+                credentials: "include",
+                cache: "no-store"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `Impossible de charger le média ${type} : HTTP ${response.status}.`
+            );
+        }
+
+        const originalBlob =
+            await response.blob();
+
+        const fallbackType =
+            isVideo
+                ? (
+                    state.variant?.videoStorageKey
+                        ?.toLowerCase()
+                        .endsWith(".mp4")
+                        ? "video/mp4"
+                        : "video/webm"
+                )
+                : "audio/mpeg";
+
+        const blob = originalBlob.type
+            ? originalBlob
+            : new Blob(
+                [originalBlob],
+                {
+                    type: fallbackType
+                }
+            );
+
+        state[objectUrlKey] =
+            URL.createObjectURL(blob);
+    }
+
+    async function reloadSavedMedia() {
+        if (
+            !state.videoFile &&
+            !state.removeVideo
+        ) {
+            await loadSavedMedia(
+                "video",
+                "videoObjectUrl"
+            );
+        }
+
+        if (
+            !state.soundFile &&
+            !state.removeSound
+        ) {
+            await loadSavedMedia(
+                "sound",
+                "soundObjectUrl"
+            );
+        }
+    }
+
     async function uploadMedia(
         type,
         file
@@ -4365,6 +4454,8 @@ function mediaSoundUrl() {
 
         state.settings =
             data.editor ?? {};
+
+        await reloadSavedMedia();
 
         if (initialize) {
             state.layout =
