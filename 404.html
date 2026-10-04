@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
+
+  <title>Page introuvable — JEvent 26</title>
+
+  <script>
+    (() => {
+      const match =
+        window.location.pathname.match(
+          /^\/overlay\/tombola\/([^/]+)\/?$/
+        );
+
+      if (match) {
+        const destination =
+          new URL(
+            "/overlay/tombola/index.html",
+            window.location.origin
+          );
+
+        destination.searchParams.set(
+          "code",
+          match[1]
+        );
+
+        const currentParameters =
+          new URLSearchParams(
+            window.location.search
+          );
+
+        if (
+          currentParameters.get("debug") === "1"
+        ) {
+          destination.searchParams.set(
+            "debug",
+            "1"
+          );
+        }
+
+        window.location.replace(
+          destination.toString()
+        );
+
+        return;
+      }
+    })();
+  </script>
+
+  <style>
+    body {
+      display: grid;
+      min-height: 100vh;
+      margin: 0;
+      place-items: center;
+
+      background: #07110c;
+      color: #f4fff8;
+
+      font-family:
+        system-ui,
+        sans-serif;
+
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 52px;
+    }
+
+    p {
+      color: #a9baaf;
+    }
+
+    a {
+      color: #69d99a;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>404</h1>
+
+    <p>
+      Cette page n’existe pas.
+    </p>
+
+    <a href="/">
+      Revenir à l’accueil
+    </a>
+  </main>
+</body>
+
+</html>
