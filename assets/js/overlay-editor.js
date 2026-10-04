@@ -1314,12 +1314,24 @@
             return "";
         }
 
-        return (
+        const directUrl =
             state.variant?.videoUrl ??
-            state.variant?.media
-                ?.videoUrl ??
-            ""
-        );
+            state.variant?.media?.videoUrl;
+
+        if (directUrl) {
+            return directUrl;
+        }
+
+        if (
+            state.variant?.videoStorageKey
+        ) {
+            return (
+                API_BASE +
+                mediaPath("video")
+            );
+        }
+
+        return "";
     }
 
     function mediaSoundUrl() {
@@ -1334,12 +1346,24 @@
             return "";
         }
 
-        return (
+        const directUrl =
             state.variant?.soundUrl ??
-            state.variant?.media
-                ?.soundUrl ??
-            ""
-        );
+            state.variant?.media?.soundUrl;
+
+        if (directUrl) {
+            return directUrl;
+        }
+
+        if (
+            state.variant?.soundStorageKey
+        ) {
+            return (
+                API_BASE +
+                mediaPath("sound")
+            );
+        }
+
+        return "";
     }
 
     function applyLayerStyle(
