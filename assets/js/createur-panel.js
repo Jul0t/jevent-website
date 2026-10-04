@@ -3404,6 +3404,67 @@
             );
 
             list.append(row);
+            if (
+                isSuperAdmin() &&
+                ![
+                    "countdown",
+                    "active",
+                    "drawing"
+                ].includes(raffle.status)
+            ) {
+                const deleteButton =
+                    createElement(
+                        "button",
+                        "dashboard-raffle-delete",
+                        "Supprimer"
+                    );
+
+                deleteButton.type = "button";
+
+                deleteButton.addEventListener(
+                    "click",
+                    async () => {
+                        const confirmed =
+                            window.confirm(
+                                `Supprimer définitivement la tombola « ${raffle.title || "Sans titre"
+                                } » ?`
+                            );
+
+                        if (!confirmed) {
+                            return;
+                        }
+
+                        deleteButton.disabled = true;
+
+                        try {
+                            await apiFetch(
+                                `/api/creator-panel/raffles/${encodeURIComponent(
+                                    raffle.publicId
+                                )
+                                }?creatorId=${encodeURIComponent(
+                                    currentCreatorId()
+                                )
+                                }`,
+                                {
+                                    method: "DELETE"
+                                }
+                            );
+
+                            await loadRaffles();
+                            renderRaffle();
+                        } catch (error) {
+                            window.alert(
+                                error.message ||
+                                "Impossible de supprimer la tombola."
+                            );
+
+                            deleteButton.disabled = false;
+                        }
+                    }
+                );
+
+                status.append(deleteButton);
+            }
         }
 
         elements.rafflesPanelContent

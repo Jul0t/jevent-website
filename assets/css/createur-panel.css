@@ -5465,10 +5465,7 @@ body.is-dark #donationAlertEditorDialog {
   display: flex;
   width: max-content;
   margin:
-    0
-    0
-    22px
-    auto;
+    0 0 22px auto;
 }
 
 #donationAlertsList,
@@ -5487,13 +5484,10 @@ body.is-dark #donationAlertEditorDialog {
 
 /* Contenu principal de la popup */
 
-#donationAlertForm
-  > :is(
-    main,
-    .dialog-content,
-    .dashboard-dialog-content,
-    .dashboard-modal-content
-  ) {
+#donationAlertForm> :is(main,
+  .dialog-content,
+  .dashboard-dialog-content,
+  .dashboard-modal-content) {
   display: grid;
   gap: 20px;
 
@@ -5503,14 +5497,11 @@ body.is-dark #donationAlertEditorDialog {
 
 /* Chaque groupe de formulaire */
 
-#donationAlertForm
-  :is(
-    .dashboard-field,
-    .dashboard-form-field,
-    .form-field,
-    .field,
-    .dialog-field
-  ) {
+#donationAlertForm :is(.dashboard-field,
+  .dashboard-form-field,
+  .form-field,
+  .field,
+  .dialog-field) {
   display: grid;
   gap: 8px;
 
@@ -5521,18 +5512,13 @@ body.is-dark #donationAlertEditorDialog {
 
 /* Grilles de champs */
 
-#donationAlertForm
-  :is(
-    .dashboard-form-grid,
-    .form-grid,
-    .dialog-grid
-  ) {
+#donationAlertForm :is(.dashboard-form-grid,
+  .form-grid,
+  .dialog-grid) {
   display: grid;
   grid-template-columns:
-    repeat(
-      2,
-      minmax(0, 1fr)
-    );
+    repeat(2,
+      minmax(0, 1fr));
 
   gap: 18px;
 }
@@ -5545,10 +5531,8 @@ body.is-dark #donationAlertEditorDialog {
   margin: 0;
 
   color:
-    var(
-      --alert-text,
-      #f0f6f2
-    );
+    var(--alert-text,
+      #f0f6f2);
 
   font-size: 0.8rem;
   font-weight: 750;
@@ -5558,66 +5542,43 @@ body.is-dark #donationAlertEditorDialog {
 
 /* Champs */
 
-#donationAlertForm
-  :is(
-    input:not(
-
-[type="checkbox"]
-
-    ):not(
-
-[type="range"]
-
-    ),
-    select,
-    textarea
-  ) {
+#donationAlertForm :is(input:not([type="checkbox"]):not([type="range"]),
+  select,
+  textarea) {
   width: 100%;
   min-height: 43px;
   margin: 0;
   padding: 10px 12px;
 
   border:
-    1px solid
-    var(
-      --alert-border,
-      #263a2d
-    );
+    1px solid var(--alert-border,
+      #263a2d);
 
   border-radius: 11px;
 
   background:
-    var(
-      --alert-surface-soft,
-      #122219
-    );
+    var(--alert-surface-soft,
+      #122219);
 
   color:
-    var(
-      --alert-text,
-      #f0f6f2
-    );
+    var(--alert-text,
+      #f0f6f2);
 }
 
 
 /* Aides sous les champs */
 
-#donationAlertForm
-  :is(
-    small,
-    .field-help,
-    .dashboard-field-help,
-    .form-help,
-    .field-description
-  ) {
+#donationAlertForm :is(small,
+  .field-help,
+  .dashboard-field-help,
+  .form-help,
+  .field-description) {
   display: block;
   margin: 0;
 
   color:
-    var(
-      --alert-muted,
-      #9bad9f
-    );
+    var(--alert-muted,
+      #9bad9f);
 
   font-size: 0.74rem;
   line-height: 1.45;
@@ -5626,17 +5587,13 @@ body.is-dark #donationAlertEditorDialog {
 
 /* Suffixes comme “secondes” */
 
-#donationAlertForm
-  input[type="number"]
-  + span {
+#donationAlertForm input[type="number"]+span {
   display: block;
   margin-top: 2px;
 
   color:
-    var(
-      --alert-muted,
-      #9bad9f
-    );
+    var(--alert-muted,
+      #9bad9f);
 
   font-size: 0.76rem;
 }
@@ -5644,8 +5601,7 @@ body.is-dark #donationAlertEditorDialog {
 
 /* Volume */
 
-#donationAlertForm
-  input[type="range"] {
+#donationAlertForm input[type="range"] {
   width: 100%;
   margin: 8px 0 2px;
 }
@@ -5653,16 +5609,12 @@ body.is-dark #donationAlertEditorDialog {
 
 /* Checkbox “Alerte activée” */
 
-#donationAlertForm
-  :is(
-    .dashboard-checkbox,
-    .form-checkbox,
-    .switch-field
-  ) {
+#donationAlertForm :is(.dashboard-checkbox,
+  .form-checkbox,
+  .switch-field) {
   display: grid;
   grid-template-columns:
-    minmax(0, 1fr)
-    auto;
+    minmax(0, 1fr) auto;
 
   gap: 16px;
 
@@ -5671,15 +5623,11 @@ body.is-dark #donationAlertEditorDialog {
   align-items: center;
 
   border-top:
-    1px solid
-    var(
-      --alert-border,
-      #263a2d
-    );
+    1px solid var(--alert-border,
+      #263a2d);
 }
 
-#donationAlertForm
-  input[type="checkbox"] {
+#donationAlertForm input[type="checkbox"] {
   width: 21px;
   height: 21px;
   margin: 0;
@@ -5705,7 +5653,7 @@ body.is-dark #donationAlertEditorDialog {
 
 /* Pied de popup */
 
-#donationAlertForm > footer {
+#donationAlertForm>footer {
   gap: 12px;
   padding: 16px 24px;
 }
@@ -5714,22 +5662,17 @@ body.is-dark #donationAlertEditorDialog {
 /* Mobile */
 
 @media (max-width: 620px) {
-  #donationAlertForm
-    :is(
-      .dashboard-form-grid,
-      .form-grid,
-      .dialog-grid
-    ) {
+
+  #donationAlertForm :is(.dashboard-form-grid,
+    .form-grid,
+    .dialog-grid) {
     grid-template-columns: 1fr;
   }
 
-  #donationAlertForm
-    > :is(
-      main,
-      .dialog-content,
-      .dashboard-dialog-content,
-      .dashboard-modal-content
-    ) {
+  #donationAlertForm> :is(main,
+    .dialog-content,
+    .dashboard-dialog-content,
+    .dashboard-modal-content) {
     padding: 18px;
   }
 
@@ -5739,4 +5682,24 @@ body.is-dark #donationAlertEditorDialog {
 
     justify-content: center;
   }
+}
+
+.dashboard-raffle-delete {
+  padding: 7px 11px;
+  border: 1px solid #dc5f5f;
+  border-radius: 8px;
+  background: transparent;
+  color: #dc5f5f;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dashboard-raffle-delete:hover {
+  background: rgb(220 95 95 / 12%);
+}
+
+.dashboard-raffle-delete:disabled {
+  opacity: 0.5;
+  cursor: wait;
 }
