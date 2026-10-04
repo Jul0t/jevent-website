@@ -620,7 +620,6 @@
 
             x: 0,
             y: 0,
-
             width: 1920,
             height: 1080,
             aspectRatio: 16 / 9,
@@ -630,7 +629,14 @@
             zIndex: 1,
 
             delayMs: 0,
-            durationMs: 6000
+            durationMs: 6000,
+
+            fit: "contain",
+            loop: false,
+            muted: true,
+
+            enterAnimation: "fade",
+            exitAnimation: "fade"
         };
     }
 
@@ -880,6 +886,15 @@
                 source.durationMs ?? 6000
             )
         );
+
+        video.enterAnimation =
+            video.enterAnimation ??
+            video.animation ??
+            "fade";
+
+        video.exitAnimation =
+            video.exitAnimation ??
+            "fade";
 
         video.id = "video";
         video.type = "video";
@@ -2343,9 +2358,8 @@
         if (
             elements.animationProperties
         ) {
-            elements.animationProperties
-                .hidden =
-                !isText;
+            elements.animationProperties.hidden =
+                false;
         }
 
         if (
@@ -2363,6 +2377,26 @@
                 .hidden =
                 !isText;
         }
+
+        setValue(
+            elements.enterAnimation,
+            layer.enterAnimation ?? "fade"
+        );
+
+        setValue(
+            elements.exitAnimation,
+            layer.exitAnimation ?? "fade"
+        );
+
+        setValue(
+            elements.animationDelay,
+            layer.delayMs ?? 0
+        );
+
+        setValue(
+            elements.animationDuration,
+            layer.durationMs ?? 6000
+        );
 
         if (isText) {
             setValue(
@@ -2424,25 +2458,6 @@
                 layer.textShadow
             );
 
-            setValue(
-                elements.enterAnimation,
-                layer.enterAnimation
-            );
-
-            setValue(
-                elements.exitAnimation,
-                layer.exitAnimation
-            );
-
-            setValue(
-                elements.animationDelay,
-                layer.delayMs
-            );
-
-            setValue(
-                elements.animationDuration,
-                layer.durationMs
-            );
         } else {
             setValue(
                 elements.videoFit,

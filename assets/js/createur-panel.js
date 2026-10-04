@@ -4118,10 +4118,11 @@
                         "input"
                     );
 
-                input.type = "text";
+                input.type = "password";
                 input.readOnly = true;
-                input.value =
-                    overlay.url || "";
+                input.value = overlay.url || "";
+                input.autocomplete = "off";
+                input.spellcheck = false;
 
                 input.setAttribute(
                     "aria-label",
@@ -4160,6 +4161,11 @@
                             "Générer un nouveau lien",
                         action:
                             "rotate",
+                        overlayType
+                    }),
+                    createOverlayButton({
+                        label: "Afficher",
+                        action: "reveal",
                         overlayType
                     })
                 );
@@ -4296,6 +4302,35 @@
     async function handleOverlayAction(
         event
     ) {
+        if (action === "reveal") {
+            const card =
+                button.closest(
+                    ".dashboard-overlay-card"
+                );
+
+            const input =
+                card?.querySelector(
+                    ".dashboard-overlay-url input"
+                );
+
+            if (!input) return;
+
+            const currentlyHidden =
+                input.type === "password";
+
+            input.type =
+                currentlyHidden
+                    ? "text"
+                    : "password";
+
+            button.textContent =
+                currentlyHidden
+                    ? "Masquer"
+                    : "Afficher";
+
+            return;
+        }
+
         const button =
             event.target.closest(
                 "[data-overlay-action]"
