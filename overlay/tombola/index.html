@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="robots"
+    content="noindex, nofollow, noarchive"
+  >
+
+  <title>Overlay tombola — JEvent 26</title>
+
+  <link
+    rel="stylesheet"
+    href="/assets/css/overlay-tombola.css?v=1"
+  >
+
+  <script
+    src="/assets/js/overlay-tombola.js?v=1"
+    defer
+  ></script>
+</head>
+
+<body>
+  <main
+    id="raffleOverlay"
+    class="raffle-overlay"
+    aria-live="polite"
+    hidden
+  >
+    <section
+      id="raffleCard"
+      class="raffle-card"
+    >
+      <div
+        class="raffle-accent"
+        aria-hidden="true"
+      ></div>
+
+      <header class="raffle-header">
+        <div class="raffle-heading">
+          <span
+            class="raffle-icon"
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M20 12v9H4v-9"
+              />
+
+              <path
+                d="M2 7h20v5H2z"
+              />
+
+              <path
+                d="M12 7v14"
+              />
+
+              <path
+                d="M12 7H7.5a2.5 2.5 0 1 1 2.2-3.7L12 7Z"
+              />
+
+              <path
+                d="M12 7h4.5a2.5 2.5 0 1 0-2.2-3.7L12 7Z"
+              />
+            </svg>
+          </span>
+
+          <div>
+            <p
+              id="raffleStatus"
+              class="raffle-status"
+            >
+              Tombola
+            </p>
+
+            <p
+              id="raffleMethod"
+              class="raffle-method"
+            >
+              1 € = 1 ticket
+            </p>
+          </div>
+        </div>
+
+        <div class="raffle-clock">
+          <span id="raffleTimerLabel">
+            Temps restant
+          </span>
+
+          <strong id="raffleTimer">
+            --:--
+          </strong>
+        </div>
+      </header>
+
+      <div class="raffle-content">
+        <h1 id="raffleTitle">
+          Tombola JEvent
+        </h1>
+
+        <p
+          id="raffleDescription"
+          class="raffle-description"
+          hidden
+        ></p>
+
+        <div
+          id="raffleWinner"
+          class="raffle-winner"
+          hidden
+        >
+          <span
+            class="raffle-winner-icon"
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M8 21h8"
+              />
+
+              <path
+                d="M12 17v4"
+              />
+
+              <path
+                d="M7 4h10v4a5 5 0 0 1-10 0V4Z"
+              />
+
+              <path
+                d="M7 6H4v1a4 4 0 0 0 4 4"
+              />
+
+              <path
+                d="M17 6h3v1a4 4 0 0 1-4 4"
+              />
+            </svg>
+          </span>
+
+          <div>
+            <span class="raffle-winner-label">
+              Gagnant
+            </span>
+
+            <strong id="raffleWinnerName">
+              —
+            </strong>
+          </div>
+        </div>
+      </div>
+
+      <footer class="raffle-statistics">
+        <div class="raffle-statistic">
+          <span id="raffleEntriesLabel">
+            Tickets
+          </span>
+
+          <strong id="raffleEntries">
+            0
+          </strong>
+        </div>
+
+        <div class="raffle-statistic">
+          <span>
+            Participants
+          </span>
+
+          <strong id="raffleParticipants">
+            0
+          </strong>
+        </div>
+
+        <div class="raffle-statistic">
+          <span>
+            Montant associé
+          </span>
+
+          <strong id="raffleAmount">
+            0,00 €
+          </strong>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <p
+    id="debugMessage"
+    class="debug-message"
+    hidden
+  ></p>
+</body>
+
+</html>
