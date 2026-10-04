@@ -4304,35 +4304,6 @@
     async function handleOverlayAction(
         event
     ) {
-        if (action === "reveal") {
-            const card =
-                button.closest(
-                    ".dashboard-overlay-card"
-                );
-
-            const input =
-                card?.querySelector(
-                    ".dashboard-overlay-url input"
-                );
-
-            if (!input) return;
-
-            const currentlyHidden =
-                input.type === "password";
-
-            input.type =
-                currentlyHidden
-                    ? "text"
-                    : "password";
-
-            button.textContent =
-                currentlyHidden
-                    ? "Masquer"
-                    : "Afficher";
-
-            return;
-        }
-
         const button =
             event.target.closest(
                 "[data-overlay-action]"
