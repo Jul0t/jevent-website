@@ -1302,69 +1302,69 @@
         return result;
     }
 
-    function mediaVideoUrl() {
-        if (
-            state.videoObjectUrl &&
-            !state.removeVideo
-        ) {
-            return state.videoObjectUrl;
-        }
+function mediaVideoUrl() {
+    if (
+        state.videoObjectUrl &&
+        !state.removeVideo
+    ) {
+        return state.videoObjectUrl;
+    }
 
-        if (state.removeVideo) {
-            return "";
-        }
-
-        const directUrl =
-            state.variant?.videoUrl ??
-            state.variant?.media?.videoUrl;
-
-        if (directUrl) {
-            return directUrl;
-        }
-
-        if (
-            state.variant?.videoStorageKey
-        ) {
-            return (
-                API_BASE +
-                mediaPath("video")
-            );
-        }
-
+    if (state.removeVideo) {
         return "";
     }
 
-    function mediaSoundUrl() {
-        if (
-            state.soundObjectUrl &&
-            !state.removeSound
-        ) {
-            return state.soundObjectUrl;
-        }
+    const directUrl =
+        state.variant?.videoUrl ??
+        state.variant?.media?.videoUrl;
 
-        if (state.removeSound) {
-            return "";
-        }
+    if (directUrl) {
+        return directUrl;
+    }
 
-        const directUrl =
-            state.variant?.soundUrl ??
-            state.variant?.media?.soundUrl;
+    if (
+        state.variant?.videoStorageKey
+    ) {
+        return (
+            API_BASE +
+            mediaPath("video")
+        );
+    }
 
-        if (directUrl) {
-            return directUrl;
-        }
+    return "";
+}
 
-        if (
-            state.variant?.soundStorageKey
-        ) {
-            return (
-                API_BASE +
-                mediaPath("sound")
-            );
-        }
+function mediaSoundUrl() {
+    if (
+        state.soundObjectUrl &&
+        !state.removeSound
+    ) {
+        return state.soundObjectUrl;
+    }
 
+    if (state.removeSound) {
         return "";
     }
+
+    const directUrl =
+        state.variant?.soundUrl ??
+        state.variant?.media?.soundUrl;
+
+    if (directUrl) {
+        return directUrl;
+    }
+
+    if (
+        state.variant?.soundStorageKey
+    ) {
+        return (
+            API_BASE +
+            mediaPath("sound")
+        );
+    }
+
+    return "";
+}
 
     function applyLayerStyle(
         element,
