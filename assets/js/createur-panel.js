@@ -3967,9 +3967,7 @@
         primary = false
     }) {
         const button =
-            document.createElement(
-                "button"
-            );
+            document.createElement("button");
 
         button.type = "button";
 
@@ -3978,14 +3976,18 @@
                 ? "dashboard-button dashboard-button-primary"
                 : "dashboard-button dashboard-button-secondary";
 
-        button.textContent =
-            label;
+        button.textContent = label;
 
         button.dataset.overlayAction =
             action;
 
         button.dataset.overlayType =
             overlayType;
+
+        button.addEventListener(
+            "click",
+            handleOverlayAction
+        );
 
         return button;
     }
@@ -4362,6 +4364,37 @@
         setOverlaysMessage();
 
         try {
+            if (action === "reveal") {
+                const card =
+                    button.closest(
+                        ".dashboard-overlay-card"
+                    );
+
+                const input =
+                    card?.querySelector(
+                        ".dashboard-overlay-url input"
+                    );
+
+                if (!input) {
+                    return;
+                }
+
+                const reveal =
+                    input.type === "password";
+
+                input.type =
+                    reveal
+                        ? "text"
+                        : "password";
+
+                button.textContent =
+                    reveal
+                        ? "Masquer"
+                        : "Afficher";
+
+                return;
+            }
+
             if (action === "create") {
                 await createOverlay(
                     overlayType
@@ -4963,12 +4996,6 @@
                 elements.darkModeEnabled.checked
             );
         }
-    );
-
-    onSafe(
-        elements.creatorOverlaysList,
-        "click",
-        handleOverlayAction
     );
 
     onSafe(

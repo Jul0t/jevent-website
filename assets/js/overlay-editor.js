@@ -3467,16 +3467,20 @@
 
     }
 
-    function enterKeyframes(
-        layer,
-        element
-    ) {
+    function enterKeyframes(layer) {
         const base =
-            `rotate(${layer.rotation}deg)`;
+            `rotate(${numberValue(
+                layer.rotation,
+                0
+            )}deg)`;
 
-        switch (
-        layer.enterAnimation
-        ) {
+        const opacity =
+            numberValue(
+                layer.opacity,
+                1
+            );
+
+        switch (layer.enterAnimation) {
             case "slide-up":
                 return [
                     {
@@ -3485,8 +3489,21 @@
                             `${base} translateY(60px)`
                     },
                     {
-                        opacity:
-                            layer.opacity,
+                        opacity,
+                        transform:
+                            `${base} translateY(0)`
+                    }
+                ];
+
+            case "slide-down":
+                return [
+                    {
+                        opacity: 0,
+                        transform:
+                            `${base} translateY(-60px)`
+                    },
+                    {
+                        opacity,
                         transform:
                             `${base} translateY(0)`
                     }
@@ -3500,13 +3517,27 @@
                             `${base} translateX(80px)`
                     },
                     {
-                        opacity:
-                            layer.opacity,
+                        opacity,
                         transform:
                             `${base} translateX(0)`
                     }
                 ];
 
+            case "slide-right":
+                return [
+                    {
+                        opacity: 0,
+                        transform:
+                            `${base} translateX(-80px)`
+                    },
+                    {
+                        opacity,
+                        transform:
+                            `${base} translateX(0)`
+                    }
+                ];
+
+            case "scale":
             case "zoom":
                 return [
                     {
@@ -3515,8 +3546,7 @@
                             `${base} scale(0.6)`
                     },
                     {
-                        opacity:
-                            layer.opacity,
+                        opacity,
                         transform:
                             `${base} scale(1)`
                     }
@@ -3530,14 +3560,12 @@
                             `${base} scale(0.4)`
                     },
                     {
-                        opacity:
-                            layer.opacity,
+                        opacity,
                         transform:
                             `${base} scale(1.12)`
                     },
                     {
-                        opacity:
-                            layer.opacity,
+                        opacity,
                         transform:
                             `${base} scale(1)`
                     }
@@ -3546,23 +3574,137 @@
             case "none":
                 return [
                     {
-                        opacity:
-                            layer.opacity
+                        opacity,
+                        transform: base
                     },
                     {
-                        opacity:
-                            layer.opacity
+                        opacity,
+                        transform: base
                     }
                 ];
 
+            case "fade":
             default:
                 return [
                     {
-                        opacity: 0
+                        opacity: 0,
+                        transform: base
                     },
                     {
-                        opacity:
-                            layer.opacity
+                        opacity,
+                        transform: base
+                    }
+                ];
+        }
+    }
+
+    function exitKeyframes(layer) {
+        const base =
+            `rotate(${numberValue(
+                layer.rotation,
+                0
+            )}deg)`;
+
+        const opacity =
+            numberValue(
+                layer.opacity,
+                1
+            );
+
+        switch (layer.exitAnimation) {
+            case "slide-up":
+                return [
+                    {
+                        opacity,
+                        transform:
+                            `${base} translateY(0)`
+                    },
+                    {
+                        opacity: 0,
+                        transform:
+                            `${base} translateY(-60px)`
+                    }
+                ];
+
+            case "slide-down":
+                return [
+                    {
+                        opacity,
+                        transform:
+                            `${base} translateY(0)`
+                    },
+                    {
+                        opacity: 0,
+                        transform:
+                            `${base} translateY(60px)`
+                    }
+                ];
+
+            case "slide-left":
+                return [
+                    {
+                        opacity,
+                        transform:
+                            `${base} translateX(0)`
+                    },
+                    {
+                        opacity: 0,
+                        transform:
+                            `${base} translateX(-80px)`
+                    }
+                ];
+
+            case "slide-right":
+                return [
+                    {
+                        opacity,
+                        transform:
+                            `${base} translateX(0)`
+                    },
+                    {
+                        opacity: 0,
+                        transform:
+                            `${base} translateX(80px)`
+                    }
+                ];
+
+            case "scale":
+            case "zoom":
+                return [
+                    {
+                        opacity,
+                        transform:
+                            `${base} scale(1)`
+                    },
+                    {
+                        opacity: 0,
+                        transform:
+                            `${base} scale(0.6)`
+                    }
+                ];
+
+            case "none":
+                return [
+                    {
+                        opacity,
+                        transform: base
+                    },
+                    {
+                        opacity,
+                        transform: base
+                    }
+                ];
+
+            case "fade":
+            default:
+                return [
+                    {
+                        opacity,
+                        transform: base
+                    },
+                    {
+                        opacity: 0,
+                        transform: base
                     }
                 ];
         }
@@ -3635,18 +3777,11 @@
                     () => {
                         const animation =
                             element.animate(
-                                [
-                                    {
-                                        opacity:
-                                            layer.opacity
-                                    },
-                                    {
-                                        opacity: 0
-                                    }
-                                ],
+                                exitKeyframes(layer),
                                 {
                                     duration: 300,
-                                    fill: "forwards"
+                                    fill: "forwards",
+                                    easing: "ease-in"
                                 }
                             );
 
