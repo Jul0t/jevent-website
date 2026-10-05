@@ -4,29 +4,42 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta
-    name="robots"
-    content="noindex, nofollow"
-  >
+  <meta name="robots" content="noindex, nofollow">
 
   <title>Page introuvable — JEvent 26</title>
 
   <script>
     (() => {
-      const match =
-        window.location.pathname.match(
-          /^\/overlay\/tombola\/([^/]+)\/?$/
-        );
+      const routes = [
+        {
+          pattern:
+            /^\/overlay\/tombola\/([^/]+)\/?$/,
+          destination:
+            "/overlay/tombola/index.html"
+        },
+        {
+          pattern:
+            /^\/overlay\/dons\/([^/]+)\/?$/,
+          destination:
+            "/overlay/dons/index.html"
+        }
+      ];
 
-      if (match) {
+      for (const route of routes) {
+        const match =
+          window.location.pathname.match(
+            route.pattern
+          );
+
+        if (!match) {
+          continue;
+        }
+
         const destination =
           new URL(
-            "/overlay/tombola/index.html",
+            route.destination,
             window.location.origin
           );
 

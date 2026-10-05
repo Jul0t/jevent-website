@@ -1,0 +1,278 @@
+/* =========================================================
+   OVERLAY DES DONS
+   ========================================================= */
+
+:root {
+  color-scheme: dark;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+
+  background: transparent !important;
+}
+
+body {
+  position: relative;
+
+  color: #ffffff;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* =========================================================
+   CONTENEUR PRINCIPAL
+   ========================================================= */
+
+#donationOverlay {
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background: transparent;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+/* =========================================================
+   ZONE D’AFFICHAGE
+   ========================================================= */
+
+#donationViewport {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background: transparent;
+
+  pointer-events: none;
+}
+
+/*
+ * Le JavaScript applique automatiquement :
+ * - la largeur logique ;
+ * - la hauteur logique ;
+ * - le niveau de zoom ;
+ * - le centrage.
+ */
+#donationStage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 1920px;
+  height: 1080px;
+
+  overflow: visible;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1);
+
+  transform-origin: center center;
+
+  background: transparent;
+
+  pointer-events: none;
+
+  isolation: isolate;
+
+  contain:
+    layout
+    style;
+}
+
+/* =========================================================
+   MÉDIAS
+   ========================================================= */
+
+.donation-overlay-media {
+  position: absolute;
+
+  display: block;
+
+  min-width: 0;
+  min-height: 0;
+
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+  outline: 0;
+
+  object-fit: contain;
+  object-position: center;
+
+  background: transparent;
+
+  pointer-events: none;
+  user-select: none;
+
+  backface-visibility: hidden;
+
+  will-change:
+    transform,
+    opacity;
+}
+
+video.donation-overlay-media {
+  max-width: none;
+  max-height: none;
+}
+
+img.donation-overlay-media {
+  max-width: none;
+  max-height: none;
+
+  -webkit-user-drag: none;
+}
+
+/* =========================================================
+   TEXTES
+   ========================================================= */
+
+.donation-overlay-text {
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 0;
+  min-height: 0;
+
+  margin: 0;
+  padding: 0;
+
+  overflow: visible;
+
+  color: #ffffff;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
+
+  pointer-events: none;
+  user-select: none;
+
+  backface-visibility: hidden;
+
+  will-change:
+    transform,
+    opacity;
+}
+
+.donation-overlay-text span {
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+/* =========================================================
+   MODE DE DÉBOGAGE
+   ========================================================= */
+
+#donationDebug {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 999999;
+
+  display: block;
+
+  width: min(
+    520px,
+    calc(100vw - 32px)
+  );
+
+  max-height:
+    calc(100vh - 32px);
+
+  margin: 0;
+  padding: 14px 16px;
+
+  overflow: auto;
+
+  border:
+    1px solid
+    rgba(85, 198, 133, 0.55);
+
+  border-radius: 12px;
+
+  background:
+    rgba(4, 18, 12, 0.94);
+
+  color: #eafff2;
+
+  box-shadow:
+    0 16px 50px
+    rgba(0, 0, 0, 0.45);
+
+  font-family:
+    Consolas,
+    Monaco,
+    "Courier New",
+    monospace;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.55;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+
+  pointer-events: auto;
+  user-select: text;
+}
+
+/* =========================================================
+   ACCESSIBILITÉ ET PERFORMANCES
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .donation-overlay-media,
+  .donation-overlay-text {
+    scroll-behavior: auto;
+  }
+}
