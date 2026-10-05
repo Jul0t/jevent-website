@@ -4201,6 +4201,17 @@
                         "dashboard-overlay-actions"
                     );
 
+                if (overlayType === "donations") {
+                    actions.append(
+                        createOverlayButton({
+                            label: "Tester",
+                            action: "test",
+                            overlayType,
+                            primary: true
+                        })
+                    );
+                }
+
                 actions.append(
                     createOverlayButton({
                         label:
@@ -4318,6 +4329,32 @@
 
         setOverlaysMessage(
             "L’overlay a été créé.",
+            "success"
+        );
+    }
+
+    async function testDonationOverlay() {
+        const creatorId =
+            currentCreatorId();
+
+        await apiFetch(
+            `/api/creator-panel/donation-alerts/test?creatorId=${encodeURIComponent(creatorId)
+            }`,
+            {
+                method: "POST",
+
+                body: JSON.stringify({
+                    donorName: "Donateur test",
+                    message:
+                        "Ceci est une alerte de test.",
+                    amountCents: 1000,
+                    currency: "EUR"
+                })
+            }
+        );
+
+        setOverlaysMessage(
+            "Alerte de test envoyée à l’overlay.",
             "success"
         );
     }
@@ -4461,6 +4498,11 @@
                     "noopener,noreferrer"
                 );
 
+                return;
+            }
+
+            if (action === "test") {
+                await testDonationOverlay();
                 return;
             }
 

@@ -93,9 +93,9 @@
             ...(
               options.body
                 ? {
-                    "Content-Type":
-                      "application/json"
-                  }
+                  "Content-Type":
+                    "application/json"
+                }
                 : {}
             ),
             ...(options.headers || {})
@@ -157,13 +157,13 @@
       data === undefined
         ? ""
         : (
-            "\n" +
-            JSON.stringify(
-              data,
-              null,
-              2
-            )
-          );
+          "\n" +
+          JSON.stringify(
+            data,
+            null,
+            2
+          )
+        );
 
     elements.debug.textContent =
       message + details;
@@ -231,7 +231,7 @@
 
       return (
         parsed &&
-        typeof parsed === "object"
+          typeof parsed === "object"
           ? parsed
           : {}
       );
@@ -458,8 +458,8 @@
     if (
 
 
-[
-"",
+      [
+        "",
         "all",
         "always",
         "any",
@@ -764,7 +764,8 @@
           exitAnimation:
             "fade"
         }
-    ]};
+      ]
+    };
   }
 
   function normalizeLayout(
@@ -789,12 +790,12 @@
 
     const video =
       parsed.video &&
-      typeof parsed.video ===
+        typeof parsed.video ===
         "object"
         ? {
-            ...fallback.video,
-            ...parsed.video
-          }
+          ...fallback.video,
+          ...parsed.video
+        }
         : fallback.video;
 
     let texts = [];
@@ -944,7 +945,7 @@
     while (
       (
         match =
-          pattern.exec(content)
+        pattern.exec(content)
       )
     ) {
       if (
@@ -967,7 +968,7 @@
 
       span.style.color =
         RICH_COLORS[
-          match[1].toLowerCase()
+        match[1].toLowerCase()
         ];
 
       span.textContent =
@@ -1044,10 +1045,9 @@
       );
 
     element.style.transform =
-      `rotate(${
-        numberOr(
-          layer.rotation
-        )
+      `rotate(${numberOr(
+        layer.rotation
+      )
       }deg)`;
 
     element.style.transformOrigin =
@@ -1098,39 +1098,39 @@
       ) => (
         exiting
           ? [
-              {
-                opacity:
-                  numberOr(
-                    layer.opacity,
-                    1
-                  ),
+            {
+              opacity:
+                numberOr(
+                  layer.opacity,
+                  1
+                ),
 
-                transform:
-                  visibleTransform
-              },
-              {
-                opacity: 0,
-                transform:
-                  hiddenTransform
-              }
-            ]
+              transform:
+                visibleTransform
+            },
+            {
+              opacity: 0,
+              transform:
+                hiddenTransform
+            }
+          ]
           : [
-              {
-                opacity: 0,
-                transform:
-                  hiddenTransform
-              },
-              {
-                opacity:
-                  numberOr(
-                    layer.opacity,
-                    1
-                  ),
+            {
+              opacity: 0,
+              transform:
+                hiddenTransform
+            },
+            {
+              opacity:
+                numberOr(
+                  layer.opacity,
+                  1
+                ),
 
-                transform:
-                  visibleTransform
-              }
-            ]
+              transform:
+                visibleTransform
+            }
+          ]
       );
 
     if (
@@ -1537,7 +1537,7 @@
 
     if (
       element instanceof
-        HTMLMediaElement
+      HTMLMediaElement
     ) {
       state.activeMedia.push(
         element
@@ -1637,13 +1637,13 @@
         "string"
         ? layer.textShadow
         : booleanOr(
-              layer.textShadow,
-              true
-            )
+          layer.textShadow,
+          true
+        )
           ? (
-              "0 3px 12px " +
-              "rgba(0, 0, 0, 0.75)"
-            )
+            "0 3px 12px " +
+            "rgba(0, 0, 0, 0.75)"
+          )
           : "none";
 
     const content =
@@ -1744,10 +1744,10 @@
     const scale =
       Math.min(
         window.innerWidth /
-          width,
+        width,
 
         window.innerHeight /
-          height
+        height
       );
 
     elements.stage.style.width =
@@ -1947,10 +1947,18 @@
       return;
     }
 
+    const forcedRule =
+      delivery.rulePublicId
+        ? state.rules.find(
+          item =>
+            item.publicId ===
+            delivery.rulePublicId
+        )
+        : null;
+
     const rule =
-      findMatchingRule(
-        donation
-      );
+      forcedRule ||
+      findMatchingRule(donation);
 
     if (!rule) {
       debug(
@@ -1965,7 +1973,19 @@
       return;
     }
 
+    const forcedVariant =
+      delivery.variantPublicId &&
+        Array.isArray(rule?.variants)
+        ? rule.variants.find(
+          item =>
+            item.publicId ===
+            delivery.variantPublicId &&
+            item.enabled !== false
+        )
+        : null;
+
     const variant =
+      forcedVariant ||
       chooseVariant(rule);
 
     if (!variant) {

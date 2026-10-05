@@ -4843,6 +4843,63 @@
         }
     }
 
+    async function sendOverlayTest() {
+        if (state.dirty) {
+            showToast(
+                "Enregistre la variante avant de la tester dans l’overlay.",
+                "error"
+            );
+
+            return;
+        }
+
+        if (elements.testButton) {
+            elements.testButton.disabled = true;
+        }
+
+        try {
+            await apiFetch(
+                `/api/creator-panel/donation-alerts/test?creatorId=${encodeURIComponent(
+                    state.creatorId
+                )
+                }`,
+                {
+                    method: "POST",
+
+                    body: JSON.stringify({
+                        donorName: "Donateur test",
+
+                        message:
+                            "Ceci est une alerte de test.",
+
+                        amountCents: 1000,
+                        currency: "EUR",
+
+                        rulePublicId:
+                            state.rulePublicId,
+
+                        variantPublicId:
+                            state.variantPublicId
+                    })
+                }
+            );
+
+            showToast(
+                "Test envoyé à l’overlay OBS."
+            );
+        } catch (error) {
+            showToast(
+                error.message ||
+                "Impossible d’envoyer le test.",
+                "error"
+            );
+        } finally {
+            if (elements.testButton) {
+                elements.testButton.disabled = false;
+            }
+        }
+    }
+
     function bindEvents() {
         bindTabs();
         bindVariableButtons();
@@ -4917,7 +4974,7 @@
         elements.testButton
             ?.addEventListener(
                 "click",
-                preview
+                sendOverlayTest
             );
 
         elements.replayButton
