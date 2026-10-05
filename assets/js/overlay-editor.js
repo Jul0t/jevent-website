@@ -4900,6 +4900,96 @@
         }
     }
 
+    // async function sendOverlayTest() {
+    //     if (
+    //         !state.creatorId ||
+    //         !state.rulePublicId ||
+    //         !state.variantPublicId
+    //     ) {
+    //         showToast(
+    //             "Impossible d’identifier cette variante.",
+    //             "error"
+    //         );
+
+    //         return;
+    //     }
+
+    //     /*
+    //      * L’overlay public utilise la version enregistrée.
+    //      * On enregistre donc les modifications avant le test.
+    //      */
+    //     if (state.dirty) {
+    //         await saveEditor();
+
+    //         if (state.dirty) {
+    //             return;
+    //         }
+    //     }
+
+    //     if (elements.testButton) {
+    //         elements.testButton.disabled = true;
+    //     }
+
+    //     try {
+    //         const donation = {
+    //             donorName: "Donateur test",
+    //             amountCents: 1000,
+    //             currency: "EUR",
+    //             message:
+    //                 "Ceci est une alerte de test."
+    //         };
+
+    //         await apiFetch(
+    //             (
+    //                 "/api/creator-panel/" +
+    //                 "donation-alerts/test" +
+    //                 `?creatorId=${encodeURIComponent(
+    //                     state.creatorId
+    //                 )}`
+    //             ),
+    //             {
+    //                 method: "POST",
+
+    //                 body: JSON.stringify({
+    //                     rulePublicId:
+    //                         state.rulePublicId,
+
+    //                     variantPublicId:
+    //                         state.variantPublicId,
+
+    //                     /*
+    //                      * Valeurs principales.
+    //                      */
+    //                     ...donation,
+
+    //                     /*
+    //                      * Également fourni sous forme
+    //                      * d’objet pour rester compatible
+    //                      * avec les deux formats de l’API.
+    //                      */
+    //                     donation
+    //                 })
+    //             }
+    //         );
+
+    //         showToast(
+    //             "Alerte de test envoyée à l’overlay."
+    //         );
+    //     } catch (error) {
+    //         console.error(error);
+
+    //         showToast(
+    //             error.message ||
+    //             "Impossible d’envoyer l’alerte de test.",
+    //             "error"
+    //         );
+    //     } finally {
+    //         if (elements.testButton) {
+    //             elements.testButton.disabled = false;
+    //         }
+    //     }
+    // }
+
     function bindEvents() {
         bindTabs();
         bindVariableButtons();
