@@ -1420,6 +1420,42 @@
     variant,
     mediaKind
   ) {
+    const media =
+      parseObject(
+        variant.media
+      );
+
+    const directUrl =
+      media[
+      `${mediaKind}Url`
+      ] ??
+      variant[
+      `${mediaKind}Url`
+      ];
+
+    /*
+     * L’API publique fournit directement
+     * l’URL protégée du média.
+     */
+    if (
+      typeof directUrl === "string" &&
+      directUrl.trim()
+    ) {
+      return directUrl.trim();
+    }
+
+    /*
+     * Compatibilité avec l’ancien format.
+     */
+    const storageKey =
+      variant[
+      `${mediaKind}StorageKey`
+      ];
+
+    if (!storageKey) {
+      return "";
+    }
+
     return (
       API_BASE +
       "/api/overlays/" +
@@ -1455,23 +1491,29 @@
       return null;
     }
 
+    const videoUrl =
+      getMediaUrl(
+        rule,
+        variant,
+        "video"
+      );
+
+    const imageUrl =
+      getMediaUrl(
+        rule,
+        variant,
+        "image"
+      );
+
     let element = null;
 
-    if (
-      variant.videoStorageKey
-    ) {
+    if (videoUrl) {
       const video =
         document.createElement(
           "video"
         );
 
-      video.src =
-        getMediaUrl(
-          rule,
-          variant,
-          "video"
-        );
-
+      video.src = videoUrl;
       video.preload = "auto";
       video.playsInline = true;
 
@@ -1491,40 +1533,77 @@
         layer.fit || "contain";
 
       video.addEventListener(
+        "loadeddata",
+        () => {
+          debug(
+            "Vidéo chargée.",
+            {
+              url: videoUrl,
+              duration:
+                video.duration
+            }
+          );
+        }
+      );
+
+      video.addEventListener(
         "error",
         () => {
           debug(
-            "Impossible de charger la vidéo."
+            "Impossible de charger la vidéo.",
+            {
+              url: videoUrl,
+
+              error:
+                video.error?.message ??
+                video.error?.code ??
+                "Erreur inconnue"
+            }
           );
         }
       );
 
       element = video;
-    } else if (
-      variant.imageStorageKey
-    ) {
+    } else if (imageUrl) {
       const image =
         document.createElement(
           "img"
         );
 
-      image.src =
-        getMediaUrl(
-          rule,
-          variant,
-          "image"
-        );
-
+      image.src = imageUrl;
       image.alt = "";
       image.draggable = false;
 
       image.style.objectFit =
         layer.fit || "contain";
 
+      image.addEventListener(
+        "error",
+        () => {
+          debug(
+            "Impossible de charger l’image.",
+            {
+              url: imageUrl
+            }
+          );
+        }
+      );
+
       element = image;
     }
 
     if (!element) {
+      debug(
+        "Aucun média disponible pour la variante.",
+        {
+          variant:
+            variant.publicId,
+
+          media:
+            variant.media
+        }
+      );
+
       return null;
     }
 
@@ -1536,7 +1615,9 @@
       layer
     );
 
-    elements.stage.append(element);
+    elements.stage.append(
+      element
+    );
 
     if (
       element instanceof
@@ -1671,9 +1752,14 @@
     rule,
     variant
   ) {
-    if (
-      !variant.soundStorageKey
-    ) {
+    const soundUrl =
+      getMediaUrl(
+        rule,
+        variant,
+        "sound"
+      );
+
+    if (!soundUrl) {
       return null;
     }
 
@@ -1682,13 +1768,7 @@
         "audio"
       );
 
-    audio.src =
-      getMediaUrl(
-        rule,
-        variant,
-        "sound"
-      );
-
+    audio.src = soundUrl;
     audio.preload = "auto";
 
     const configuredVolume =
