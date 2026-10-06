@@ -772,10 +772,13 @@
     rule,
     variant
   ) {
-    const parsed =
-      parseObject(
-        variant.layout
-      );
+    const parsed = parseObject(
+      variant.layout ??
+      variant.layoutJson ??
+      variant.layoutConfig ??
+      variant.settings ??
+      null
+    );
 
     const fallback =
       createDefaultLayout(
