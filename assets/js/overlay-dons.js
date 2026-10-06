@@ -1416,23 +1416,59 @@
   }
 
   function getMediaUrl(
+    rule,
     variant,
     mediaKind
   ) {
     const media =
-      variant?.media &&
-        typeof variant.media === "object"
-        ? variant.media
-        : {};
+      parseObject(
+        variant?.media
+      );
 
     const directUrl =
       media[`${mediaKind}Url`] ??
       variant?.[`${mediaKind}Url`] ??
       "";
 
-    return typeof directUrl === "string"
-      ? directUrl.trim()
-      : "";
+    /*
+     * Format actuel de l’API publique.
+     */
+    if (
+      typeof directUrl === "string" &&
+      directUrl.trim()
+    ) {
+      return directUrl.trim();
+    }
+
+    /*
+     * Ancien format, conservé en secours.
+     */
+    if (
+      !rule?.publicId ||
+      !variant?.publicId
+    ) {
+      return "";
+    }
+
+    return (
+      API_BASE +
+      "/api/overlays/" +
+      encodeURIComponent(
+        state.accessToken
+      ) +
+      "/donation-alerts/" +
+      encodeURIComponent(
+        rule.publicId
+      ) +
+      "/variants/" +
+      encodeURIComponent(
+        variant.publicId
+      ) +
+      "/media/" +
+      encodeURIComponent(
+        mediaKind
+      )
+    );
   }
 
   function createVideoLayer(
@@ -1446,20 +1482,44 @@
         true
       )
     ) {
+      console.warn(
+        "[Overlay dons] Calque vidéo masqué."
+      );
+
       return null;
     }
 
     const videoUrl =
       getMediaUrl(
+        rule,
         variant,
         "video"
       );
 
     const imageUrl =
       getMediaUrl(
+        rule,
         variant,
         "image"
       );
+
+    /*
+     * Ce message doit toujours apparaître,
+     * même sans ?debug=1.
+     */
+    console.log(
+      "[Overlay dons] Média détecté :",
+      {
+        variant:
+          variant?.publicId,
+
+        media:
+          variant?.media,
+
+        videoUrl,
+        imageUrl
+      }
+    );
 
     let element = null;
 
@@ -1473,12 +1533,6 @@
       video.preload = "auto";
       video.playsInline = true;
 
-      video.loop =
-        booleanOr(
-          layer.loop,
-          false
-        );
-
       video.muted =
         booleanOr(
           layer.muted,
@@ -1488,6 +1542,15 @@
       video.defaultMuted =
         video.muted;
 
+      video.loop =
+        booleanOr(
+          layer.loop,
+          false
+        );
+
+      video.disablePictureInPicture =
+        true;
+
       video.style.objectFit =
         layer.fit || "contain";
 
@@ -1495,13 +1558,29 @@
         "loadedmetadata",
         () => {
           console.log(
-            "[Overlay dons] Vidéo chargée :",
+            "[Overlay dons] Métadonnées vidéo chargées :",
             {
-              src: video.currentSrc,
-              duration: video.duration,
-              width: video.videoWidth,
-              height: video.videoHeight
+              source:
+                video.currentSrc,
+
+              duration:
+                video.duration,
+
+              width:
+                video.videoWidth,
+
+              height:
+                video.videoHeight
             }
+          );
+        }
+      );
+
+      video.addEventListener(
+        "canplay",
+        () => {
+          console.log(
+            "[Overlay dons] Vidéo prête à être jouée."
           );
         }
       );
@@ -1512,9 +1591,21 @@
           console.error(
             "[Overlay dons] Erreur vidéo :",
             {
-              src: video.currentSrc || videoUrl,
-              code: video.error?.code,
-              message: video.error?.message
+              source:
+                video.currentSrc ||
+                videoUrl,
+
+              code:
+                video.error?.code,
+
+              message:
+                video.error?.message,
+
+              networkState:
+                video.networkState,
+
+              readyState:
+                video.readyState
             }
           );
         }
@@ -1549,14 +1640,8 @@
 
     if (!element) {
       console.warn(
-        "[Overlay dons] Aucun média trouvé :",
-        {
-          variantPublicId:
-            variant?.publicId,
-
-          media:
-            variant?.media
-        }
+        "[Overlay dons] Aucun média disponible.",
+        variant
       );
 
       return null;
@@ -1581,6 +1666,12 @@
       state.activeMedia.push(
         element
       );
+
+      /*
+       * Force le chargement après insertion
+       * dans le DOM.
+       */
+      element.load();
     }
 
     return element;
