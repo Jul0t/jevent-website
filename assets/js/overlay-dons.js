@@ -1416,65 +1416,174 @@
   }
 
   function getMediaUrl(
-    rule,
     variant,
     mediaKind
   ) {
     const media =
-      parseObject(
-        variant.media
-      );
+      variant?.media &&
+        typeof variant.media === "object"
+        ? variant.media
+        : {};
 
     const directUrl =
-      media[
-      `${mediaKind}Url`
-      ] ??
-      variant[
-      `${mediaKind}Url`
-      ];
+      media[`${mediaKind}Url`] ??
+      variant?.[`${mediaKind}Url`] ??
+      "";
 
-    /*
-     * L’API publique fournit directement
-     * l’URL protégée du média.
-     */
+    return typeof directUrl === "string"
+      ? directUrl.trim()
+      : "";
+  }
+
+  function createVideoLayer(
+    rule,
+    variant,
+    layer
+  ) {
     if (
-      typeof directUrl === "string" &&
-      directUrl.trim()
-    ) {
-      return directUrl.trim();
-    }
-
-    /*
-     * Compatibilité avec l’ancien format.
-     */
-    const storageKey =
-      variant[
-      `${mediaKind}StorageKey`
-      ];
-
-    if (!storageKey) {
-      return "";
-    }
-
-    return (
-      API_BASE +
-      "/api/overlays/" +
-      encodeURIComponent(
-        state.accessToken
-      ) +
-      "/donation-alerts/" +
-      encodeURIComponent(
-        rule.publicId
-      ) +
-      "/variants/" +
-      encodeURIComponent(
-        variant.publicId
-      ) +
-      "/media/" +
-      encodeURIComponent(
-        mediaKind
+      !booleanOr(
+        layer.visible,
+        true
       )
+    ) {
+      return null;
+    }
+
+    const videoUrl =
+      getMediaUrl(
+        variant,
+        "video"
+      );
+
+    const imageUrl =
+      getMediaUrl(
+        variant,
+        "image"
+      );
+
+    let element = null;
+
+    if (videoUrl) {
+      const video =
+        document.createElement(
+          "video"
+        );
+
+      video.src = videoUrl;
+      video.preload = "auto";
+      video.playsInline = true;
+
+      video.loop =
+        booleanOr(
+          layer.loop,
+          false
+        );
+
+      video.muted =
+        booleanOr(
+          layer.muted,
+          true
+        );
+
+      video.defaultMuted =
+        video.muted;
+
+      video.style.objectFit =
+        layer.fit || "contain";
+
+      video.addEventListener(
+        "loadedmetadata",
+        () => {
+          console.log(
+            "[Overlay dons] Vidéo chargée :",
+            {
+              src: video.currentSrc,
+              duration: video.duration,
+              width: video.videoWidth,
+              height: video.videoHeight
+            }
+          );
+        }
+      );
+
+      video.addEventListener(
+        "error",
+        () => {
+          console.error(
+            "[Overlay dons] Erreur vidéo :",
+            {
+              src: video.currentSrc || videoUrl,
+              code: video.error?.code,
+              message: video.error?.message
+            }
+          );
+        }
+      );
+
+      element = video;
+    } else if (imageUrl) {
+      const image =
+        document.createElement(
+          "img"
+        );
+
+      image.src = imageUrl;
+      image.alt = "";
+      image.draggable = false;
+
+      image.style.objectFit =
+        layer.fit || "contain";
+
+      image.addEventListener(
+        "error",
+        () => {
+          console.error(
+            "[Overlay dons] Erreur image :",
+            imageUrl
+          );
+        }
+      );
+
+      element = image;
+    }
+
+    if (!element) {
+      console.warn(
+        "[Overlay dons] Aucun média trouvé :",
+        {
+          variantPublicId:
+            variant?.publicId,
+
+          media:
+            variant?.media
+        }
+      );
+
+      return null;
+    }
+
+    element.className =
+      "donation-overlay-media";
+
+    applyLayerPosition(
+      element,
+      layer
     );
+
+    elements.stage.append(
+      element
+    );
+
+    if (
+      element instanceof
+      HTMLMediaElement
+    ) {
+      state.activeMedia.push(
+        element
+      );
+    }
+
+    return element;
   }
 
   function createVideoLayer(
