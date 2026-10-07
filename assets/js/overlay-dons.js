@@ -88,8 +88,14 @@
         {
           ...options,
 
+          cache:
+            options.cache ??
+            "no-store",
+
           headers: {
-            Accept: "application/json",
+            Accept:
+              "application/json",
+
             ...(
               options.body
                 ? {
@@ -98,6 +104,7 @@
                 }
                 : {}
             ),
+
             ...(options.headers || {})
           }
         }
@@ -1415,6 +1422,34 @@
     return delay + duration;
   }
 
+  function addMediaVersion(
+    rawUrl,
+    variant
+  ) {
+    if (!rawUrl) {
+      return "";
+    }
+
+    const url =
+      new URL(
+        rawUrl,
+        window.location.href
+      );
+
+    const version =
+      variant?.mediaUpdatedAt ??
+      variant?.updatedAt ??
+      variant?.updated_at ??
+      "8";
+
+    url.searchParams.set(
+      "v",
+      String(version)
+    );
+
+    return url.toString();
+  }
+
   function getMediaUrl(
     rule,
     variant,
@@ -1437,7 +1472,10 @@
       typeof directUrl === "string" &&
       directUrl.trim()
     ) {
-      return directUrl.trim();
+      return addMediaVersion(
+        directUrl.trim(),
+        variant
+      );
     }
 
     /*
@@ -1450,7 +1488,7 @@
       return "";
     }
 
-    return (
+    const fallbackUrl =
       API_BASE +
       "/api/overlays/" +
       encodeURIComponent(
@@ -1467,7 +1505,11 @@
       "/media/" +
       encodeURIComponent(
         mediaKind
-      )
+      );
+
+    return addMediaVersion(
+      fallbackUrl,
+      variant
     );
   }
 
@@ -2191,10 +2233,28 @@
             data.claimToken;
         }
 
+        /*
+         * Recharge les dernières modifications avant
+         * d’afficher l’alerte.
+         */
+        try {
+          await loadConfiguration();
+
+          debug(
+            "Configuration actualisée avant l’alerte."
+          );
+        } catch (error) {
+          debug(
+            "Impossible d’actualiser la configuration avant l’alerte.",
+            error.message
+          );
+        }
+
         await processDelivery(
           delivery
         );
       }
+
     } catch (error) {
       debug(
         "Erreur pendant la récupération des dons.",
