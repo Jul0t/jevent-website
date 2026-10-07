@@ -1334,7 +1334,8 @@
 
   function scheduleLayer(
     element,
-    layer
+    layer,
+    onShow = null
   ) {
     const delay =
       Math.max(
@@ -1360,6 +1361,17 @@
       () => {
         element.style.visibility =
           "visible";
+
+        if (typeof onShow === "function") {
+          Promise.resolve(onShow()).catch(
+            error => {
+              debug(
+                "Impossible de révéler le don.",
+                error.message
+              );
+            }
+          );
+        }
 
         animateLayer(
           element,
@@ -2006,6 +2018,8 @@
         );
     }
 
+    let revealStarted = false;
+
     for (
       const textLayer of
       layout.texts
@@ -2026,7 +2040,23 @@
 
           scheduleLayer(
             textElement,
-            textLayer
+            textLayer,
+            (
+              /\{\{\s*amount\s*\}\}|\{\s*amount\s*\}|\$\s*amount\s*\$/i.test(
+                String(
+                  textLayer.template || ""
+                )
+              )
+                ? async () => {
+                  if (revealStarted) {
+                    return;
+                  }
+
+                  revealStarted = true;
+                  await revealDelivery(delivery);
+                }
+                : null
+            )
           )
         );
     }
@@ -2067,6 +2097,38 @@
     );
 
     cleanupScene();
+  }
+
+  async function revealDelivery(delivery) {
+    const deliveryId =
+      delivery.publicId ||
+      delivery.deliveryPublicId;
+
+    if (
+      !deliveryId ||
+      !delivery.claimToken
+    ) {
+      return;
+    }
+
+    await apiFetch(
+      "/api/overlays/" +
+      encodeURIComponent(
+        state.accessToken
+      ) +
+      "/donations/" +
+      encodeURIComponent(
+        deliveryId
+      ) +
+      "/reveal",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          claimToken:
+            delivery.claimToken
+        })
+      }
+    );
   }
 
   async function completeDelivery(
