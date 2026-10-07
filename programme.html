@@ -4,57 +4,33 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta
-    name="description"
-    content="Découvre le programme complet du JEvent 26 et retrouve les activités de tous les créateurs."
-  >
+  <meta name="description"
+    content="Découvre le programme complet du JEvent 26 et retrouve les activités de tous les créateurs.">
 
-  <meta
-    name="theme-color"
-    content="#030806"
-  >
+  <meta name="theme-color" content="#030806">
 
   <title>
     Programme — JEvent 26
   </title>
 
   <!-- Base visuelle commune avec l’accueil -->
-  <link
-    rel="stylesheet"
-    href="/assets/css/home.css?v=3"
-  >
+  <link rel="stylesheet" href="/assets/css/home.css?v=3">
 
-  <link
-    rel="stylesheet"
-    href="/assets/css/programme.css?v=4"
-  >
+  <link rel="stylesheet" href="/assets/css/programme.css?v=4">
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/marked@18.0.12/lib/marked.umd.min.js"
-    defer
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@18.0.12/lib/marked.umd.min.js" defer></script>
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/dompurify@3.4.15/dist/purify.min.js"
-    defer
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.15/dist/purify.min.js" defer></script>
 
-  <script
-    src="/assets/js/programme.js?v=2"
-    defer
-  ></script>
+  <script src="/assets/js/programme.js?v=2" defer></script>
+
+  <link rel="icon" href="/assets/favicon.ico">
 </head>
 
 <body>
-  <a
-    class="skip-link"
-    href="#mainContent"
-  >
+  <a class="skip-link" href="#mainContent">
     Aller au contenu
   </a>
 
@@ -62,16 +38,8 @@
 
   <header class="site-header">
     <div class="site-header-inner">
-      <a
-        class="brand"
-        href="/"
-        aria-label="Accueil du JEvent 26"
-      >
-        <img
-          class="brand-logo"
-          src="/assets/jevent_logo.png"
-          alt=""
-        >
+      <a class="brand" href="/" aria-label="Accueil du JEvent 26">
+        <img class="brand-logo" src="/assets/jevent_logo.png" alt="">
 
         <span class="brand-copy">
           <strong>JEvent 26</strong>
@@ -82,32 +50,19 @@
         </span>
       </a>
 
-      <button
-        id="navigationToggle"
-        class="navigation-toggle"
-        type="button"
-        aria-label="Ouvrir le menu"
-        aria-controls="mainNavigation"
-        aria-expanded="false"
-      >
+      <button id="navigationToggle" class="navigation-toggle" type="button" aria-label="Ouvrir le menu"
+        aria-controls="mainNavigation" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
       </button>
 
-      <nav
-        id="mainNavigation"
-        class="main-navigation"
-        aria-label="Navigation principale"
-      >
+      <nav id="mainNavigation" class="main-navigation" aria-label="Navigation principale">
         <a href="/">
           Accueil
         </a>
 
-        <a
-          class="is-active"
-          href="/programme.html"
-        >
+        <a class="is-active" href="/programme.html">
           Programme
         </a>
 
@@ -127,10 +82,7 @@
           </span>
         </a>
 
-        <a
-          class="navigation-account"
-          href="/compte.html"
-        >
+        <a class="navigation-account" href="/compte.html">
           Mon compte
         </a>
       </nav>
@@ -159,19 +111,11 @@
           </p>
         </div>
 
-        <div
-          id="currentProgramStatus"
-          class="program-status-card"
-        >
-          <span
-            class="program-status-icon"
-            aria-hidden="true"
-          >
+        <div id="currentProgramStatus" class="program-status-card">
+          <span class="program-status-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24">
-              <path
-                d="M12 7v5l3.5 2M21 12a9 9 0 1 1-18 0
-                   9 9 0 0 1 18 0Z"
-              />
+              <path d="M12 7v5l3.5 2M21 12a9 9 0 1 1-18 0
+                   9 9 0 0 1 18 0Z" />
             </svg>
           </span>
 
@@ -192,10 +136,7 @@
 
     <!-- Filtres -->
 
-    <section
-      class="program-controls-section"
-      aria-label="Filtres du programme"
-    >
+    <section class="program-controls-section" aria-label="Filtres du programme">
       <div class="page-container">
         <div class="program-controls">
           <div class="program-controls-heading">
@@ -209,19 +150,9 @@
               </strong>
             </div>
 
-            <button
-              id="resetFiltersButton"
-              class="reset-filters-button"
-              type="button"
-              hidden
-            >
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  d="M4 7h11a5 5 0 1 1 0 10H9M4 7l4-4M4 7l4 4"
-                />
+            <button id="resetFiltersButton" class="reset-filters-button" type="button" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 7h11a5 5 0 1 1 0 10H9M4 7l4-4M4 7l4 4" />
               </svg>
 
               Tout afficher
@@ -239,12 +170,7 @@
               </small>
             </div>
 
-            <div
-              id="dayFilterList"
-              class="day-filter-list"
-              role="tablist"
-              aria-label="Journées du programme"
-            >
+            <div id="dayFilterList" class="day-filter-list" role="tablist" aria-label="Journées du programme">
               <!-- Généré par programme.js -->
             </div>
           </div>
@@ -261,11 +187,7 @@
             </div>
 
             <div class="creator-filter-scroll">
-              <div
-                id="creatorFilterList"
-                class="creator-filter-list"
-                aria-label="Filtrer par créateur"
-              >
+              <div id="creatorFilterList" class="creator-filter-list" aria-label="Filtrer par créateur">
                 <!-- Généré par programme.js -->
               </div>
             </div>
@@ -273,12 +195,7 @@
 
           <!-- Résumé des filtres -->
 
-          <div
-            id="activeFilters"
-            class="active-filters"
-            aria-live="polite"
-            hidden
-          ></div>
+          <div id="activeFilters" class="active-filters" aria-live="polite" hidden></div>
         </div>
       </div>
     </section>
@@ -287,10 +204,7 @@
 
     <section class="program-main-section">
       <div class="page-container">
-        <div
-          id="programLoading"
-          class="program-loading"
-        >
+        <div id="programLoading" class="program-loading">
           <span class="program-loader"></span>
 
           <strong>
@@ -302,22 +216,13 @@
           </p>
         </div>
 
-        <div
-          id="programError"
-          class="program-error"
-          hidden
-        >
+        <div id="programError" class="program-error" hidden>
           <span class="program-error-icon">
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 8v5M12 17h.01M10.3 3.6
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 8v5M12 17h.01M10.3 3.6
                    2.2 17.8a2 2 0 0 0 1.7 3h16.2
                    a2 2 0 0 0 1.7-3L13.7 3.6
-                   a2 2 0 0 0-3.4 0Z"
-              />
+                   a2 2 0 0 0-3.4 0Z" />
             </svg>
           </span>
 
@@ -331,26 +236,15 @@
             </p>
           </div>
 
-          <button
-            id="retryProgramButton"
-            class="button button-secondary"
-            type="button"
-          >
+          <button id="retryProgramButton" class="button button-secondary" type="button">
             Réessayer
           </button>
         </div>
 
-        <section
-          id="programContent"
-          class="program-content"
-          hidden
-        >
+        <section id="programContent" class="program-content" hidden>
           <header class="calendar-heading">
             <div>
-              <p
-                id="selectedDayEyebrow"
-                class="eyebrow"
-              >
+              <p id="selectedDayEyebrow" class="eyebrow">
                 Journée sélectionnée
               </p>
 
@@ -379,43 +273,25 @@
 
           <!-- Calendrier ordinateur -->
 
-          <div
-            id="calendarContainer"
-            class="public-program-calendar"
-          >
+          <div id="calendarContainer" class="public-program-calendar">
             <div class="calendar-scroll">
-              <div
-                id="calendarGrid"
-                class="calendar-grid"
-              ></div>
+              <div id="calendarGrid" class="calendar-grid"></div>
             </div>
           </div>
 
           <!-- Liste mobile -->
 
-          <div
-            id="mobileProgramList"
-            class="mobile-program-list"
-          ></div>
+          <div id="mobileProgramList" class="mobile-program-list"></div>
 
           <!-- Aucun résultat -->
 
-          <div
-            id="programEmpty"
-            class="program-empty"
-            hidden
-          >
+          <div id="programEmpty" class="program-empty" hidden>
             <span class="program-empty-icon">
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  d="M5 4v3M19 4v3M4 9h16M5 6h14
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 4v3M19 4v3M4 9h16M5 6h14
                      a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1
                      H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z
-                     M8 13h8M8 16h5"
-                />
+                     M8 13h8M8 16h5" />
               </svg>
             </span>
 
@@ -428,11 +304,7 @@
               les créateurs.
             </p>
 
-            <button
-              id="emptyResetButton"
-              class="button button-secondary"
-              type="button"
-            >
+            <button id="emptyResetButton" class="button button-secondary" type="button">
               Réinitialiser les filtres
             </button>
           </div>
@@ -443,18 +315,11 @@
 
   <!-- Détails d’une activité -->
 
-  <dialog
-    id="activityDialog"
-    class="activity-dialog"
-    aria-labelledby="activityDialogTitle"
-  >
+  <dialog id="activityDialog" class="activity-dialog" aria-labelledby="activityDialogTitle">
     <div class="activity-dialog-shell">
       <header class="activity-dialog-header">
         <div>
-          <p
-            id="activityDialogEyebrow"
-            class="eyebrow"
-          >
+          <p id="activityDialogEyebrow" class="eyebrow">
             Activité
           </p>
 
@@ -463,43 +328,22 @@
           </h2>
         </div>
 
-        <button
-          id="closeActivityDialog"
-          class="activity-dialog-close"
-          type="button"
-          aria-label="Fermer"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
+        <button id="closeActivityDialog" class="activity-dialog-close" type="button" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 6l12 12M18 6 6 18"></path>
           </svg>
         </button>
       </header>
 
-      <div
-        id="activityDialogContent"
-        class="activity-dialog-content"
-      ></div>
+      <div id="activityDialogContent" class="activity-dialog-content"></div>
 
       <footer class="activity-dialog-footer">
-        <a
-          id="activityCreatorLink"
-          class="button button-primary"
-          href="/createurs.html"
-        >
+        <a id="activityCreatorLink" class="button button-primary" href="/createurs.html">
           Voir le créateur
         </a>
 
-        <a
-          id="activityExternalLink"
-          class="button button-secondary"
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer"
-          hidden
-        >
+        <a id="activityExternalLink" class="button button-secondary" href="#" target="_blank" rel="noopener noreferrer"
+          hidden>
           Ouvrir le lien
         </a>
       </footer>
@@ -509,10 +353,7 @@
   <footer class="site-footer">
     <div class="page-container footer-layout">
       <div class="footer-brand">
-        <img
-          src="/assets/jevent_logo.png"
-          alt=""
-        >
+        <img src="/assets/jevent_logo.png" alt="">
 
         <div>
           <strong>JEvent 26</strong>
@@ -523,10 +364,7 @@
         </div>
       </div>
 
-      <nav
-        class="footer-navigation"
-        aria-label="Navigation de pied de page"
-      >
+      <nav class="footer-navigation" aria-label="Navigation de pied de page">
         <a href="/">
           Accueil
         </a>

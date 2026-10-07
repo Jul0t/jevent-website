@@ -4,46 +4,27 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta
-    name="description"
-    content="Découvre les créateurs participant au JEvent 26, leurs directs et leurs cagnottes."
-  >
+  <meta name="description" content="Découvre les créateurs participant au JEvent 26, leurs directs et leurs cagnottes.">
 
-  <meta
-    name="theme-color"
-    content="#030806"
-  >
+  <meta name="theme-color" content="#030806">
 
   <title>
     Les créateurs — JEvent 26
   </title>
 
-  <link
-    rel="stylesheet"
-    href="/assets/css/home.css?v=6"
-  >
+  <link rel="icon" href="/assets/favicon.ico">
 
-  <link
-    rel="stylesheet"
-    href="/assets/css/createurs.css?v=2"
-  >
+  <link rel="stylesheet" href="/assets/css/home.css?v=6">
 
-  <script
-    src="/assets/js/createurs.js?v=4"
-    defer
-  ></script>
+  <link rel="stylesheet" href="/assets/css/createurs.css?v=2">
+
+  <script src="/assets/js/createurs.js?v=4" defer></script>
 </head>
 
 <body>
-  <a
-    class="skip-link"
-    href="#mainContent"
-  >
+  <a class="skip-link" href="#mainContent">
     Aller au contenu
   </a>
 
@@ -51,16 +32,8 @@
 
   <header class="site-header">
     <div class="site-header-inner">
-      <a
-        class="brand"
-        href="/"
-        aria-label="Accueil du JEvent 26"
-      >
-        <img
-          class="brand-logo"
-          src="/assets/jevent_logo.png"
-          alt=""
-        >
+      <a class="brand" href="/" aria-label="Accueil du JEvent 26">
+        <img class="brand-logo" src="/assets/jevent_logo.png" alt="">
 
         <span class="brand-copy">
           <strong>JEvent 26</strong>
@@ -71,24 +44,14 @@
         </span>
       </a>
 
-      <button
-        id="navigationToggle"
-        class="navigation-toggle"
-        type="button"
-        aria-label="Ouvrir le menu"
-        aria-controls="mainNavigation"
-        aria-expanded="false"
-      >
+      <button id="navigationToggle" class="navigation-toggle" type="button" aria-label="Ouvrir le menu"
+        aria-controls="mainNavigation" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
       </button>
 
-      <nav
-        id="mainNavigation"
-        class="main-navigation"
-        aria-label="Navigation principale"
-      >
+      <nav id="mainNavigation" class="main-navigation" aria-label="Navigation principale">
         <a href="/">
           Accueil
         </a>
@@ -97,10 +60,7 @@
           Programme
         </a>
 
-        <a
-          class="is-active"
-          href="/createurs.html"
-        >
+        <a class="is-active" href="/createurs.html">
           Créateurs
         </a>
 
@@ -108,24 +68,15 @@
           L’association
         </a>
 
-        <a
-          href="/#boutique"
-          data-shop-link
-        >
+        <a href="/#boutique" data-shop-link>
           Boutique
 
-          <span
-            id="shopNavigationBadge"
-            class="navigation-badge"
-          >
+          <span id="shopNavigationBadge" class="navigation-badge">
             12 oct.
           </span>
         </a>
 
-        <a
-          class="navigation-account"
-          href="/compte.html"
-        >
+        <a class="navigation-account" href="/compte.html">
           Mon compte
         </a>
       </nav>
@@ -185,63 +136,31 @@
 
     <!-- Recherche et filtres -->
 
-    <section
-      class="creators-controls-section"
-      aria-label="Rechercher et filtrer les créateurs"
-    >
+    <section class="creators-controls-section" aria-label="Rechercher et filtrer les créateurs">
       <div class="page-container">
         <div class="creators-controls">
           <div class="creator-search">
-            <span
-              class="creator-search-icon"
-              aria-hidden="true"
-            >
+            <span class="creator-search-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
-                <circle
-                  cx="11"
-                  cy="11"
-                  r="7"
-                ></circle>
+                <circle cx="11" cy="11" r="7"></circle>
 
                 <path d="m16.5 16.5 4 4"></path>
               </svg>
             </span>
 
-            <input
-              id="creatorSearchInput"
-              type="search"
-              autocomplete="off"
-              placeholder="Rechercher un créateur…"
-              aria-label="Rechercher un créateur"
-            >
+            <input id="creatorSearchInput" type="search" autocomplete="off" placeholder="Rechercher un créateur…"
+              aria-label="Rechercher un créateur">
 
-            <button
-              id="clearSearchButton"
-              class="clear-search-button"
-              type="button"
-              aria-label="Effacer la recherche"
-              hidden
-            >
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
+            <button id="clearSearchButton" class="clear-search-button" type="button" aria-label="Effacer la recherche"
+              hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M6 6l12 12M18 6 6 18"></path>
               </svg>
             </button>
           </div>
 
-          <div
-            class="creator-filter-list"
-            role="group"
-            aria-label="Filtrer les créateurs"
-          >
-            <button
-              class="creator-filter-button is-active"
-              type="button"
-              data-filter="all"
-              aria-pressed="true"
-            >
+          <div class="creator-filter-list" role="group" aria-label="Filtrer les créateurs">
+            <button class="creator-filter-button is-active" type="button" data-filter="all" aria-pressed="true">
               Tous
 
               <span id="allFilterCount">
@@ -249,16 +168,8 @@
               </span>
             </button>
 
-            <button
-              class="creator-filter-button"
-              type="button"
-              data-filter="live"
-              aria-pressed="false"
-            >
-              <span
-                class="filter-live-dot"
-                aria-hidden="true"
-              ></span>
+            <button class="creator-filter-button" type="button" data-filter="live" aria-pressed="false">
+              <span class="filter-live-dot" aria-hidden="true"></span>
 
               En direct
 
@@ -267,12 +178,7 @@
               </span>
             </button>
 
-            <button
-              class="creator-filter-button"
-              type="button"
-              data-filter="offline"
-              aria-pressed="false"
-            >
+            <button class="creator-filter-button" type="button" data-filter="offline" aria-pressed="false">
               Hors ligne
 
               <span id="offlineFilterCount">
@@ -284,15 +190,9 @@
 
           <!-- Menu de tri personnalisé -->
 
-          <details
-            id="creatorSortMenu"
-            class="creator-sort-menu"
-          >
+          <details id="creatorSortMenu" class="creator-sort-menu">
             <summary>
-              <span
-                class="sort-menu-icon"
-                aria-hidden="true"
-              >
+              <span class="sort-menu-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24">
                   <path d="M8 6h12M4 6h.01M8 12h8M4 12h.01M8 18h5M4 18h.01"></path>
                 </svg>
@@ -302,21 +202,13 @@
                 En direct d’abord
               </span>
 
-              <svg
-                class="sort-menu-arrow"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
+              <svg class="sort-menu-arrow" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m7 9 5 5 5-5"></path>
               </svg>
             </summary>
 
             <div class="creator-sort-options">
-              <button
-                class="creator-sort-option is-selected"
-                type="button"
-                data-sort="default"
-              >
+              <button class="creator-sort-option is-selected" type="button" data-sort="default">
                 <span>
                   En direct d’abord
                 </span>
@@ -326,11 +218,7 @@
                 </small>
               </button>
 
-              <button
-                class="creator-sort-option"
-                type="button"
-                data-sort="name"
-              >
+              <button class="creator-sort-option" type="button" data-sort="name">
                 <span>
                   Nom de A à Z
                 </span>
@@ -340,11 +228,7 @@
                 </small>
               </button>
 
-              <button
-                class="creator-sort-option"
-                type="button"
-                data-sort="viewers"
-              >
+              <button class="creator-sort-option" type="button" data-sort="viewers">
                 <span>
                   Plus regardés
                 </span>
@@ -378,19 +262,9 @@
             </p>
           </div>
 
-          <button
-            id="resetCreatorsFilters"
-            class="reset-creators-filters"
-            type="button"
-            hidden
-          >
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                d="M4 7h11a5 5 0 1 1 0 10H9M4 7l4-4M4 7l4 4"
-              ></path>
+          <button id="resetCreatorsFilters" class="reset-creators-filters" type="button" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h11a5 5 0 1 1 0 10H9M4 7l4-4M4 7l4 4"></path>
             </svg>
 
             Tout afficher
@@ -399,14 +273,8 @@
 
         <!-- Chargement -->
 
-        <div
-          id="creatorsLoading"
-          class="creators-loading"
-        >
-          <span
-            class="creators-loader"
-            aria-hidden="true"
-          ></span>
+        <div id="creatorsLoading" class="creators-loading">
+          <span class="creators-loader" aria-hidden="true"></span>
 
           <strong>
             Chargement des créateurs…
@@ -419,22 +287,13 @@
 
         <!-- Erreur -->
 
-        <div
-          id="creatorsError"
-          class="creators-error"
-          hidden
-        >
+        <div id="creatorsError" class="creators-error" hidden>
           <span class="creators-error-icon">
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 8v5M12 17h.01M10.3 3.6
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 8v5M12 17h.01M10.3 3.6
                    2.2 17.8a2 2 0 0 0 1.7 3h16.2
                    a2 2 0 0 0 1.7-3L13.7 3.6
-                   a2 2 0 0 0-3.4 0Z"
-              ></path>
+                   a2 2 0 0 0-3.4 0Z"></path>
             </svg>
           </span>
 
@@ -448,40 +307,21 @@
             </p>
           </div>
 
-          <button
-            id="retryCreatorsButton"
-            class="button button-secondary"
-            type="button"
-          >
+          <button id="retryCreatorsButton" class="button button-secondary" type="button">
             Réessayer
           </button>
         </div>
 
         <!-- Grille -->
 
-        <div
-          id="creatorsGrid"
-          class="creators-grid"
-          hidden
-        ></div>
+        <div id="creatorsGrid" class="creators-grid" hidden></div>
 
         <!-- Aucun résultat -->
 
-        <div
-          id="creatorsEmpty"
-          class="creators-empty"
-          hidden
-        >
+        <div id="creatorsEmpty" class="creators-empty" hidden>
           <span class="creators-empty-icon">
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <circle
-                cx="11"
-                cy="11"
-                r="7"
-              ></circle>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
 
               <path d="m16.5 16.5 4 4"></path>
             </svg>
@@ -496,11 +336,7 @@
             filtres sélectionnés.
           </p>
 
-          <button
-            id="emptyResetCreatorsButton"
-            class="button button-secondary"
-            type="button"
-          >
+          <button id="emptyResetCreatorsButton" class="button button-secondary" type="button">
             Réinitialiser les filtres
           </button>
         </div>
@@ -513,15 +349,10 @@
       <div class="page-container">
         <article class="creators-donation-card">
           <div class="creators-donation-icon">
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 21s-7-4.6-7-11a4 4 0 0 1
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21s-7-4.6-7-11a4 4 0 0 1
                    7-2.6A4 4 0 0 1 19 10c0 6.4-7
-                   11-7 11Z"
-              ></path>
+                   11-7 11Z"></path>
             </svg>
           </div>
 
@@ -541,10 +372,7 @@
             </p>
           </div>
 
-          <a
-            class="button button-primary"
-            href="/programme.html"
-          >
+          <a class="button button-primary" href="/programme.html">
             Découvrir le programme
           </a>
         </article>
@@ -555,10 +383,7 @@
   <footer class="site-footer">
     <div class="page-container footer-layout">
       <div class="footer-brand">
-        <img
-          src="/assets/jevent_logo.png"
-          alt=""
-        >
+        <img src="/assets/jevent_logo.png" alt="">
 
         <div>
           <strong>JEvent 26</strong>
@@ -569,10 +394,7 @@
         </div>
       </div>
 
-      <nav
-        class="footer-navigation"
-        aria-label="Navigation de pied de page"
-      >
+      <nav class="footer-navigation" aria-label="Navigation de pied de page">
         <a href="/">
           Accueil
         </a>
@@ -589,10 +411,7 @@
           Association
         </a>
 
-        <a
-          href="/#boutique"
-          data-shop-link
-        >
+        <a href="/#boutique" data-shop-link>
           Boutique
         </a>
       </nav>

@@ -1,8 +1,11 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="/assets/favicon.ico">
 
   <title>Panel modérateur — JEvent</title>
 
@@ -200,10 +203,7 @@
     <header class="site-header">
       <a class="brand" href="/">
         <span class="brand-logo">
-          <img
-            src="/assets/jevent_logo.png"
-            alt="Logo du JEvent"
-          >
+          <img src="/assets/jevent_logo.png" alt="Logo du JEvent">
         </span>
 
         <span>
@@ -291,27 +291,27 @@
 
   <script>
     async function verifyModeratorAccess() {
-  const response = await fetch(
-    `${API}/api/auth/me`,
-    {
-      credentials: "include"
+      const response = await fetch(
+        `${API}/api/auth/me`,
+        {
+          credentials: "include"
+        }
+      );
+
+      const data = await response.json();
+
+      if (!data.authenticated) {
+        location.replace("/");
+        return false;
+      }
+
+      if (!data.isModerator) {
+        location.replace("/compte.html");
+        return false;
+      }
+
+      return true;
     }
-  );
-
-  const data = await response.json();
-
-  if (!data.authenticated) {
-    location.replace("/");
-    return false;
-  }
-
-  if (!data.isModerator) {
-    location.replace("/compte.html");
-    return false;
-  }
-
-  return true;
-}
 
     const API = "https://api.jevent.julot.fr";
 
@@ -702,25 +702,26 @@
       }
     });
 
-async function startPage() {
-  const allowed = await verifyModeratorAccess();
+    async function startPage() {
+      const allowed = await verifyModeratorAccess();
 
-  if (!allowed) {
-    return;
-  }
+      if (!allowed) {
+        return;
+      }
 
-  try {
-    await Promise.all([
-      loadFeatures(),
-      loadUploads()
-    ]);
-  } catch (error) {
-    showMessage(error.message, "error");
-  }
-}
+      try {
+        await Promise.all([
+          loadFeatures(),
+          loadUploads()
+        ]);
+      } catch (error) {
+        showMessage(error.message, "error");
+      }
+    }
 
-startPage();
+    startPage();
 
   </script>
 </body>
+
 </html>
