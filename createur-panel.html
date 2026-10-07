@@ -12,7 +12,7 @@
 
   <link rel="icon" href="/assets/favicon.ico">
 
-  <link rel="stylesheet" href="/assets/css/createur-panel.css?v=10">
+  <link rel="stylesheet" href="/assets/css/createur-panel.css?v=11">
 </head>
 
 <body class="creator-dashboard-body">
@@ -417,6 +417,23 @@
                     </small>
                   </article>
                 </div>
+              </section>
+
+              <!-- Historique des dons -->
+
+              <section class="dashboard-block dashboard-donation-history">
+                <header class="dashboard-block-heading">
+                  <div>
+                    <span>Temps réel</span>
+                    <h2>Historique des dons</h2>
+                  </div>
+
+                  <span id="donationHistoryStatus" class="dashboard-last-update">
+                    Chargement…
+                  </span>
+                </header>
+
+                <div id="donationHistoryList" class="dashboard-donation-history-list" aria-live="polite"></div>
               </section>
 
               <!-- Actions rapides -->
@@ -837,6 +854,19 @@
             </label>
             <label class="dashboard-setting-row">
               <span>
+                <strong>Masquer les dons jusqu’à l’overlay</strong>
+
+                <small>
+                  Cache le montant, le pseudo et le message jusqu’à
+                  l’apparition du montant dans l’animation.
+                </small>
+              </span>
+
+              <input id="hideDonationDetailsUntilOverlay" type="checkbox" checked>
+            </label>
+
+            <label class="dashboard-setting-row">
+              <span>
                 <strong>Mode sombre</strong>
                 <small>
                   Utiliser une apparence adaptée à un thème sombre.
@@ -1248,6 +1278,7 @@
 
   <script src="/assets/js/createur-panel.js?v=13" defer></script>
   <script src="/assets/js/createur-panel-alerts.js?v=5" defer></script>
+  <script src="/assets/js/createur-panel-donations.js?v=1" defer></script>
 </body>
 
 </html>

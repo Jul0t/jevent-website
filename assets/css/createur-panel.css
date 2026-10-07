@@ -5703,3 +5703,78 @@ body.is-dark #donationAlertEditorDialog {
   opacity: 0.5;
   cursor: wait;
 }
+
+.dashboard-donation-history-list {
+  display: grid;
+  gap: 10px;
+}
+
+.dashboard-donation-history-item {
+  display: flex;
+  padding: 14px 16px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid var(--dashboard-border);
+  border-radius: var(--dashboard-radius);
+  background: var(--dashboard-surface-soft);
+}
+
+.dashboard-donation-history-item.is-masked {
+  border-color: rgba(217, 139, 40, 0.35);
+  background: rgba(217, 139, 40, 0.08);
+}
+
+.dashboard-donation-history-content {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.dashboard-donation-history-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dashboard-donation-history-heading strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboard-donation-history-amount {
+  color: var(--dashboard-accent-dark);
+  font-weight: 800;
+}
+
+.dashboard-donation-history-message {
+  margin: 0;
+  color: var(--dashboard-muted);
+  overflow-wrap: anywhere;
+}
+
+.dashboard-donation-history-date {
+  color: var(--dashboard-muted);
+  font-size: 0.75rem;
+}
+
+.dashboard-donation-history-empty {
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+  color: var(--dashboard-muted);
+  border: 1px dashed var(--dashboard-border-strong);
+  border-radius: var(--dashboard-radius);
+}
+
+@media (max-width: 650px) {
+  .dashboard-donation-history-item {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .dashboard-donation-history-item .dashboard-button {
+    width: 100%;
+  }
+}
