@@ -1129,6 +1129,31 @@
             : "";
     }
 
+    function updateCreateVariantButton(
+        rule = getActiveRule()
+    ) {
+        if (!elements.createVariantButton) {
+            return;
+        }
+
+        const variants = getVariants(rule);
+
+        const selectionMode =
+            elements.selectionMode?.value ||
+            rule?.selectionMode ||
+            "fixed";
+
+        const blocked =
+            selectionMode === "fixed" &&
+            variants.length >= 1;
+
+        elements.createVariantButton.disabled = blocked;
+
+        elements.createVariantButton.title = blocked
+            ? "Une animation fixe ne peut contenir qu’une seule variante."
+            : "";
+    }
+
     function renderVariants(rule) {
         if (!elements.variantsList) {
             return;
@@ -1252,6 +1277,7 @@
     }
 
     async function createVariant() {
+
         const rule =
             getActiveRule();
 
@@ -1265,6 +1291,24 @@
         }
 
         const variants = getVariants(rule);
+        updateCreateVariantButton(rule);
+
+        const selectionMode =
+            elements.selectionMode?.value ||
+            rule.selectionMode ||
+            "fixed";
+
+        if (
+            selectionMode === "fixed" &&
+            variants.length >= 1
+        ) {
+            setMessage(
+                "Une animation fixe ne peut contenir qu’une seule variante.",
+                "error"
+            );
+
+            return;
+        }
 
         const mode =
             elements.selectionMode?.value ||
@@ -1467,12 +1511,17 @@
         );
     }
 
+    elements.selectionMode?.addEventListener(
+        "change",
+        () => {updateCreateVariantButton();}
+    );
+
     elements.selectionMode
         ?.addEventListener(
             "change",
             () => updateVariantCreationState()
         );
-        
+
     elements.createButton
         ?.addEventListener(
             "click",
