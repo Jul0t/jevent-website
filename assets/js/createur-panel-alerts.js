@@ -185,10 +185,11 @@
                 .toLowerCase();
 
         const aliases = {
-            all: "all",
-            any: "all",
-            always: "all",
-            any_amount: "all",
+            all: "default",
+            any: "default",
+            always: "default",
+            any_amount: "default",
+            default: "default",
 
             minimum: "minimum",
             at_least: "minimum",
@@ -203,11 +204,7 @@
             amount_range: "range"
         };
 
-        return (
-            aliases[normalized] ||
-            normalized ||
-            "all"
-        );
+        return aliases[normalized] || normalized || "default";
     }
 
     function centsToEuros(value) {
@@ -655,7 +652,7 @@
 
         if (elements.ruleCondition) {
             elements.ruleCondition.value =
-                "all";
+                "default";
         }
 
         if (elements.minimum) {
@@ -670,7 +667,7 @@
 
         if (elements.selectionMode) {
             elements.selectionMode.value =
-                "random";
+                "fixed";
         }
 
         if (elements.delay) {
@@ -731,9 +728,11 @@
                 rule.name || "";
 
             elements.ruleCondition.value =
-                rule.conditionType ||
-                rule.condition ||
-                "all";
+                normalizeConditionType(
+                    rule.conditionType ||
+                    rule.condition ||
+                    "default"
+                );
 
             elements.minimum.value =
                 centsToEuros(
@@ -748,8 +747,7 @@
                 );
 
             elements.selectionMode.value =
-                rule.selectionMode ||
-                "random";
+                rule.selectionMode || "fixed";
 
             elements.delay.value =
                 Number(
@@ -860,7 +858,7 @@
 
             selectionMode:
                 elements.selectionMode
-                    ?.value || "random",
+                    ?.value || "fixed",
 
             delayMs:
                 Math.round(
@@ -1109,6 +1107,28 @@
         }
     }
 
+    function updateVariantCreationState(rule = getActiveRule()) {
+        if (!elements.createVariantButton) {
+            return;
+        }
+
+        const variants = getVariants(rule);
+        updateVariantCreationState(rule);
+        const mode =
+            elements.selectionMode?.value ||
+            rule?.selectionMode ||
+            "fixed";
+
+        const blocked =
+            mode === "fixed" &&
+            variants.length >= 1;
+
+        elements.createVariantButton.disabled = blocked;
+        elements.createVariantButton.title = blocked
+            ? "Une alerte en variante fixe ne peut contenir qu’une variante."
+            : "";
+    }
+
     function renderVariants(rule) {
         if (!elements.variantsList) {
             return;
@@ -1244,12 +1264,28 @@
             return;
         }
 
+        const variants = getVariants(rule);
+
+        const mode =
+            elements.selectionMode?.value ||
+            rule.selectionMode ||
+            "fixed";
+
+        if (
+            mode === "fixed" &&
+            variants.length >= 1
+        ) {
+            setMessage(
+                "Une alerte en variante fixe ne peut contenir qu’une variante.",
+                "error"
+            );
+            return;
+        }
+
         elements.createVariantButton.disabled =
             true;
 
         try {
-            const variants =
-                getVariants(rule);
 
             const data =
                 await apiFetch(
@@ -1310,8 +1346,9 @@
                 "error"
             );
         } finally {
-            elements.createVariantButton.disabled =
-                false;
+            updateVariantCreationState(
+                getActiveRule() || rule
+            );
         }
     }
 
@@ -1430,6 +1467,12 @@
         );
     }
 
+    elements.selectionMode
+        ?.addEventListener(
+            "change",
+            () => updateVariantCreationState()
+        );
+        
     elements.createButton
         ?.addEventListener(
             "click",
