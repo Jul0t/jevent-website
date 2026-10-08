@@ -5778,3 +5778,15 @@ body.is-dark #donationAlertEditorDialog {
     width: 100%;
   }
 }
+
+.dashboard-button-danger {
+  color: #ff8f8f;
+  border-color: rgba(255, 90, 90, 0.4);
+  background: rgba(255, 70, 70, 0.1);
+}
+
+.dashboard-button-danger:hover {
+  color: #fff;
+  border-color: #ff5c5c;
+  background: rgba(255, 70, 70, 0.22);
+}

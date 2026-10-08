@@ -7,9 +7,9 @@
             "#donationHistoryList"
         );
 
-    const status =
+    const clearTestsButton =
         document.querySelector(
-            "#donationHistoryStatus"
+            "#clearDonationTests"
         );
 
     const setting =
@@ -17,7 +17,7 @@
             "#hideDonationDetailsUntilOverlay"
         );
 
-    if (!list || !status || !setting) {
+    if (!list || !clearTestsButton || !setting) {
         return;
     }
 
@@ -292,18 +292,47 @@
                     );
             }
 
-            status.textContent =
-                "À jour";
         } catch (error) {
             console.error(
                 "Historique des dons :",
                 error
             );
 
-            status.textContent =
-                "Erreur";
         } finally {
             loading = false;
+        }
+    }
+
+    async function clearDonationTests() {
+        const confirmed = window.confirm(
+            "Supprimer toutes les simulations de dons de ce créateur ?"
+        );
+
+        if (!confirmed || !creatorId) {
+            return;
+        }
+
+        clearTestsButton.disabled = true;
+
+        try {
+            const result = await apiFetch(
+                creatorUrl(
+                    "/api/creator-panel/donation-tests"
+                ),
+                {
+                    method: "DELETE"
+                }
+            );
+
+            await loadDonations();
+
+            window.alert(
+                `${result.deleted || 0} don(s) test annulé(s).`
+            );
+        } catch (error) {
+            window.alert(error.message);
+        } finally {
+            clearTestsButton.disabled = false;
         }
     }
 
@@ -396,6 +425,11 @@
                 1000
             );
     }
+
+    clearTestsButton.addEventListener(
+        "click",
+        clearDonationTests
+    );
 
     list.addEventListener(
         "click",

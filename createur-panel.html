@@ -12,7 +12,7 @@
 
   <link rel="icon" href="/assets/favicon.ico">
 
-  <link rel="stylesheet" href="/assets/css/createur-panel.css?v=11">
+  <link rel="stylesheet" href="/assets/css/createur-panel.css?v=12">
 </head>
 
 <body class="creator-dashboard-body">
@@ -428,9 +428,10 @@
                     <h2>Historique des dons</h2>
                   </div>
 
-                  <span id="donationHistoryStatus" class="dashboard-last-update">
-                    Chargement…
-                  </span>
+                  <button id="clearDonationTests" class="dashboard-button dashboard-button-danger" type="button">
+                    Annuler les dons test
+                  </button>
+
                 </header>
 
                 <div id="donationHistoryList" class="dashboard-donation-history-list" aria-live="polite"></div>
@@ -1239,7 +1240,7 @@
               <strong>Tirage manuel</strong>
 
               <small>
-                À la fin du chrono, tu devras appuyer sur
+                À la fin du chrono, tu devras appuy er sur
                 « Tirer le gagnant ».
               </small>
             </span>
@@ -1278,7 +1279,7 @@
 
   <script src="/assets/js/createur-panel.js?v=14" defer></script>
   <script src="/assets/js/createur-panel-alerts.js?v=5" defer></script>
-  <script src="/assets/js/createur-panel-donations.js?v=3" defer></script>
+  <script src="/assets/js/createur-panel-donations.js?v=4" defer></script>
 </body>
 
 </html>
