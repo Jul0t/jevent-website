@@ -82,17 +82,11 @@
     }
 
     function formatAmount(donation) {
-        return new Intl.NumberFormat(
-            "fr-FR",
-            {
-                style: "currency",
-                currency:
-                    donation.currency || "EUR"
-            }
-        ).format(
-            Number(
-                donation.amountCents || 0
-            ) / 100
+        return new Intl.NumberFormat("fr-FR", {
+            style: "currency",
+            currency: donation.currency || "EUR"
+        }).format(
+            Number(donation.amountCents || 0) / 100
         );
     }
 
