@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Barre de dons — JEvent</title>
+
+  <link rel="stylesheet" href="/assets/css/overlay-barre-dons.css?v=1">
+  <script src="/assets/js/overlay-barre-dons.js?v=1" defer></script>
+</head>
+
+<body>
+  <main id="donationBarOverlay" class="donation-bar-overlay" hidden>
+    <section class="donation-bar-card">
+      <header class="donation-bar-heading">
+        <strong id="donationBarTitle">Objectif de dons</strong>
+        <span id="donationBarPercentage">0 %</span>
+      </header>
+
+      <div class="donation-bar-track">
+        <div id="donationBarProgress" class="donation-bar-progress"></div>
+      </div>
+
+      <footer class="donation-bar-amounts">
+        <strong id="donationBarCurrent">0 €</strong>
+        <span id="donationBarTarget">sur 0 €</span>
+      </footer>
+    </section>
+  </main>
+
+  <p id="donationBarDebug" class="donation-bar-debug" hidden></p>
+</body>
+</html>
