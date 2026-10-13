@@ -117,6 +117,9 @@
         variantEnabled:
             $("#editorVariantEnabled"),
 
+        canvasPreset:
+            $("#editorCanvasPreset"),
+
         canvasWidth:
             $("#editorCanvasWidth"),
 
@@ -2888,9 +2891,29 @@
             canvasHeight()
         );
 
+        const resolution =
+            `${canvasWidth()}x${canvasHeight()}`;
+
+        const knownResolutions = [
+            "1920x1080",
+            "1280x720",
+            "1080x1920",
+            "1080x1080"
+        ];
+
+        setValue(
+            elements.canvasPreset,
+            knownResolutions.includes(resolution)
+                ? resolution
+                : "custom"
+        );
         setValue(
             elements.totalDuration,
-            totalDurationMs()
+            Number(
+                (
+                    totalDurationMs() / 1000
+                ).toFixed(1)
+            )
         );
 
         if (elements.soundStatus) {
@@ -5477,6 +5500,42 @@
                 markDirty
             );
 
+        elements.canvasPreset
+            ?.addEventListener(
+                "change",
+                () => {
+                    const value =
+                        elements.canvasPreset.value;
+
+                    if (value === "custom") {
+                        return;
+                    }
+
+                    const [
+                        width,
+                        height
+                    ] = value
+                        .split("x")
+                        .map(Number);
+
+                    if (!width || !height) {
+                        return;
+                    }
+
+                    pushHistory();
+
+                    state.layout.canvas.width =
+                        width;
+
+                    state.layout.canvas.height =
+                        height;
+
+                    markDirty();
+                    renderEverything();
+                    fitZoom();
+                }
+            );
+
         elements.canvasWidth
             ?.addEventListener(
                 "change",
@@ -5530,13 +5589,15 @@
                     pushHistory();
 
                     state.layout.durationMs =
-                        Math.max(
+                        clamp(
+                            Math.round(
+                                numberValue(
+                                    elements.totalDuration.value,
+                                    6
+                                ) * 1000
+                            ),
                             1000,
-                            numberValue(
-                                elements.totalDuration
-                                    .value,
-                                6000
-                            )
+                            60000
                         );
 
                     markDirty();

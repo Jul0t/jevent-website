@@ -12,9 +12,9 @@
 
     <link rel="icon" href="/assets/favicon.ico">
 
-    <link rel="stylesheet" href="/assets/css/overlay-editor.css?v=9">
+    <link rel="stylesheet" href="/assets/css/overlay-editor.css?v=10">
 
-    <script src="/assets/js/overlay-editor.js?v=13" defer></script>
+    <script src="/assets/js/overlay-editor.js?v=14" defer></script>
 </head>
 
 <body class="overlay-editor-page">
@@ -298,78 +298,163 @@
                         </div>
                     </section>
 
-                    <!-- Réglages -->
-                    <section class="editor-sidebar-panel" data-editor-sidebar-content="settings" hidden>
+                    <!-- Réglages généraux -->
+                    <section class="editor-sidebar-panel editor-general-settings" data-editor-sidebar-content="settings"
+                        hidden>
                         <div class="editor-panel-heading">
                             <div>
                                 <span class="editor-eyebrow">
-                                    Animation
+                                    Configuration
                                 </span>
 
-                                <h2>Réglages</h2>
+                                <h2>Réglages généraux</h2>
+
+                                <p>
+                                    Configure le comportement global de cette animation.
+                                </p>
                             </div>
                         </div>
 
-                        <label class="editor-field">
-                            <span>Nom de l’animation</span>
+                        <div class="editor-settings-stack">
 
-                            <input id="editorVariantName" type="text" maxlength="100" autocomplete="off">
-                        </label>
-
-                        <label class="editor-field">
-                            <span>Poids de sélection</span>
-
-                            <input id="editorVariantWeight" type="number" min="1" max="1000" step="1" value="1">
-
-                            <small>
-                                Utilisé lorsqu’une règle possède plusieurs animations.
-                            </small>
-                        </label>
-
-                        <label class="editor-switch-field">
-                            <span>
-                                <strong>Animation activée</strong>
-
-                                <small>
-                                    Une animation désactivée ne sera jamais affichée.
-                                </small>
-                            </span>
-
-                            <input id="editorVariantEnabled" type="checkbox" checked>
-                        </label>
-
-                        <div class="editor-field-group">
-                            <span class="editor-field-group-title">
-                                Résolution
-                            </span>
-
-                            <div class="editor-inline-fields">
-                                <label class="editor-field">
-                                    <span>Largeur</span>
-
-                                    <input id="editorCanvasWidth" type="number" value="1920" readonly>
-                                </label>
+                            <!-- Informations -->
+                            <section class="editor-settings-card">
+                                <div class="editor-settings-card-heading">
+                                    <div>
+                                        <strong>Informations</strong>
+                                        <span>Nom et disponibilité de l’animation.</span>
+                                    </div>
+                                </div>
 
                                 <label class="editor-field">
-                                    <span>Hauteur</span>
+                                    <span>Nom de l’animation</span>
 
-                                    <input id="editorCanvasHeight" type="number" value="1080" readonly>
+                                    <input id="editorVariantName" type="text" maxlength="100" autocomplete="off"
+                                        placeholder="Exemple : Don classique">
                                 </label>
-                            </div>
+
+                                <label class="editor-switch-field editor-settings-switch">
+                                    <span>
+                                        <strong>Animation activée</strong>
+
+                                        <small>
+                                            Une animation désactivée ne sera jamais utilisée.
+                                        </small>
+                                    </span>
+
+                                    <input id="editorVariantEnabled" type="checkbox" checked>
+                                </label>
+                            </section>
+
+                            <!-- Lecture -->
+                            <section class="editor-settings-card">
+                                <div class="editor-settings-card-heading">
+                                    <div>
+                                        <strong>Lecture</strong>
+                                        <span>Durée complète de l’animation.</span>
+                                    </div>
+                                </div>
+
+                                <label class="editor-field">
+                                    <span>Durée totale</span>
+
+                                    <div class="editor-unit-input">
+                                        <input id="editorTotalDuration" type="number" min="1" max="60" step="0.1"
+                                            value="5">
+
+                                        <span>secondes</span>
+                                    </div>
+
+                                    <small>
+                                        Les calques ne pourront pas dépasser cette durée.
+                                    </small>
+                                </label>
+                            </section>
+
+                            <!-- Format -->
+                            <section class="editor-settings-card">
+                                <div class="editor-settings-card-heading">
+                                    <div>
+                                        <strong>Format de l’overlay</strong>
+                                        <span>Résolution utilisée dans OBS.</span>
+                                    </div>
+                                </div>
+
+                                <label class="editor-field">
+                                    <span>Format prédéfini</span>
+
+                                    <select id="editorCanvasPreset">
+                                        <option value="1920x1080">
+                                            Paysage — 1920 × 1080
+                                        </option>
+
+                                        <option value="1280x720">
+                                            Paysage — 1280 × 720
+                                        </option>
+
+                                        <option value="1080x1920">
+                                            Portrait — 1080 × 1920
+                                        </option>
+
+                                        <option value="1080x1080">
+                                            Carré — 1080 × 1080
+                                        </option>
+
+                                        <option value="custom">
+                                            Personnalisé
+                                        </option>
+                                    </select>
+                                </label>
+
+                                <div class="editor-inline-fields">
+                                    <label class="editor-field">
+                                        <span>Largeur</span>
+
+                                        <div class="editor-unit-input">
+                                            <input id="editorCanvasWidth" type="number" min="320" max="3840" step="1"
+                                                value="1920">
+
+                                            <span>px</span>
+                                        </div>
+                                    </label>
+
+                                    <label class="editor-field">
+                                        <span>Hauteur</span>
+
+                                        <div class="editor-unit-input">
+                                            <input id="editorCanvasHeight" type="number" min="180" max="2160" step="1"
+                                                value="1080">
+
+                                            <span>px</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </section>
+
+                            <!-- Sélection -->
+                            <section class="editor-settings-card">
+                                <div class="editor-settings-card-heading">
+                                    <div>
+                                        <strong>Sélection</strong>
+
+                                        <span>
+                                            Utilisé uniquement avec plusieurs animations aléatoires.
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <label class="editor-field">
+                                    <span>Poids de sélection</span>
+
+                                    <input id="editorVariantWeight" type="number" min="1" max="1000" step="1" value="1">
+
+                                    <small>
+                                        Plus le poids est élevé, plus cette animation sera sélectionnée souvent.
+                                    </small>
+                                </label>
+                            </section>
                         </div>
-
-                        <label class="editor-field">
-                            <span>Durée totale</span>
-
-                            <div class="editor-unit-input">
-                                <input id="editorTotalDuration" type="number" min="500" max="60000" step="100"
-                                    value="5000">
-
-                                <span>ms</span>
-                            </div>
-                        </label>
                     </section>
-
                 </div>
             </aside>
 

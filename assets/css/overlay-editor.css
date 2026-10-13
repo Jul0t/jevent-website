@@ -2665,3 +2665,142 @@ body {
 
     place-items: center;
 }
+
+/* ==========================================================
+   RÉGLAGES GÉNÉRAUX
+   ========================================================== */
+
+.editor-general-settings {
+    padding-bottom: 24px;
+}
+
+.editor-general-settings .editor-panel-heading {
+    margin-bottom: 16px;
+}
+
+.editor-general-settings .editor-panel-heading p {
+    max-width: 230px;
+    margin-top: 4px;
+}
+
+.editor-settings-stack {
+    display: grid;
+    gap: 12px;
+}
+
+.editor-settings-card {
+    display: grid;
+    padding: 14px;
+    gap: 14px;
+
+    border:
+        1px solid var(--editor-border-soft);
+
+    border-radius:
+        var(--editor-radius);
+
+    background:
+        linear-gradient(145deg,
+            rgba(18, 33, 25, 0.92),
+            rgba(11, 23, 16, 0.92));
+}
+
+.editor-settings-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.editor-settings-card-heading>div {
+    display: grid;
+    gap: 3px;
+}
+
+.editor-settings-card-heading strong {
+    color:
+        var(--editor-text);
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.editor-settings-card-heading span {
+    color:
+        var(--editor-muted);
+
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.editor-settings-card .editor-field {
+    margin: 0;
+}
+
+.editor-settings-card .editor-field>span:first-child {
+    color:
+        var(--editor-text-soft);
+
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.editor-settings-card .editor-field small {
+    color:
+        var(--editor-muted-dark);
+
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.editor-settings-card .editor-inline-fields {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+}
+
+.editor-settings-switch {
+    min-height: 64px;
+    padding: 10px 12px;
+
+    border:
+        1px solid var(--editor-border);
+
+    border-radius:
+        var(--editor-radius-small);
+
+    background:
+        rgba(7, 16, 11, 0.45);
+}
+
+.editor-settings-switch>span {
+    display: grid;
+    gap: 2px;
+}
+
+.editor-settings-switch strong {
+    color:
+        var(--editor-text-soft);
+
+    font-size: 12px;
+}
+
+.editor-settings-switch small {
+    color:
+        var(--editor-muted-dark);
+
+    font-size: 10px;
+    line-height: 1.35;
+}
+
+.editor-settings-switch input:checked {
+    filter:
+        drop-shadow(0 0 5px rgba(89, 201, 135, 0.45));
+}
+
+#editorCanvasPreset {
+    width: 100%;
+}
