@@ -2804,3 +2804,31 @@ body {
 #editorCanvasPreset {
     width: 100%;
 }
+
+#editorTimelineRuler {
+    cursor: ew-resize;
+    touch-action: none;
+}
+
+.editor-timeline-track {
+    cursor: default;
+}
+
+.editor-timeline-bar {
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+}
+
+.editor-timeline-bar:active {
+    cursor: grabbing;
+}
+
+.editor-timeline-bar.is-locked {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.editor-timeline-bar.is-locked .editor-timeline-resize {
+    pointer-events: none;
+}

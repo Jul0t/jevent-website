@@ -2556,29 +2556,20 @@
     }
 
     function seekTimeline(event) {
-        if (!elements.timelineContent) {
+        if (!elements.timelineRuler) {
             return;
         }
 
         const rect =
-            elements.timelineContent
+            elements.timelineRuler
                 .getBoundingClientRect();
-
-        const trackLeft =
-            rect.left + 170;
-
-        const trackWidth =
-            Math.max(
-                1,
-                rect.width - 170
-            );
 
         const ratio = clamp(
             (
                 event.clientX -
-                trackLeft
+                rect.left
             ) /
-            trackWidth,
+            Math.max(1, rect.width),
             0,
             1
         );
@@ -2588,10 +2579,156 @@
         );
     }
 
+    function startTimelineMove(
+        event,
+        layer
+    ) {
+        if (
+            event.button !== 0 ||
+            !layer ||
+            layer.locked
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const track =
+            event.currentTarget.closest(
+                ".editor-timeline-track"
+            );
+
+        if (!track) {
+            return;
+        }
+
+        clearPreview();
+        renderCanvas();
+        selectLayer(layer.id);
+
+        const snapshot = createSnapshot();
+        const startX = event.clientX;
+
+        const trackWidth = Math.max(
+            track.clientWidth,
+            1
+        );
+
+        const timelineDuration =
+            totalDurationMs();
+
+        const startDelay = Math.max(
+            0,
+            numberValue(layer.delayMs, 0)
+        );
+
+        const layerDuration = Math.max(
+            100,
+            numberValue(
+                layer.durationMs,
+                timelineDuration
+            )
+        );
+
+        const maximumDelay = Math.max(
+            0,
+            timelineDuration - layerDuration
+        );
+
+        let changed = false;
+
+        document.body.classList.add(
+            "is-editor-dragging"
+        );
+
+        const move = moveEvent => {
+            const difference =
+                (
+                    moveEvent.clientX -
+                    startX
+                ) /
+                trackWidth *
+                timelineDuration;
+
+            const delay = clamp(
+                Math.round(
+                    (
+                        startDelay +
+                        difference
+                    ) / 100
+                ) * 100,
+                0,
+                maximumDelay
+            );
+
+            if (
+                delay ===
+                numberValue(layer.delayMs, 0)
+            ) {
+                return;
+            }
+
+            layer.delayMs = delay;
+            changed = true;
+
+            markDirty();
+            renderProperties();
+            renderTimeline();
+        };
+
+        const stop = () => {
+            window.removeEventListener(
+                "pointermove",
+                move
+            );
+
+            window.removeEventListener(
+                "pointerup",
+                stop
+            );
+
+            window.removeEventListener(
+                "pointercancel",
+                stop
+            );
+
+            document.body.classList.remove(
+                "is-editor-dragging"
+            );
+
+            if (changed) {
+                pushHistory(snapshot);
+            }
+        };
+
+        window.addEventListener(
+            "pointermove",
+            move
+        );
+
+        window.addEventListener(
+            "pointerup",
+            stop
+        );
+
+        window.addEventListener(
+            "pointercancel",
+            stop
+        );
+    }
+
     function startTimelineResize(
         event,
         layer
     ) {
+        if (
+            event.button !== 0 ||
+            !layer ||
+            layer.locked
+        ) {
+            return;
+        }
         event.preventDefault();
         event.stopPropagation();
 
@@ -2616,16 +2753,13 @@
         const timelineDuration =
             totalDurationMs();
 
-        const startDuration =
-            layer.type === "text"
-                ? numberValue(
-                    layer.durationMs,
-                    5000
-                )
-                : numberValue(
-                    state.layout.durationMs,
-                    6000
-                );
+        const startDuration = Math.max(
+            100,
+            numberValue(
+                layer.durationMs,
+                timelineDuration
+            )
+        );
 
         pushHistory();
 
@@ -2649,23 +2783,16 @@
                 60000
             );
 
-            if (layer.type === "text") {
-                layer.durationMs =
-                    duration;
+            layer.durationMs = duration;
 
-                state.layout.durationMs =
-                    Math.max(
-                        state.layout.durationMs,
-                        layer.delayMs +
-                        duration
-                    );
-            } else {
-                state.layout.durationMs =
-                    Math.max(
-                        1000,
-                        duration
-                    );
-            }
+            state.layout.durationMs = Math.max(
+                numberValue(
+                    state.layout.durationMs,
+                    6000
+                ),
+                numberValue(layer.delayMs, 0) +
+                duration
+            );
 
             markDirty();
             renderGeneralSettings();
@@ -2757,15 +2884,37 @@
             bar.className =
                 "editor-timeline-bar";
 
-            const delay =
-                layer.type === "text"
-                    ? layer.delayMs
-                    : 0;
+            bar.classList.toggle(
+                "is-locked",
+                Boolean(layer.locked)
+            );
 
-            const layerDuration =
-                layer.type === "text"
-                    ? layer.durationMs
-                    : duration;
+            bar.title = layer.locked
+                ? "Calque verrouillé"
+                : "Déplacer le calque dans le temps";
+
+            bar.addEventListener(
+                "pointerdown",
+                event => {
+                    startTimelineMove(
+                        event,
+                        layer
+                    );
+                }
+            );
+
+            const delay = Math.max(
+                0,
+                numberValue(layer.delayMs, 0)
+            );
+
+            const layerDuration = Math.max(
+                100,
+                numberValue(
+                    layer.durationMs,
+                    duration
+                )
+            );
 
             bar.style.left =
                 `${delay / duration * 100}%`;
@@ -5038,27 +5187,20 @@
                 preview
             );
 
-        elements.timelineContent
+        elements.timelineRuler
             ?.addEventListener(
                 "pointerdown",
                 event => {
-                    if (
-                        event.target.closest(
-                            ".editor-timeline-label"
-                        ) ||
-                        event.target.closest(
-                            ".editor-timeline-resize"
-                        )
-                    ) {
+                    if (event.button !== 0) {
                         return;
                     }
+
+                    event.preventDefault();
 
                     clearPreview();
                     renderCanvas();
 
-                    state.timelineScrubbing =
-                        true;
-
+                    state.timelineScrubbing = true;
                     seekTimeline(event);
                 }
             );
@@ -5580,7 +5722,7 @@
                     renderEverything();
                     fitZoom();
                 }
-            );
+            ); bindEvents
 
         elements.totalDuration
             ?.addEventListener(
