@@ -4,7 +4,7 @@
     const API_BASE =
         "https://api.jevent.julot.fr";
 
-    const REFRESH_INTERVAL_MS = 5000;
+    const REFRESH_INTERVAL_MS = 60000;
 
     let goalsScrollAnimation = null;
     let lastRenderSignature = "";
