@@ -3968,6 +3968,11 @@
             title: "Barre de dons",
             description:
                 "Affiche la progression de la cagnotte de ta chaîne."
+        },
+        donation_goals: {
+            title: "Objectifs de dons",
+            description:
+                "Affiche la liste et la progression de tous tes objectifs de dons."
         }
     };
 
