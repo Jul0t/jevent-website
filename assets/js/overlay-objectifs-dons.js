@@ -6,6 +6,9 @@
 
     const REFRESH_INTERVAL_MS = 5000;
 
+    let goalsScrollAnimation = null;
+    let lastRenderSignature = "";
+
     const elements = {
         overlay:
             document.querySelector("#goalsOverlay"),
@@ -23,7 +26,10 @@
             document.querySelector("#goalsList"),
 
         debug:
-            document.querySelector("#goalsDebug")
+            document.querySelector("#goalsDebug"),
+
+        viewport:
+            document.querySelector("#goalsViewport"),
     };
 
     function getToken() {
@@ -165,18 +171,18 @@
 
         card.querySelector(".goal-current")
             .textContent =
-                formatMoney(
-                    raisedCents,
-                    goal.currency
-                );
+            formatMoney(
+                raisedCents,
+                goal.currency
+            );
 
         card.querySelector(".goal-target")
             .textContent =
-                "sur " +
-                formatMoney(
-                    targetCents,
-                    goal.currency
-                );
+            "sur " +
+            formatMoney(
+                targetCents,
+                goal.currency
+            );
 
         requestAnimationFrame(() => {
             card.querySelector(".goal-progress")
@@ -184,6 +190,83 @@
         });
 
         return card;
+    }
+
+    function stopGoalsScroll() {
+        goalsScrollAnimation?.cancel();
+        goalsScrollAnimation = null;
+
+        elements.list.style.transform = "";
+    }
+
+    function getAutomaticColumns(goalCount) {
+        if (goalCount <= 1) {
+            return 1;
+        }
+
+        if (goalCount <= 4) {
+            return 2;
+        }
+
+        return 3;
+    }
+
+    function startGoalsScroll(settings = {}) {
+        stopGoalsScroll();
+
+        if (settings.scrollEnabled !== true) {
+            return;
+        }
+
+        const viewportHeight =
+            elements.viewport.clientHeight;
+
+        const listHeight =
+            elements.list.scrollHeight;
+
+        const distance =
+            Math.max(
+                0,
+                listHeight - viewportHeight
+            );
+
+        if (distance < 2) {
+            return;
+        }
+
+        const speed =
+            Math.min(
+                200,
+                Math.max(
+                    10,
+                    Number(settings.scrollSpeed) || 35
+                )
+            );
+
+        goalsScrollAnimation =
+            elements.list.animate(
+                [
+                    {
+                        transform:
+                            "translateY(0)"
+                    },
+                    {
+                        transform:
+                            `translateY(-${distance}px)`
+                    }
+                ],
+                {
+                    duration:
+                        Math.max(
+                            3000,
+                            distance / speed * 1000
+                        ),
+
+                    direction: "alternate",
+                    iterations: Infinity,
+                    easing: "linear"
+                }
+            );
     }
 
     function render(
@@ -267,7 +350,7 @@
         if (
             !overlay ||
             overlay.overlayType !==
-                "donation_goals"
+            "donation_goals"
         ) {
             throw new Error(
                 "Ce lien ne correspond pas aux objectifs de dons."

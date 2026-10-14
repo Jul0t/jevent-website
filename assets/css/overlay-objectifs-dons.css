@@ -41,24 +41,47 @@ body {
 }
 
 .goals-panel {
-    width: min(1200px, 100%);
-    padding: 30px;
-    border: 1px solid var(--goals-border);
-    border-radius: 26px;
+    display: flex;
+    flex-direction: column;
+
+    width: fit-content;
+    min-width: min(420px, calc(100vw - 48px));
+    max-width: calc(100vw - 96px);
+    max-height: calc(100vh - 96px);
+
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+
     color: var(--goals-text);
-    background:
-        linear-gradient(
-            135deg,
-            var(--goals-card),
-            var(--goals-background)
-        );
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.5),
-        0 0 45px rgba(72, 204, 126, 0.12);
-    backdrop-filter: blur(18px);
+}
+
+.goals-viewport {
+    flex: 1;
+    min-height: 0;
+    max-height: calc(100vh - 190px);
+    overflow: hidden;
+}
+
+.goals-list {
+    --goals-columns: 1;
+
+    display: grid;
+    grid-template-columns:
+        repeat(var(--goals-columns),
+            minmax(320px, 360px));
+
+    width: max-content;
+    max-width: 100%;
+    gap: 16px;
+
+    will-change: transform;
 }
 
 .goals-header {
+    flex: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -87,18 +110,19 @@ body {
     font-weight: 900;
 }
 
-.goals-list {
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(320px, 1fr));
-    gap: 16px;
-}
-
 .goal-card {
     padding: 18px 20px;
     border: 1px solid rgba(113, 224, 157, 0.2);
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.045);
+
+    background:
+        linear-gradient(135deg,
+            rgba(16, 48, 31, 0.97),
+            rgba(5, 17, 11, 0.94));
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(72, 204, 126, 0.08);
 }
 
 .goal-card.is-reached {
@@ -145,11 +169,9 @@ body {
     height: 100%;
     border-radius: inherit;
     background:
-        linear-gradient(
-            90deg,
+        linear-gradient(90deg,
             var(--goals-primary),
-            var(--goals-secondary)
-        );
+            var(--goals-secondary));
     box-shadow:
         0 0 18px rgba(89, 209, 141, 0.45);
     transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
@@ -176,4 +198,11 @@ body {
     color: white;
     background: rgba(120, 0, 0, 0.9);
     font-family: monospace;
+}
+
+@media (max-width: 850px) {
+    .goals-list {
+        grid-template-columns: minmax(280px, 1fr);
+        width: 100%;
+    }
 }

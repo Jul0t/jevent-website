@@ -58,9 +58,7 @@ body {
   justify-content: center;
 
   padding:
-    40px
-    40px
-    64px;
+    40px 40px 64px;
 
   pointer-events: none;
 }
@@ -69,34 +67,23 @@ body {
   position: relative;
 
   width:
-    min(
-      920px,
-      calc(100vw - 80px)
-    );
+    min(920px,
+      calc(100vw - 80px));
 
   overflow: hidden;
 
   border:
-    1px solid
-    var(--overlay-border);
+    1px solid var(--overlay-border);
 
   border-radius: 24px;
 
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       rgba(16, 48, 31, 0.97),
-      var(--overlay-background)
-    );
+      var(--overlay-background));
 
-  box-shadow:
-    0 30px 80px
-      rgba(0, 0, 0, 0.5),
-    0 0 45px
-      rgba(72, 204, 126, 0.12);
-
-  backdrop-filter:
-    blur(18px);
+  box-shadow: none;
+  backdrop-filter: none;
 
   transform-origin:
     center bottom;
@@ -104,36 +91,26 @@ body {
 
 .raffle-card.is-updated {
   animation:
-    raffle-card-update
-    500ms
-    cubic-bezier(
-      0.22,
+    raffle-card-update 500ms cubic-bezier(0.22,
       1,
       0.36,
-      1
-    );
+      1);
 }
 
 .raffle-accent {
   position: absolute;
   inset:
-    0
-    auto
-    0
-    0;
+    0 auto 0 0;
 
   width: 6px;
 
   background:
-    linear-gradient(
-      180deg,
+    linear-gradient(180deg,
       var(--overlay-green-light),
-      var(--overlay-green)
-    );
+      var(--overlay-green));
 
   box-shadow:
-    0 0 24px
-      rgba(89, 209, 141, 0.65);
+    0 0 24px rgba(89, 209, 141, 0.65);
 }
 
 .raffle-header {
@@ -143,14 +120,10 @@ body {
   gap: 30px;
 
   padding:
-    22px
-    28px
-    18px
-    32px;
+    22px 28px 18px 32px;
 
   border-bottom:
-    1px solid
-    rgba(255, 255, 255, 0.08);
+    1px solid rgba(255, 255, 255, 0.08);
 }
 
 .raffle-heading {
@@ -171,8 +144,7 @@ body {
   place-items: center;
 
   border:
-    1px solid
-    rgba(113, 224, 157, 0.28);
+    1px solid rgba(113, 224, 157, 0.28);
 
   border-radius: 15px;
 
@@ -255,9 +227,7 @@ body {
 
 .raffle-content {
   padding:
-    22px
-    32px
-    24px;
+    22px 32px 24px;
 }
 
 .raffle-content h1 {
@@ -267,11 +237,9 @@ body {
     var(--overlay-white);
 
   font-size:
-    clamp(
-      28px,
+    clamp(28px,
       3vw,
-      42px
-    );
+      42px);
 
   font-weight: 900;
   letter-spacing: -0.035em;
@@ -281,9 +249,7 @@ body {
 .raffle-description {
   max-width: 720px;
   margin:
-    12px
-    0
-    0;
+    12px 0 0;
 
   color:
     var(--overlay-muted);
@@ -302,27 +268,20 @@ body {
   padding: 15px 18px;
 
   border:
-    1px solid
-    rgba(240, 199, 104, 0.4);
+    1px solid rgba(240, 199, 104, 0.4);
 
   border-radius: 15px;
 
   background:
-    linear-gradient(
-      90deg,
+    linear-gradient(90deg,
       rgba(240, 199, 104, 0.16),
-      rgba(240, 199, 104, 0.05)
-    );
+      rgba(240, 199, 104, 0.05));
 
   animation:
-    winner-reveal
-    650ms
-    cubic-bezier(
-      0.22,
+    winner-reveal 650ms cubic-bezier(0.22,
       1,
       0.36,
-      1
-    );
+      1);
 }
 
 .raffle-winner-icon {
@@ -343,7 +302,7 @@ body {
     var(--overlay-gold);
 }
 
-.raffle-winner > div {
+.raffle-winner>div {
   display: grid;
   gap: 2px;
 }
@@ -373,15 +332,12 @@ body {
     repeat(3, minmax(0, 1fr));
 
   margin:
-    0
-    20px
-    20px;
+    0 20px 20px;
 
   overflow: hidden;
 
   border:
-    1px solid
-    rgba(255, 255, 255, 0.08);
+    1px solid rgba(255, 255, 255, 0.08);
 
   border-radius: 16px;
 
@@ -397,10 +353,9 @@ body {
   padding: 16px 20px;
 }
 
-.raffle-statistic + .raffle-statistic {
+.raffle-statistic+.raffle-statistic {
   border-left:
-    1px solid
-    rgba(255, 255, 255, 0.08);
+    1px solid rgba(255, 255, 255, 0.08);
 }
 
 .raffle-statistic span {
@@ -429,61 +384,54 @@ body {
   white-space: nowrap;
 }
 
-.raffle-card[
-  data-status="drawing"
+.raffle-card[ data-status="drawing"
+
 ] .raffle-accent {
   background:
     var(--overlay-gold);
 
   box-shadow:
-    0 0 25px
-      rgba(240, 199, 104, 0.7);
+    0 0 25px rgba(240, 199, 104, 0.7);
 
   animation:
-    drawing-pulse
-    1s
-    ease-in-out
-    infinite;
+    drawing-pulse 1s ease-in-out infinite;
 }
 
-.raffle-card[
-  data-status="drawing"
+.raffle-card[ data-status="drawing"
+
 ] .raffle-status {
   color:
     var(--overlay-gold);
 }
 
-.raffle-card[
-  data-status="drawing"
+.raffle-card[ data-status="drawing"
+
 ] .raffle-clock strong {
   color:
     var(--overlay-gold);
 }
 
-.raffle-card[
-  data-status="completed"
+.raffle-card[ data-status="completed"
+
 ] {
   border-color:
     rgba(240, 199, 104, 0.38);
 }
 
-.raffle-card[
-  data-status="completed"
+.raffle-card[ data-status="completed"
+
 ] .raffle-accent {
   background:
-    linear-gradient(
-      180deg,
+    linear-gradient(180deg,
       #ffe29a,
-      var(--overlay-gold)
-    );
+      var(--overlay-gold));
 
   box-shadow:
-    0 0 28px
-      rgba(240, 199, 104, 0.58);
+    0 0 28px rgba(240, 199, 104, 0.58);
 }
 
-.raffle-card[
-  data-status="completed"
+.raffle-card[ data-status="completed"
+
 ] .raffle-status {
   color:
     var(--overlay-gold);
@@ -492,16 +440,13 @@ body {
 .debug-message {
   position: fixed;
   inset:
-    auto
-    20px
-    20px;
+    auto 20px 20px;
 
   margin: 0;
   padding: 12px 15px;
 
   border:
-    1px solid
-    rgba(239, 100, 100, 0.55);
+    1px solid rgba(239, 100, 100, 0.55);
 
   border-radius: 10px;
 
@@ -518,15 +463,13 @@ body {
   from {
     opacity: 0;
     transform:
-      translateY(28px)
-      scale(0.97);
+      translateY(28px) scale(0.97);
   }
 
   to {
     opacity: 1;
     transform:
-      translateY(0)
-      scale(1);
+      translateY(0) scale(1);
   }
 }
 
@@ -534,19 +477,18 @@ body {
   from {
     opacity: 0;
     transform:
-      translateY(12px)
-      scale(0.97);
+      translateY(12px) scale(0.97);
   }
 
   to {
     opacity: 1;
     transform:
-      translateY(0)
-      scale(1);
+      translateY(0) scale(1);
   }
 }
 
 @keyframes drawing-pulse {
+
   0%,
   100% {
     opacity: 0.65;
@@ -560,9 +502,7 @@ body {
 @media (max-width: 700px) {
   .raffle-overlay {
     padding:
-      20px
-      18px
-      28px;
+      20px 18px 28px;
   }
 
   .raffle-card {
@@ -573,10 +513,7 @@ body {
     align-items: flex-start;
 
     padding:
-      18px
-      20px
-      16px
-      24px;
+      18px 20px 16px 24px;
   }
 
   .raffle-icon {
@@ -590,9 +527,7 @@ body {
 
   .raffle-content {
     padding:
-      18px
-      24px
-      20px;
+      18px 24px 20px;
   }
 
   .raffle-content h1 {
@@ -601,9 +536,7 @@ body {
 
   .raffle-statistics {
     margin:
-      0
-      14px
-      14px;
+      0 14px 14px;
   }
 
   .raffle-statistic {

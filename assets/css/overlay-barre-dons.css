@@ -54,11 +54,8 @@ body {
             rgba(16, 48, 31, 0.97),
             var(--bar-background));
 
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.5),
-        0 0 45px rgba(72, 204, 126, 0.12);
-
-    backdrop-filter: blur(18px);
+    box-shadow: none;
+    backdrop-filter: none;
 }
 
 .donation-bar-heading,
