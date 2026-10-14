@@ -4058,6 +4058,169 @@
         return button;
     }
 
+    function createDonationGoalsSettings(
+        overlay
+    ) {
+        const settings =
+            overlay.settings || {};
+
+        const container =
+            createElement(
+                "div",
+                "dashboard-overlay-settings"
+            );
+
+        container.innerHTML = `
+        <label class="dashboard-overlay-toggle">
+            <span>
+                <strong>
+                    Défilement automatique
+                </strong>
+
+                <small>
+                    Faire défiler uniquement la liste
+                    des objectifs.
+                </small>
+            </span>
+
+            <input
+                class="dashboard-goals-scroll-enabled"
+                type="checkbox"
+            >
+        </label>
+
+        <label class="dashboard-overlay-speed">
+            <span>
+                Vitesse
+                <strong
+                    class="dashboard-goals-speed-value"
+                ></strong>
+            </span>
+
+            <input
+                class="dashboard-goals-scroll-speed"
+                type="range"
+                min="10"
+                max="200"
+                step="5"
+            >
+        </label>
+
+        <button
+            class="dashboard-button
+                   dashboard-button-primary
+                   dashboard-goals-settings-save"
+            type="button"
+        >
+            Enregistrer
+        </button>
+    `;
+
+        const enabledInput =
+            container.querySelector(
+                ".dashboard-goals-scroll-enabled"
+            );
+
+        const speedInput =
+            container.querySelector(
+                ".dashboard-goals-scroll-speed"
+            );
+
+        const speedValue =
+            container.querySelector(
+                ".dashboard-goals-speed-value"
+            );
+
+        const saveButton =
+            container.querySelector(
+                ".dashboard-goals-settings-save"
+            );
+
+        enabledInput.checked =
+            settings.scrollEnabled === true;
+
+        speedInput.value =
+            String(
+                Number(settings.scrollSpeed) || 35
+            );
+
+        function updateControls() {
+            speedInput.disabled =
+                !enabledInput.checked;
+
+            speedValue.textContent =
+                `${speedInput.value} px/s`;
+        }
+
+        enabledInput.addEventListener(
+            "change",
+            updateControls
+        );
+
+        speedInput.addEventListener(
+            "input",
+            updateControls
+        );
+
+        saveButton.addEventListener(
+            "click",
+            async () => {
+                saveButton.disabled = true;
+
+                try {
+                    const creatorId =
+                        currentCreatorId();
+
+                    const data =
+                        await apiFetch(
+                            (
+                                "/api/creator-panel/" +
+                                "overlays/donation_goals/" +
+                                "settings" +
+                                `?creatorId=${encodeURIComponent(
+                                    creatorId
+                                )}`
+                            ),
+                            {
+                                method: "PATCH",
+
+                                body:
+                                    JSON.stringify({
+                                        scrollEnabled:
+                                            enabledInput.checked,
+
+                                        scrollSpeed:
+                                            Number(
+                                                speedInput.value
+                                            )
+                                    })
+                            }
+                        );
+
+                    overlay.settings =
+                        data.overlay?.settings || {};
+
+                    setOverlaysMessage(
+                        "Réglages des objectifs enregistrés.",
+                        "success"
+                    );
+                } catch (error) {
+                    setOverlaysMessage(
+                        error.message ||
+                        "Impossible d’enregistrer les réglages.",
+                        "error"
+                    );
+                } finally {
+                    saveButton.disabled = false;
+                }
+            }
+        );
+
+        updateControls();
+
+        return container;
+    }
+
     function renderOverlays() {
         if (
             !elements.creatorOverlaysList
@@ -4249,10 +4412,20 @@
                     })
                 );
 
-                card.append(
-                    urlWrapper,
-                    actions
-                );
+                card.append(urlWrapper);
+
+                if (
+                    overlayType ===
+                    "donation_goals"
+                ) {
+                    card.append(
+                        createDonationGoalsSettings(
+                            overlay
+                        )
+                    );
+                }
+
+                card.append(actions);
             }
 
             elements.creatorOverlaysList

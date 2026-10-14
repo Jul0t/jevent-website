@@ -5790,3 +5790,69 @@ body.is-dark #donationAlertEditorDialog {
   border-color: #ff5c5c;
   background: rgba(255, 70, 70, 0.22);
 }
+
+.dashboard-overlay-settings {
+  display: grid;
+  padding: 14px;
+  gap: 14px;
+
+  border: 1px solid var(--dashboard-border);
+  border-radius: 14px;
+
+  background: var(--dashboard-surface-soft);
+}
+
+.dashboard-overlay-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dashboard-overlay-toggle span {
+  display: grid;
+  gap: 4px;
+}
+
+.dashboard-overlay-toggle strong {
+  color: var(--dashboard-text);
+  font-size: 0.82rem;
+}
+
+.dashboard-overlay-toggle small {
+  color: var(--dashboard-muted);
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.dashboard-overlay-toggle input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--dashboard-accent);
+}
+
+.dashboard-overlay-speed {
+  display: grid;
+  gap: 8px;
+}
+
+.dashboard-overlay-speed>span {
+  display: flex;
+  justify-content: space-between;
+
+  color: var(--dashboard-muted);
+  font-size: 0.74rem;
+}
+
+.dashboard-overlay-speed strong {
+  color: var(--dashboard-text);
+}
+
+.dashboard-overlay-speed input {
+  width: 100%;
+  accent-color: var(--dashboard-accent);
+}
+
+.dashboard-overlay-speed input:disabled {
+  opacity: 0.4;
+}

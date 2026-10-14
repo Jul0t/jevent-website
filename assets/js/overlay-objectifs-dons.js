@@ -307,6 +307,24 @@
             return;
         }
 
+        const renderSignature =
+            JSON.stringify({
+                raisedCents,
+                goals,
+                settings
+            });
+
+        if (
+            renderSignature ===
+            lastRenderSignature
+        ) {
+            return;
+        }
+
+        lastRenderSignature =
+            renderSignature;
+
+        stopGoalsScroll();
         applySettings(settings);
 
         elements.creator.textContent =
@@ -320,6 +338,17 @@
         elements.total.textContent =
             formatMoney(raisedCents);
 
+        const columnCount =
+            Math.min(
+                getAutomaticColumns(goals.length),
+                goals.length
+            );
+
+        elements.list.style.setProperty(
+            "--goals-columns",
+            String(columnCount)
+        );
+
         elements.list.replaceChildren(
             ...goals.map(goal =>
                 createGoal(goal, raisedCents)
@@ -327,6 +356,19 @@
         );
 
         elements.overlay.hidden = false;
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                startGoalsScroll(settings);
+            });
+        });
+
+        if (!goals.length) {
+            stopGoalsScroll();
+            lastRenderSignature = "";
+            elements.overlay.hidden = true;
+            return;
+        }
     }
 
     async function refresh() {
