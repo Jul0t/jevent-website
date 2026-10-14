@@ -227,7 +227,7 @@
         applySettings(settings);
 
         elements.creator.textContent =
-            overlay.creator?.displayName ||
+            overlay.creator?.slug ||
             "JEvent";
 
         elements.title.textContent =
