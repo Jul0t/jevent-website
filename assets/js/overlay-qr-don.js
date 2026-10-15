@@ -158,7 +158,7 @@
 
             data: donationUrl,
 
-            image: "/assets/jevent_logo.png",
+            image: "/assets/j26_black.png",
 
             qrOptions: {
                 errorCorrectionLevel: "H"
