@@ -128,9 +128,8 @@
             );
         }
 
-        if (
-            typeof window.QRCode !== "function"
-        ) {
+        if (typeof window.QRCodeStyling !== "function") {
+
             throw new Error(
                 "La bibliothèque QR code est introuvable."
             );
@@ -152,28 +151,53 @@
 
         elements.code.replaceChildren();
 
-        new window.QRCode(
-            elements.code,
-            {
-                text: donationUrl,
+        const qrCode = new window.QRCodeStyling({
+            width: 270,
+            height: 270,
+            type: "canvas",
 
-                width: 270,
-                height: 270,
+            data: donationUrl,
 
-                colorDark:
-                    String(
-                        settings.qrColor ||
-                        "#07150d"
-                    ),
+            image: "/assets/jevent_logo.png",
 
-                colorLight:
-                    "#ffffff",
+            qrOptions: {
+                errorCorrectionLevel: "H"
+            },
 
-                correctLevel:
-                    window.QRCode
-                        .CorrectLevel.H
+            dotsOptions: {
+                color: String(
+                    settings.qrColor || "#07150d"
+                ),
+                type: "rounded"
+            },
+
+            cornersSquareOptions: {
+                color: String(
+                    settings.qrColor || "#07150d"
+                ),
+                type: "extra-rounded"
+            },
+
+            cornersDotOptions: {
+                color: String(
+                    settings.qrColor || "#07150d"
+                ),
+                type: "dot"
+            },
+
+            backgroundOptions: {
+                color: "#ffffff"
+            },
+
+            imageOptions: {
+                hideBackgroundDots: true,
+                imageSize: 0.28,
+                margin: 8,
+                crossOrigin: "anonymous"
             }
-        );
+        });
+
+        qrCode.append(elements.code);
 
         elements.overlay.hidden = false;
     }
@@ -218,7 +242,7 @@
             if (
                 !overlay ||
                 overlay.overlayType !==
-                    "donation_qr"
+                "donation_qr"
             ) {
                 throw new Error(
                     "Ce lien ne correspond pas au QR code de don."
