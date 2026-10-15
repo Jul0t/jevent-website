@@ -3,47 +3,29 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
-    <meta
-        name="robots"
-        content="noindex, nofollow"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
 
     <title>QR code de don — JEvent</title>
 
-    <link
-        rel="icon"
-        href="/assets/favicon.ico"
-    >
-    <link
-        rel="stylesheet"
-        href="/assets/css/overlay-qr-don.css?v=1"
-    >
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="/assets/css/overlay-qr-don.css?v=2">
 
-    <script
-        src="/assets/vendor/qrcode.min.js"
-        defer
-    ></script>
-    <script
-        src="/assets/js/overlay-qr-don.js?v=1"
-        defer
-    ></script>
+    <script src="/assets/vendor/qrcode.min.js" defer></script>
+    <script src="/assets/js/overlay-qr-don.js?v=1" defer></script>
 </head>
 
 <body>
-    <main
-        id="donationQrOverlay"
-        class="donation-qr-overlay"
-        hidden
-    >
+    <main id="donationQrOverlay" class="donation-qr-overlay" hidden>
         <section class="donation-qr-card">
             <div class="donation-qr-accent"></div>
 
             <div class="donation-qr-frame">
                 <div id="donationQrCode"></div>
+
+                <div class="donation-qr-logo" aria-hidden="true">
+                    <img src="/assets/jevent_logo.png" alt="">
+                </div>
             </div>
 
             <div class="donation-qr-content">
@@ -60,11 +42,7 @@
         </section>
     </main>
 
-    <p
-        id="donationQrDebug"
-        class="donation-qr-debug"
-        hidden
-    ></p>
+    <p id="donationQrDebug" class="donation-qr-debug" hidden></p>
 </body>
 
 </html>
