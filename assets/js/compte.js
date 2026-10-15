@@ -2,7 +2,7 @@
   "use strict";
 
   const API_URL =
-    "https://api-beta.jevent.julot.fr";
+    "https://api.jevent.julot.fr";
 
   const SHOP_URL =
     `${API_URL}/api/shop`;
