@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const API_URL = "https://api-beta.jevent.julot.fr";
+  const API_URL = "https://api.jevent.julot.fr";
   const TIMEOUT_MS = 12000;
 
   const $ = (selector) => document.querySelector(selector);

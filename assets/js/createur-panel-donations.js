@@ -1,6 +1,6 @@
 (() => {
     const API_URL =
-        "https://api-beta.jevent.julot.fr";
+        "https://api.jevent.julot.fr";
 
     const list =
         document.querySelector(

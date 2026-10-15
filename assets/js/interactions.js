@@ -2,7 +2,7 @@
   "use strict";
 
   const API_BASE =
-    "https://api-beta.jevent.julot.fr";
+    "https://api.jevent.julot.fr";
 
   const ABSOLUTE_MAX_FILE_SIZE =
     2 * 1024 * 1024;

@@ -2,7 +2,7 @@
     "use strict";
 
     const API_URL =
-        "https://api-beta.jevent.julot.fr";
+        "https://api.jevent.julot.fr";
 
     const EVENT_KEY =
         "jevent-2026";
