@@ -3973,6 +3973,11 @@
             title: "Objectifs de dons",
             description:
                 "Affiche la liste et la progression de tous tes objectifs de dons."
+        },
+        donation_qr: {
+            title: "QR code de don",
+            description:
+                "Affiche un QR code permettant d’accéder directement à ta cagnotte."
         }
     };
 
