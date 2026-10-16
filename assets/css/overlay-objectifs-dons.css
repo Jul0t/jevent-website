@@ -44,21 +44,16 @@ body {
     display: flex;
     flex-direction: column;
 
-    width: min-content;
-    min-width: min(420px, calc(100vw - 48px));
+    width: fit-content;
+    min-width: 360px;
     max-width: calc(100vw - 96px);
     max-height: calc(100vh - 96px);
-
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
 
     color: var(--goals-text);
 }
 
 .goals-viewport {
-    flex: 1;
+    width: 100%;
     min-height: 0;
     max-height: calc(100vh - 190px);
     overflow: hidden;
@@ -70,9 +65,10 @@ body {
     display: grid;
     grid-template-columns:
         repeat(var(--goals-columns),
-            minmax(280px, 360px));
+            360px);
 
-    width: 100%;
+    width: max-content;
+    max-width: 100%;
     gap: 16px;
 
     will-change: transform;
@@ -199,8 +195,13 @@ body {
 }
 
 @media (max-width: 850px) {
+    .goals-panel {
+        width: calc(100vw - 48px);
+        min-width: 0;
+    }
+
     .goals-list {
-        grid-template-columns: minmax(280px, 1fr);
+        grid-template-columns: minmax(0, 1fr);
         width: 100%;
     }
 }
