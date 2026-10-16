@@ -44,16 +44,15 @@ body {
     display: flex;
     flex-direction: column;
 
-    width: fit-content;
+    width: min-content;
     min-width: min(420px, calc(100vw - 48px));
     max-width: calc(100vw - 96px);
     max-height: calc(100vh - 96px);
 
     padding: 0;
-    border: none;
+    border: 0;
     background: transparent;
     box-shadow: none;
-    backdrop-filter: none;
 
     color: var(--goals-text);
 }
@@ -71,10 +70,9 @@ body {
     display: grid;
     grid-template-columns:
         repeat(var(--goals-columns),
-            minmax(320px, 360px));
+            minmax(280px, 360px));
 
-    width: max-content;
-    max-width: 100%;
+    width: 100%;
     gap: 16px;
 
     will-change: transform;
