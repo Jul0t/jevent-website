@@ -3978,6 +3978,11 @@
             title: "QR code de don",
             description:
                 "Affiche un QR code permettant d’accéder directement à ta cagnotte."
+        },
+        donation_global: {
+            title: "Cagnotte globale",
+            description:
+                "Affiche le total des dons réunis entre tous les participants."
         }
     };
 

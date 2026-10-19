@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Cagnotte globale — JEvent</title>
+
+    <link
+        rel="stylesheet"
+        href="/assets/css/overlay-cagnotte-globale.css?v=1"
+    >
+
+    <script
+        src="/assets/js/overlay-cagnotte-globale.js?v=1"
+        defer
+    ></script>
+</head>
+
+<body>
+    <main
+        id="globalDonationOverlay"
+        class="global-donation-overlay"
+        hidden
+    >
+        <section class="global-donation-card">
+            <span class="global-donation-label">
+                Cagnotte globale
+            </span>
+
+            <strong
+                id="globalDonationAmount"
+                class="global-donation-amount"
+            >
+                0 €
+            </strong>
+
+            <span class="global-donation-subtitle">
+                collectés grâce aux donateurs
+            </span>
+        </section>
+    </main>
+
+    <p
+        id="globalDonationDebug"
+        class="global-donation-debug"
+        hidden
+    ></p>
+</body>
+</html>
