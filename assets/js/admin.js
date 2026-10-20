@@ -905,6 +905,7 @@
     if (elements.statsRaisedAmount) {
       elements.statsRaisedAmount.textContent =
         formatMoney(
+          overview.totalRaisedCents ??
           overview.raisedCents
         );
     }

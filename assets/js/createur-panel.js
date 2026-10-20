@@ -1368,22 +1368,18 @@
         const overview =
             getOverviewStatistics();
 
+        const creatorRaisedCents =
+            Number(state.creator?.raisedCents);
+
+        const statisticsRaisedCents =
+            Number(overview.raisedCents);
+
         const raisedCents =
-            state.creator
-                ?.raisedAvailable
-                ? numberOrZero(
-                    state.creator.raisedCents
-                )
-                : (
-                    overview.raisedCents ===
-                        null ||
-                        overview.raisedCents ===
-                        undefined
-                        ? null
-                        : numberOrZero(
-                            overview.raisedCents
-                        )
-                );
+            Number.isFinite(creatorRaisedCents)
+                ? creatorRaisedCents
+                : Number.isFinite(statisticsRaisedCents)
+                    ? statisticsRaisedCents
+                    : null;
 
         if (elements.raisedAmount) {
             elements.raisedAmount.textContent =
@@ -2706,27 +2702,28 @@
     }
 
     function getCurrentRaisedCents() {
+        const creatorRaisedCents =
+            Number(state.creator?.raisedCents);
+
         if (
-            state.creator?.raisedAvailable
+            Number.isFinite(
+                creatorRaisedCents
+            )
         ) {
-            return numberOrZero(
-                state.creator.raisedCents
-            );
+            return creatorRaisedCents;
         }
 
         const overview =
             getOverviewStatistics();
 
-        if (
-            overview.raisedCents === null ||
-            overview.raisedCents === undefined
-        ) {
-            return null;
-        }
+        const statisticsRaisedCents =
+            Number(overview.raisedCents);
 
-        return numberOrZero(
-            overview.raisedCents
-        );
+        return Number.isFinite(
+            statisticsRaisedCents
+        )
+            ? statisticsRaisedCents
+            : null;
     }
 
     function getUpcomingGoalReminder() {
