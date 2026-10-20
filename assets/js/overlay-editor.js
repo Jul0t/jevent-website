@@ -105,7 +105,8 @@
         soundStatus:
             first(
                 "#editorSoundStatus",
-                "#editorSoundMediaStatus"
+                "#editorSoundMediaStatus",
+                "#editorSoundMedia"
             ),
 
         variantName:
