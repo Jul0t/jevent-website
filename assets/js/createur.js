@@ -252,7 +252,6 @@
       Number(creator.raisedCents);
 
     const available =
-      creator.raisedAvailable === true &&
       Number.isFinite(raisedCents);
 
     elements.creatorFundraisingCard.hidden =
