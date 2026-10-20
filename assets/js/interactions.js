@@ -28,64 +28,40 @@
 
   const elements = {
     loadingState:
-      document.querySelector(
-        "#loadingState"
-      ),
+      document.querySelector("#loadingState"),
 
     errorState:
-      document.querySelector(
-        "#errorState"
-      ),
+      document.querySelector("#errorState"),
 
     errorMessage:
-      document.querySelector(
-        "#errorMessage"
-      ),
+      document.querySelector("#errorMessage"),
 
     retryButton:
-      document.querySelector(
-        "#retryButton"
-      ),
+      document.querySelector("#retryButton"),
 
     pageContent:
-      document.querySelector(
-        "#pageContent"
-      ),
+      document.querySelector("#pageContent"),
 
     creditBalance:
-      document.querySelector(
-        "#creditBalance"
-      ),
+      document.querySelector("#creditBalance"),
 
     creditInformation:
-      document.querySelector(
-        "#creditInformation"
-      ),
+      document.querySelector("#creditInformation"),
 
     personalCode:
-      document.querySelector(
-        "#personalCode"
-      ),
+      document.querySelector("#personalCode"),
 
     copyCodeButton:
-      document.querySelector(
-        "#copyCodeButton"
-      ),
+      document.querySelector("#copyCodeButton"),
 
     interactionsList:
-      document.querySelector(
-        "#interactionsList"
-      ),
+      document.querySelector("#interactionsList"),
 
     interactionsEmpty:
-      document.querySelector(
-        "#interactionsEmpty"
-      ),
+      document.querySelector("#interactionsEmpty"),
 
     uploadSection:
-      document.querySelector(
-        "#uploadSection"
-      ),
+      document.querySelector("#uploadSection"),
 
     selectedInteractionTitle:
       document.querySelector(
@@ -98,9 +74,7 @@
       ),
 
     selectedCreatorName:
-      document.querySelector(
-        "#selectedCreatorName"
-      ),
+      document.querySelector("#selectedCreatorName"),
 
     selectedInteractionCost:
       document.querySelector(
@@ -118,74 +92,46 @@
       ),
 
     uploadForm:
-      document.querySelector(
-        "#uploadForm"
-      ),
+      document.querySelector("#uploadForm"),
 
     interactionPublicId:
-      document.querySelector(
-        "#interactionPublicId"
-      ),
+      document.querySelector("#interactionPublicId"),
 
     imageInput:
-      document.querySelector(
-        "#imageInput"
-      ),
+      document.querySelector("#imageInput"),
 
     dropZone:
-      document.querySelector(
-        "#dropZone"
-      ),
+      document.querySelector("#dropZone"),
 
     selectedFile:
-      document.querySelector(
-        "#selectedFile"
-      ),
+      document.querySelector("#selectedFile"),
 
     imagePreview:
-      document.querySelector(
-        "#imagePreview"
-      ),
+      document.querySelector("#imagePreview"),
 
     selectedFileName:
-      document.querySelector(
-        "#selectedFileName"
-      ),
+      document.querySelector("#selectedFileName"),
 
     selectedFileSize:
-      document.querySelector(
-        "#selectedFileSize"
-      ),
+      document.querySelector("#selectedFileSize"),
 
     removeFileButton:
-      document.querySelector(
-        "#removeFileButton"
-      ),
+      document.querySelector("#removeFileButton"),
 
     submitButton:
-      document.querySelector(
-        "#submitButton"
-      ),
+      document.querySelector("#submitButton"),
 
     uploadMessage:
-      document.querySelector(
-        "#uploadMessage"
-      ),
+      document.querySelector("#uploadMessage"),
 
     uploadsList:
-      document.querySelector(
-        "#uploadsList"
-      ),
+      document.querySelector("#uploadsList"),
 
     uploadsEmpty:
-      document.querySelector(
-        "#uploadsEmpty"
-      ),
+      document.querySelector("#uploadsEmpty"),
 
     refreshUploadsButton:
-      document.querySelector(
-        "#refreshUploadsButton"
-      )
+      document.querySelector("#refreshUploadsButton")
   };
 
   const state = {
@@ -200,7 +146,8 @@
     previewUrl: null,
 
     loading: false,
-    uploading: false
+    uploading: false,
+    triggeringEffect: false
   };
 
   /* =========================================================
@@ -232,7 +179,8 @@
   }
 
   function numberOrZero(value) {
-    const number = Number(value);
+    const number =
+      Number(value);
 
     return Number.isFinite(number)
       ? number
@@ -285,9 +233,7 @@
 
     return (
       `${(
-        size /
-        1024 /
-        1024
+        size / 1024 / 1024
       ).toFixed(2)} Mo`
     );
   }
@@ -326,7 +272,9 @@
       return value;
     }
 
-    if (typeof value !== "string") {
+    if (
+      typeof value !== "string"
+    ) {
       return {};
     }
 
@@ -336,7 +284,8 @@
 
       return (
         parsed &&
-        typeof parsed === "object"
+        typeof parsed === "object" &&
+        !Array.isArray(parsed)
           ? parsed
           : {}
       );
@@ -441,14 +390,17 @@
         '<path d="M12 18v3"/>',
         '<path d="M3 12h3"/>',
         '<path d="M18 12h3"/>'
+      ],
+
+      effect: [
+        '<path d="m13 2-9 12h7l-1 8 9-12h-7l1-8Z"/>'
       ]
     };
 
-    svg.innerHTML =
-      (
-        paths[type] ||
-        paths.advanced
-      ).join("");
+    svg.innerHTML = (
+      paths[type] ||
+      paths.advanced
+    ).join("");
 
     return svg;
   }
@@ -469,9 +421,7 @@
             Accept:
               "application/json",
 
-            ...(
-              options.headers || {}
-            )
+            ...(options.headers || {})
           }
         }
       );
@@ -517,7 +467,7 @@
   }
 
   /* =========================================================
-     NORMALISATION DES DONNÉES
+     NORMALISATION
      ========================================================= */
 
   function normalizeCreator(
@@ -577,8 +527,7 @@
       );
 
     const configuredTypes =
-      configuration
-        .allowedContentTypes;
+      configuration.allowedContentTypes;
 
     const allowedContentTypes =
       Array.isArray(
@@ -587,17 +536,16 @@
       configuredTypes.length > 0
         ? configuredTypes.filter(
             type =>
-              DEFAULT_CONTENT_TYPES
-                .includes(type)
+              DEFAULT_CONTENT_TYPES.includes(
+                type
+              )
           )
         : DEFAULT_CONTENT_TYPES;
 
     const configuredMaximum =
       Number(
-        configuration
-          .maximumFileSizeBytes ??
-        configuration
-          .maxFileSizeBytes
+        configuration.maximumFileSizeBytes ??
+        configuration.maxFileSizeBytes
       );
 
     const maximumFileSizeBytes =
@@ -677,22 +625,21 @@
       maximumFileSizeBytes,
 
       configuration,
+
       creator
     };
   }
 
-  function extractInteractions(
-    data
-  ) {
+  function extractInteractions(data) {
     if (
       Array.isArray(
         data?.interactions?.items
       )
     ) {
-      return data.interactions.items
-        .map(item =>
+      return data.interactions.items.map(
+        item =>
           normalizeInteraction(item)
-        );
+      );
     }
 
     if (
@@ -707,9 +654,7 @@
     }
 
     if (
-      Array.isArray(
-        data?.items
-      )
+      Array.isArray(data?.items)
     ) {
       return data.items.map(
         item =>
@@ -867,7 +812,6 @@
       ) {
         return {
           available: false,
-
           label:
             `Ouverture le ${
               formatDate(
@@ -886,7 +830,7 @@
 
       if (
         Number.isFinite(closesAt) &&
-        now > closesAt
+        now >= closesAt
       ) {
         return {
           available: false,
@@ -941,19 +885,18 @@
           wallet.total_earned_cents
         );
 
-      elements.creditInformation
-        .textContent =
-          totalEarned > 0
-            ? (
-                `${formatCredits(
-                  totalEarned
-                )} obtenu${
-                  totalEarned > 100
-                    ? "s"
-                    : ""
-                } au total`
-              )
-            : "1 € donné = 1 crédit";
+      elements.creditInformation.textContent =
+        totalEarned > 0
+          ? (
+              `${formatCredits(
+                totalEarned
+              )} obtenu${
+                totalEarned > 100
+                  ? "s"
+                  : ""
+              } au total`
+            )
+          : "1 € donné = 1 crédit";
     }
   }
 
@@ -967,8 +910,9 @@
     }
 
     try {
-      await navigator.clipboard
-        .writeText(code);
+      await navigator.clipboard.writeText(
+        code
+      );
     } catch {
       const input =
         document.createElement(
@@ -976,57 +920,49 @@
         );
 
       input.value = code;
-      input.style.position =
-        "fixed";
-      input.style.opacity =
-        "0";
+      input.style.position = "fixed";
+      input.style.opacity = "0";
 
       document.body.append(input);
 
       input.select();
 
-      document.execCommand(
-        "copy"
-      );
+      document.execCommand("copy");
 
       input.remove();
     }
 
-    if (
-      !elements.copyCodeButton
-    ) {
+    if (!elements.copyCodeButton) {
       return;
     }
 
     const oldText =
-      elements.copyCodeButton
-        .textContent;
+      elements.copyCodeButton.textContent;
 
-    elements.copyCodeButton
-      .textContent =
-        "Code copié";
+    elements.copyCodeButton.textContent =
+      "Code copié";
 
     window.setTimeout(
       () => {
-        elements.copyCodeButton
-          .textContent =
-            oldText;
+        elements.copyCodeButton.textContent =
+          oldText;
       },
       1800
     );
   }
 
   /* =========================================================
-     CATALOGUE
+     INTERACTIONS
      ========================================================= */
 
-  function groupInteractions() {
+  function groupInteractions(
+    interactions
+  ) {
     const groups =
       new Map();
 
     for (
-      const interaction of
-      state.interactions
+      const interaction of interactions
     ) {
       const creator =
         interaction.creator;
@@ -1059,6 +995,135 @@
     );
   }
 
+  async function triggerEffect(
+    interaction,
+    button
+  ) {
+    if (
+      state.triggeringEffect
+    ) {
+      return;
+    }
+
+    const balance =
+      numberOrZero(
+        state.wallet?.balanceCents ??
+        state.wallet?.balance_cents
+      );
+
+    if (
+      balance <
+      interaction.costCents
+    ) {
+      if (button) {
+        button.textContent =
+          "Crédits insuffisants";
+      }
+
+      return;
+    }
+
+    state.triggeringEffect =
+      true;
+
+    if (button) {
+      button.disabled = true;
+      button.textContent =
+        "Déclenchement…";
+    }
+
+    try {
+      const result =
+        await apiFetch(
+          "/api/interactions/effects",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+              interactionPublicId:
+                interaction.publicId
+            })
+          }
+        );
+
+      if (result.wallet) {
+        state.wallet = {
+          ...state.wallet,
+          ...result.wallet
+        };
+
+        renderWallet();
+      }
+
+      if (button) {
+        button.textContent =
+          "Déclenché !";
+
+        button.classList.add(
+          "is-success"
+        );
+      }
+
+      window.setTimeout(
+        () => {
+          if (!button) {
+            return;
+          }
+
+          button.textContent =
+            "Déclencher";
+
+          button.disabled =
+            false;
+
+          button.classList.remove(
+            "is-success"
+          );
+        },
+        1200
+      );
+    } catch (error) {
+      console.error(
+        "Impossible de déclencher l’effet :",
+        error
+      );
+
+      if (button) {
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Réessayer";
+
+        button.title =
+          error.message ||
+          "Impossible de déclencher l’effet.";
+
+        window.setTimeout(
+          () => {
+            if (!button) {
+              return;
+            }
+
+            button.textContent =
+              "Déclencher";
+
+            button.title = "";
+          },
+          2500
+        );
+      }
+    } finally {
+      state.triggeringEffect =
+        false;
+    }
+  }
+
   function createInteractionCard(
     interaction
   ) {
@@ -1078,7 +1143,8 @@
       interaction.costCents;
 
     const supported =
-      interaction.type === "image";
+      interaction.type === "image" ||
+      interaction.type === "effect";
 
     const article =
       document.createElement(
@@ -1091,6 +1157,12 @@
     if (!availability.available) {
       article.classList.add(
         "is-unavailable"
+      );
+    }
+
+    if (interaction.type === "effect") {
+      article.classList.add(
+        "is-effect"
       );
     }
 
@@ -1160,7 +1232,9 @@
       (
         interaction.type === "image"
           ? "Envoie une image au créateur."
-          : "Participe à cette interaction."
+          : interaction.type === "effect"
+            ? "Déclenche un effet visuel."
+            : "Participe à cette interaction."
       );
 
     const availabilityLabel =
@@ -1186,6 +1260,7 @@
       );
 
     button.type = "button";
+
     button.className =
       "poster-interaction-select";
 
@@ -1193,19 +1268,37 @@
       button.textContent =
         "Bientôt disponible";
 
-      button.disabled = true;
+      button.disabled =
+        true;
     } else if (
       !availability.available
     ) {
       button.textContent =
         "Indisponible";
 
-      button.disabled = true;
+      button.disabled =
+        true;
     } else if (!canAfford) {
       button.textContent =
         "Crédits insuffisants";
 
-      button.disabled = true;
+      button.disabled =
+        true;
+    } else if (
+      interaction.type === "effect"
+    ) {
+      button.textContent =
+        "Déclencher";
+
+      button.addEventListener(
+        "click",
+        () => {
+          triggerEffect(
+            interaction,
+            button
+          );
+        }
+      );
     } else {
       button.textContent =
         "Choisir";
@@ -1270,9 +1363,13 @@
     }
 
     const groups =
-      groupInteractions();
+      groupInteractions(
+        interactions
+      );
 
-    for (const group of groups) {
+    for (
+      const group of groups
+    ) {
       const section =
         document.createElement(
           "section"
@@ -1290,8 +1387,7 @@
         "poster-creator-heading";
 
       if (
-        group.creator
-          .profileImageUrl
+        group.creator.profileImageUrl
       ) {
         const avatar =
           document.createElement(
@@ -1299,8 +1395,7 @@
           );
 
         avatar.src =
-          group.creator
-            .profileImageUrl;
+          group.creator.profileImageUrl;
 
         avatar.alt =
           `Avatar de ${
@@ -1373,12 +1468,18 @@
   }
 
   /* =========================================================
-     SÉLECTION D’UNE INTERACTION
+     SÉLECTION D’UNE IMAGE
      ========================================================= */
 
   function selectInteraction(
     interaction
   ) {
+    if (
+      interaction.type !== "image"
+    ) {
+      return;
+    }
+
     state.selectedInteraction =
       interaction;
 
@@ -1388,27 +1489,22 @@
     if (
       elements.interactionPublicId
     ) {
-      elements.interactionPublicId
-        .value =
-          interaction.publicId;
+      elements.interactionPublicId.value =
+        interaction.publicId;
     }
 
     if (
-      elements
-        .selectedInteractionTitle
+      elements.selectedInteractionTitle
     ) {
-      elements
-        .selectedInteractionTitle
+      elements.selectedInteractionTitle
         .textContent =
           interaction.title;
     }
 
     if (
-      elements
-        .selectedInteractionDescription
+      elements.selectedInteractionDescription
     ) {
-      elements
-        .selectedInteractionDescription
+      elements.selectedInteractionDescription
         .textContent =
           interaction.description ||
           "Sélectionne une image à envoyer.";
@@ -1417,19 +1513,15 @@
     if (
       elements.selectedCreatorName
     ) {
-      elements
-        .selectedCreatorName
+      elements.selectedCreatorName
         .textContent =
-          interaction.creator
-            .displayName;
+          interaction.creator.displayName;
     }
 
     if (
-      elements
-        .selectedInteractionCost
+      elements.selectedInteractionCost
     ) {
-      elements
-        .selectedInteractionCost
+      elements.selectedInteractionCost
         .textContent =
           formatCredits(
             interaction.costCents
@@ -1437,14 +1529,11 @@
     }
 
     if (
-      elements
-        .selectedInteractionFormats
+      elements.selectedInteractionFormats
     ) {
-      elements
-        .selectedInteractionFormats
+      elements.selectedInteractionFormats
         .textContent =
-          interaction
-            .allowedContentTypes
+          interaction.allowedContentTypes
             .map(
               type =>
                 CONTENT_TYPE_LABELS[
@@ -1456,8 +1545,7 @@
 
     if (elements.imageInput) {
       elements.imageInput.accept =
-        interaction
-          .allowedContentTypes
+        interaction.allowedContentTypes
           .join(",");
     }
 
@@ -1490,8 +1578,8 @@
     if (
       elements.interactionPublicId
     ) {
-      elements.interactionPublicId
-        .value = "";
+      elements.interactionPublicId.value =
+        "";
     }
 
     setHidden(
@@ -1592,17 +1680,17 @@
     if (
       elements.selectedFileName
     ) {
-      elements
-        .selectedFileName
-        .textContent = "";
+      elements.selectedFileName
+        .textContent =
+        "";
     }
 
     if (
       elements.selectedFileSize
     ) {
-      elements
-        .selectedFileSize
-        .textContent = "";
+      elements.selectedFileSize
+        .textContent =
+        "";
     }
 
     setHidden(
@@ -1618,9 +1706,7 @@
     updateSubmitButton();
   }
 
-  function displaySelectedFile(
-    file
-  ) {
+  function displaySelectedFile(file) {
     try {
       validateFile(file);
     } catch (error) {
@@ -1654,21 +1740,19 @@
     if (
       elements.selectedFileName
     ) {
-      elements
-        .selectedFileName
+      elements.selectedFileName
         .textContent =
-          file.name;
+        file.name;
     }
 
     if (
       elements.selectedFileSize
     ) {
-      elements
-        .selectedFileSize
+      elements.selectedFileSize
         .textContent =
-          formatFileSize(
-            file.size
-          );
+        formatFileSize(
+          file.size
+        );
     }
 
     setHidden(
@@ -1687,7 +1771,9 @@
   }
 
   function updateSubmitButton() {
-    if (!elements.submitButton) {
+    if (
+      !elements.submitButton
+    ) {
       return;
     }
 
@@ -1704,6 +1790,8 @@
     const canSubmit =
       Boolean(
         state.selectedInteraction &&
+        state.selectedInteraction.type ===
+          "image" &&
         state.selectedFile &&
         balance >= cost &&
         !state.uploading
@@ -1725,23 +1813,19 @@
     if (
       elements.removeFileButton
     ) {
-      elements
-        .removeFileButton
-        .disabled =
-          state.uploading;
+      elements.removeFileButton.disabled =
+        state.uploading;
     }
   }
 
   /* =========================================================
-     ENVOI
+     ENVOI D’IMAGE
      ========================================================= */
 
   async function submitUpload(event) {
     event.preventDefault();
 
-    if (
-      state.uploading
-    ) {
+    if (state.uploading) {
       return;
     }
 
@@ -1777,8 +1861,7 @@
 
     if (
       balance <
-      state.selectedInteraction
-        .costCents
+      state.selectedInteraction.costCents
     ) {
       setMessage(
         "Tu n’as pas assez de crédits.",
@@ -1793,8 +1876,7 @@
 
     formData.append(
       "interactionPublicId",
-      state.selectedInteraction
-        .publicId
+      state.selectedInteraction.publicId
     );
 
     formData.append(
@@ -1839,7 +1921,6 @@
         status === "approved"
           ? "Ton image a été envoyée et acceptée."
           : "Ton image a été envoyée à la modération.",
-
         "success"
       );
 
@@ -1858,7 +1939,6 @@
       setMessage(
         error.message ||
         "Impossible d’envoyer l’image.",
-
         "error"
       );
     } finally {
@@ -1870,7 +1950,7 @@
   }
 
   /* =========================================================
-     HISTORIQUE
+     HISTORIQUE DES IMAGES
      ========================================================= */
 
   function createUploadRow(upload) {
@@ -1883,9 +1963,7 @@
       "poster-upload-item";
 
     article.classList.add(
-      `is-${
-        upload.status
-      }`
+      `is-${upload.status}`
     );
 
     const icon =
@@ -2020,7 +2098,9 @@
   }
 
   function renderUploads() {
-    if (!elements.uploadsList) {
+    if (
+      !elements.uploadsList
+    ) {
       return;
     }
 
@@ -2033,15 +2113,11 @@
     );
 
     for (
-      const upload of
-      state.uploads
+      const upload of state.uploads
     ) {
-      elements.uploadsList
-        .append(
-          createUploadRow(
-            upload
-          )
-        );
+      elements.uploadsList.append(
+        createUploadRow(upload)
+      );
     }
   }
 
@@ -2075,17 +2151,20 @@
         state.interactions.find(
           interaction =>
             interaction.publicId ===
-            state.selectedInteraction
-              .publicId
+            state.selectedInteraction.publicId
         );
 
       if (current) {
         state.selectedInteraction =
           current;
 
-        selectInteraction(
-          current
-        );
+        if (
+          current.type === "image"
+        ) {
+          selectInteraction(
+            current
+          );
+        }
       } else {
         deselectInteraction();
       }
@@ -2096,17 +2175,13 @@
     keepMessage = false
   } = {}) {
     if (
-      elements
-        .refreshUploadsButton
+      elements.refreshUploadsButton
     ) {
-      elements
-        .refreshUploadsButton
-        .disabled = true;
+      elements.refreshUploadsButton.disabled =
+        true;
 
-      elements
-        .refreshUploadsButton
-        .textContent =
-          "Actualisation…";
+      elements.refreshUploadsButton.textContent =
+        "Actualisation…";
     }
 
     try {
@@ -2122,17 +2197,13 @@
       }
     } finally {
       if (
-        elements
-          .refreshUploadsButton
+        elements.refreshUploadsButton
       ) {
-        elements
-          .refreshUploadsButton
-          .disabled = false;
+        elements.refreshUploadsButton.disabled =
+          false;
 
-        elements
-          .refreshUploadsButton
-          .textContent =
-            "Actualiser";
+        elements.refreshUploadsButton.textContent =
+          "Actualiser";
       }
     }
   }
@@ -2187,17 +2258,16 @@
       false
     );
 
-    if (elements.errorMessage) {
+    if (
       elements.errorMessage
-        .textContent =
-          error.status === 401
-            ? (
-                "Connecte-toi avec Twitch depuis la page d’accueil pour accéder aux interactions."
-              )
-            : (
-                error.message ||
-                "Une erreur est survenue."
-              );
+    ) {
+      elements.errorMessage.textContent =
+        error.status === 401
+          ? "Connecte-toi avec Twitch depuis la page d’accueil pour accéder aux interactions."
+          : (
+              error.message ||
+              "Une erreur est survenue."
+            );
     }
   }
 
@@ -2206,7 +2276,8 @@
       return;
     }
 
-    state.loading = true;
+    state.loading =
+      true;
 
     showLoading();
 
@@ -2227,7 +2298,8 @@
 
       showError(error);
     } finally {
-      state.loading = false;
+      state.loading =
+        false;
     }
   }
 
@@ -2288,7 +2360,6 @@
         setMessage(
           error.message ||
           "Impossible d’actualiser les participations.",
-
           "error"
         );
       }
@@ -2301,8 +2372,7 @@
   ];
 
   for (
-    const eventName of
-    dragEvents
+    const eventName of dragEvents
   ) {
     onSafe(
       elements.dropZone,
@@ -2326,8 +2396,7 @@
   ];
 
   for (
-    const eventName of
-    dragLeaveEvents
+    const eventName of dragLeaveEvents
   ) {
     onSafe(
       elements.dropZone,
