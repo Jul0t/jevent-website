@@ -2781,7 +2781,7 @@
                     ) / 100
                 ) * 100,
                 100,
-                60000
+                180000
             );
 
             layer.durationMs = duration;
@@ -4142,7 +4142,7 @@
                             1000
                         ),
                         1000,
-                        60000
+                        180000
                     );
 
                 state.layout.durationMs =
@@ -5716,7 +5716,7 @@
             "delayMs",
             {
                 minimum: 0,
-                maximum: 60000
+                maximum: 180000
             }
         );
 
@@ -5725,7 +5725,7 @@
             "durationMs",
             {
                 minimum: 100,
-                maximum: 60000
+                maximum: 180000
             }
         );
 
@@ -5931,7 +5931,7 @@
                                 ) * 1000
                             ),
                             1000,
-                            60000
+                            180000
                         );
 
                     markDirty();

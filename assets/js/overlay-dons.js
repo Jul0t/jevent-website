@@ -2069,7 +2069,7 @@
 
     maximumEnd =
       Math.min(
-        120000,
+        180000,
         maximumEnd
       );
 
