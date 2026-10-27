@@ -4322,7 +4322,34 @@
         );
 
         if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+
+            const noSoundConfigured =
+                type === "sound" &&
+                response.status === 404 &&
+                String(data.error || "")
+                    .replace(/[’‘]/g, "'")
+                    .trim() === "Aucun média n'est configuré.";
+
+            if (noSoundConfigured) {
+                // Aucun son n’est enregistré :
+                // on laisse l’éditeur s’ouvrir sans audio.
+                state.soundObjectUrl = null;
+
+                if (state.variant) {
+                    state.variant.soundStorageKey = null;
+                    state.variant.soundUrl = null;
+
+                    if (state.variant.media) {
+                        state.variant.media.soundUrl = null;
+                    }
+                }
+
+                return;
+            }
+
             throw new Error(
+                data.error ||
                 `Impossible de charger le média ${type} : HTTP ${response.status}.`
             );
         }
