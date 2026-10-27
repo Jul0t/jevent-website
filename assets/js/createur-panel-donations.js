@@ -254,6 +254,17 @@
                 );
             }
 
+            const replayButton = createElement(
+                "button",
+                "dashboard-button dashboard-button-secondary",
+                "Rejouer l’alerte"
+            );
+
+            replayButton.type = "button";
+            replayButton.dataset.replayDonation = String(donation.id);
+
+            card.append(replayButton);
+
             list.append(card);
         }
     }
@@ -482,4 +493,41 @@
             );
         }
     );
+
+    list.addEventListener("click", async event => {
+        const button = event.target.closest(
+            "[data-replay-donation]"
+        );
+
+        if (!button || button.disabled) {
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = "Mise en attente…";
+
+        try {
+            await apiFetch(
+                creatorUrl(
+                    "/api/creator-panel/donations/" +
+                    encodeURIComponent(
+                        button.dataset.replayDonation
+                    ) +
+                    "/replay"
+                ),
+                { method: "POST" }
+            );
+
+            window.alert(
+                "Alerte remise en attente. L’overlay doit être ouvert pour la jouer."
+            );
+
+            await loadDonations();
+        } catch (error) {
+            window.alert(error.message);
+        } finally {
+            button.disabled = false;
+            button.textContent = "Rejouer l’alerte";
+        }
+    });
 })();
