@@ -4066,11 +4066,13 @@
         }
 
         const maximum =
-            numberValue(
-                state.settings?.limits
-                    ?.maximumVideoFileSizeBytes,
-                15 * 1024 * 1024
-            );
+            Number(state.creatorId) === 1
+                ? 1024 ** 3
+                : numberValue(
+                    state.settings?.limits
+                        ?.maximumVideoFileSizeBytes,
+                    15 * 1024 * 1024
+                );
 
         if (
             !file.type.startsWith(
@@ -4304,7 +4306,10 @@
 
         revokeObjectUrl(objectUrlKey);
 
-        if (!hasMedia) {
+        if (isVideo) {
+            state[objectUrlKey] =
+                API_BASE + mediaPath(type);
+
             return;
         }
 
@@ -4371,16 +4376,175 @@
         }
     }
 
-    async function uploadMedia(
-        type,
-        file
-    ) {
+    async function uploadLargeVideo(file) {
+        const basePath = mediaPath("video");
+
+        async function send(
+            action,
+            {
+                token = "",
+                partNumber = null,
+                body = null,
+                binary = false
+            } = {}
+        ) {
+            const url = new URL(
+                API_BASE + basePath
+            );
+
+            url.searchParams.set(
+                "multipart",
+                action
+            );
+
+            if (token) {
+                url.searchParams.set(
+                    "uploadToken",
+                    token
+                );
+            }
+
+            if (partNumber !== null) {
+                url.searchParams.set(
+                    "partNumber",
+                    String(partNumber)
+                );
+            }
+
+            for (let attempt = 0; attempt < 3; attempt++) {
+                try {
+                    const response = await fetch(
+                        url,
+                        {
+                            method: "POST",
+                            credentials: "include",
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": binary
+                                    ? "application/octet-stream"
+                                    : "application/json"
+                            },
+                            body: binary
+                                ? body
+                                : JSON.stringify(body ?? {})
+                        }
+                    );
+
+                    const data = await response
+                        .json()
+                        .catch(() => ({}));
+
+                    if (!response.ok) {
+                        const error = new Error(
+                            data.error ||
+                            `Erreur HTTP ${response.status}`
+                        );
+
+                        error.status = response.status;
+
+                        throw error;
+                    }
+
+                    return data;
+                } catch (error) {
+                    const retryable =
+                        !error.status ||
+                        error.status >= 500 ||
+                        error.status === 408 ||
+                        error.status === 429;
+
+                    if (!retryable || attempt === 2) {
+                        throw error;
+                    }
+
+                    await new Promise(resolve =>
+                        setTimeout(
+                            resolve,
+                            (attempt + 1) * 1500
+                        )
+                    );
+                }
+            }
+        }
+
+        const session = await send(
+            "start",
+            {
+                body: {
+                    size: file.size,
+                    contentType: file.type
+                }
+            }
+        );
+
+        const parts = [];
+
+        try {
+            for (
+                let offset = 0, partNumber = 1;
+                offset < file.size;
+                offset += session.partSize, partNumber++
+            ) {
+                const end = Math.min(
+                    offset + session.partSize,
+                    file.size
+                );
+
+                const part = await send(
+                    "part",
+                    {
+                        token: session.token,
+                        partNumber,
+                        binary: true,
+                        body: file.slice(offset, end)
+                    }
+                );
+
+                parts.push(part);
+
+                setSaveState(
+                    "Envoi de la vidéo : " +
+                    Math.round(end / file.size * 100) +
+                    " %"
+                );
+            }
+
+            setSaveState(
+                "Finalisation de la vidéo…"
+            );
+
+            await send(
+                "complete",
+                {
+                    token: session.token,
+                    body: { parts }
+                }
+            );
+        } catch (error) {
+            await send(
+                "abort",
+                { token: session.token }
+            ).catch(() => { });
+
+            throw error;
+        }
+    }
+
+    async function uploadMedia(type, file) {
         if (!file) {
             return;
         }
 
-        const formData =
-            new FormData();
+        if (
+            type === "video" &&
+            Number(state.creatorId) === 1 &&
+            file.size > 50 * 1024 * 1024
+        ) {
+            await uploadLargeVideo(file);
+            return;
+        }
+
+        const formData = new FormData();
 
         formData.append(
             "file",
