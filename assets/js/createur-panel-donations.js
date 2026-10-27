@@ -518,10 +518,6 @@
                 { method: "POST" }
             );
 
-            window.alert(
-                "Alerte remise en attente. L’overlay doit être ouvert pour la jouer."
-            );
-
             await loadDonations();
         } catch (error) {
             window.alert(error.message);
